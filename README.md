@@ -1,97 +1,103 @@
-# ORBIS - AI Production Intelligence (PWA)
+# ORBIS (AI Production Intelligence & Dairy Traceability)
 
-Sistem Ketertelusuran Bahan Baku dan Produk Berbasis AI untuk Industri Pengolahan Susu.
+Sistem ketertelusuran bahan baku dan pendukung keputusan perencanaan produksi untuk industri pengolahan susu berbasis graf dan kecerdasan buatan.
 
-## 📁 Direktori Project
-```text
-G:\tiara-project\orbis\
-```
+---
 
-## 🚀 Cara Menjalankan Project
+## 🥛 Latar Belakang & Masalah
 
-Masuk ke folder project:
+Pada industri pengolahan susu segar (*dairy processing*), alur material bergerak cepat dan saling bercabang:
+1. Susu diperah di peternakan (*farm*).
+2. Diangkut menggunakan truk tangki berinsulasi (*road tanker*).
+3. Ditampung di tangki penyimpanan pabrik (*storage tank / silo*).
+4. Diolah dan dialirkan ke tangki aseptik serta mesin pengisian (*filling line*).
+5. Dikemas menjadi lot produk jadi (*finished goods*).
+
+**Tantangan di lapangan:**
+* **Relasi Many-to-Many**: Satu truk tangki bisa mendistribusikan susu ke beberapa tangki penyimpanan, dan satu tangki penyimpanan bisa menyuplai bahan untuk beberapa batch produksi sekaligus.
+* **Pencatatan Masih Tersebar**: Catatan penerimaan tanker, uji lab, dan pengemasan sering kali tersimpan terpisah di berbagai file Excel operasional.
+* **Investigasi Kualitas Lambat**: Saat tim Quality Assurance (QA) menemukan anomali rasa atau kontaminasi bakteri pada suatu batch di pasar, penelusuran manual membutuhkan waktu lama. Akibatnya, pabrik terpaksa menarik (*recall*) produk dalam cakupan yang terlalu luas karena tidak tahu pasti produk mana saja yang benar-benar terpapar.
+
+---
+
+## 💡 Solusi yang Dihadirkan ORBIS
+
+ORBIS hadir sebagai platform terintegrasi yang menghubungkan seluruh titik kejadian operasional (*Critical Tracking Events*) mulai dari peternakan hingga produk akhir:
+
+### 1. Smart Excel Ingestion & Validation
+* Menerima input catatan harian operasional berbasis file Excel dari lapangan.
+* Melakukan pemetaan kolom secara cerdas (*smart column mapping*) dengan skor keyakinan (*confidence score*).
+* Memisahkan data valid dari anomali struktural (*missing value*, format tanggal keliru, unit ambigu) agar staf cukup meninjau baris yang membutuhkan koreksi manual sebelum data masuk ke *event ledger*.
+
+### 2. Graph-Based Traceability (DAG)
+* Memodelkan riwayat material dalam bentuk graf berarah (*Directed Acyclic Graph*):
+  $$\text{Farm} \xrightarrow{\text{SUPPLIED\_TO}} \text{Tanker} \xrightarrow{\text{DISCHARGED\_INTO}} \text{Storage Tank} \xrightarrow{\text{PRODUCED}} \text{Batch} \xrightarrow{\text{FINISHED\_GOODS}} \text{Lot}$$
+* **Forward Trace**: Melacak dari bahan baku/truk tangki tertentu ke depan untuk melihat batch dan lot mana saja yang terbuat dari bahan tersebut.
+* **Backward Trace**: Melacak dari suatu lot produk jadi bermasalah ke belakang untuk menemukan tangki, truk, dan peternakan asalnya kurang dari hitungan detik.
+
+### 3. AI Production Planning & Recommendation
+* Memprediksi potensi *bottleneck* penjadwalan produksi berdasarkan data historis dan parameter riil mesin.
+* Menganalisis waktu henti pembersihan dan pergantian rasa (*flavour changeover*), misalnya merekomendasikan produksi varian *Full Cream* sebelum *Strawberry* guna menghemat waktu henti hingga 45 menit.
+* Memvalidasi batasan teknis pabrik secara otomatis (misal: mesin *filling* hanya boleh aktif jika kapasitas *Aseptic Tank* di atas 50%).
+* Keputusan akhir tetap berada di tangan *Production Planner* (*Human-in-the-Loop*).
+
+### 4. Quality Investigation & Precision Scoping
+* Saat ada laporan deviasi atau hasil uji lab yang meragukan, sistem langsung mengisolasi material yang terkonfirmasi terhubung (*confirmed relationship*) dan menandai produk hilir yang berpotensi terdampak (*potentially affected*).
+* Menghindari penarikan produk massal yang tidak perlu dan menghemat kerugian operasional pabrik.
+
+### 5. Audit Trail & Integrity Check
+* Setiap aksi penting (persetujuan jadwal produksi, pembuatan batch, penerimaan truk tangki) dicatat ke dalam *event ledger* dengan bukti *hash* integritas data.
+* Mencegah manipulasi catatan operasional saat dilakukan audit berkala.
+
+---
+
+## 🛠️ Tech Stack & Arsitektur
+
+* **Aplikasi**: Progressive Web App (PWA) berbasis **React 19**, **TypeScript**, dan **Vite**.
+* **Styling & UI**: **Tailwind CSS v4** dengan implementasi *Design System* khusus industri manufaktur.
+* **Service Worker**: `@vite-plugin-pwa` dengan *Workbox* untuk caching dan kesiapan *offline-mode* di lingkungan pabrik.
+* **Hosting**: Siap di-deploy langsung ke **Vercel** melalui konfigurasi `vercel.json`.
+
+---
+
+## 🚀 Panduan Menjalankan Project
+
+### Prasyarat
+* Node.js (versi 18 ke atas disarankan)
+* npm
+
+### 1. Masuk ke Direktori Project
 ```bash
 cd G:\tiara-project\orbis
 ```
 
-### 1. Mode Development (Lokal)
+### 2. Install Dependensi
+```bash
+npm install
+```
+
+### 3. Jalankan Server Development
 ```bash
 npm run dev
 ```
-Buka browser pada URL yang muncul (biasanya `http://localhost:5173`).
+Buka browser pada alamat yang tertera (biasanya `http://localhost:5173`).
 
-### 2. Build Produksi & PWA (Service Worker)
+### 4. Build untuk Produksi
 ```bash
 npm run build
 npm run preview
 ```
 
-### 3. Deploy ke Vercel (100% Gratis)
-Project sudah dilengkapi konfigurasi [`vercel.json`](file:///G:/tiara-project/orbis/vercel.json) dan Service Worker:
-* Jalankan `npx vercel` dari folder ini, atau
-* Push ke GitHub dan import ke dashboard Vercel.
-
 ---
 
-## 📱 Daftar 35 Halaman Lengkap (100% Sesuai Gambar & Variabel Asli)
+## 📌 Struktur Modul Aplikasi
 
-### 🏭 1. Production Planning & AI Optimization
-1. **Production Planning** (`ProductionPlanning.tsx`)
-2. **AI Recommendation** (`AIRecommendation.tsx`)
-3. **Schedule Simulation** (`ScheduleSimulation.tsx`)
-4. **Planning Approval** (`PlanningApproval.tsx`)
-5. **Planning Rejection** (`PlanningRejection.tsx`)
-
-### 🧠 2. AI Intelligence
-6. **Processing duration prediction** (`AIPredictionDetail.tsx`)
-7. **Insufficient data for reliable prediction** (`PredictionInsufficient.tsx`)
-8. **Production risk analysis** (`AIProductionRisk.tsx`)
-
-### 🔗 3. Traceability (Graph-Based Material Tracking)
-9. **Traceability overview** (`TraceabilityOverview.tsx`)
-10. **Material relationship graph** (`MaterialGraph.tsx`)
-11. **Forward trace · TRK-042** (`ForwardTrace.tsx`)
-12. **Backward trace · FG-1030-01** (`BackwardTrace.tsx`)
-13. **Batch B-2026-1030-01** (`BatchDetail.tsx`)
-
-### 🛡️ 4. Quality Investigation
-14. **Quality investigation** (`QualityInvestigationOverview.tsx`)
-15. **Investigation QI-2026-014** (`QualityInvestigationDetail.tsx`)
-16. **Affected batch analysis** (`AffectedBatchAnalysis.tsx`)
-    * Tabel: `TRK-042`, `ST-04`, `B-2026-1030-01`, `FG-1030-01`
-    * Summary: `Trace relationships are recorded; impact classification remains subject to quality review.`
-17. **Potentially affected: B-2026-1030-01 → FG-1030-01** (`AffectedProducts.tsx`)
-    * Badge: `POTENTIAL IMPACT`
-    * Tombol: `Return to workflow`
-
-### 🔒 5. Audit Trail & Integrity Check
-18. **Audit trail overview** (`AuditTrailOverview.tsx`)
-    * Metrik: `8 / 8 verification indicator`, `1,248 events recorded`
-    * Tabel kejadian: `EVT-1030-882`, `EVT-1030-881`, `EVT-1030-880`
-19. **Event EVT-1030-882** (`AuditEventDetail.tsx`)
-    * Detail grid: `Schedule approved`, `B-2026-1030-01`, `Ana Putri · Production Planner`, `30 Oct 2026 · 10:42`, `EVT-1030-881`, `Hash recorded · 8/8 verified`
-20. **Integrity check** (`AuditIntegrityCheck.tsx`)
-    * Badge: `INTEGRITY MATCH`
-    * Keterangan: `Operational database record matches stored integrity evidence.`
-    * Tabel: `Record hash (sha256: demo-8f3a...)`, `Previous reference (EVT-1030-881)`, `Verification status (8/8 verified)`
-
-### 🚛 6. Incoming Tanker
-21. **Incoming tanker monitoring** (`TankerOverview.tsx`)
-22. **Tanker TRK-042** (`TankerDetail.tsx`)
-23. **Sampling & lab status** (`TankerLabStatus.tsx`)
-24. **Lab result pending** (`TankerLabPending.tsx`)
-25. **Unloading detail (TRK-042 → ST-04)** (`TankerUnloading.tsx`)
-26. **TRK-045 Delayed** (`TankerDelayed.tsx`)
-
-### 📊 7. Data Management (Governed Ingestion)
-27. **Data Management - Overview** (`DataManagementOverview.tsx`)
-28. **Data Management - Excel Upload** (`ExcelUpload.tsx`)
-29. **Data Management - Review AI Column Mapping** (`ColumnMapping.tsx`)
-30. **Data Management - Validate records** (`ValidationRecords.tsx`)
-31. **Data Management - Import preview** (`ImportPreview.tsx`)
-32. **Data Management - Import history** (`ImportHistory.tsx`)
-33. **Data Management - Import failed** (`ImportError.tsx`)
-34. **Data Management - Column Mapping Review** (`ColumnMappingReview.tsx`)
-
-### 🎨 8. ORBIS Design System
-35. **Foundations & Components** (`DesignSystem.tsx`)
+Aplikasi menyediakan navigasi langsung di bagian atas layar (*quick switcher bar*) untuk mengakses alur operasional:
+1. **Production Planning**: Ringkasan utilisasi tangki, lini aktif, jadwal *filling machine*, dan status operasional.
+2. **AI Recommendation & Simulation**: Analisis urutan batch terbaik, validasi kapasitas, dan simulasi jadwal.
+3. **Incoming Tanker**: Pemantauan kedatangan truk tangki susu, status uji lab sampel, serta progress pembongkaran (*unloading*).
+4. **Data Management**: Alur unggah Excel harian, pemetaan kolom cerdas, validasi data baris, hingga konfirmasi ledger.
+5. **Traceability**: Visual graf alur material, penelusuran maju (*forward*), mundur (*backward*), dan rincian batch.
+6. **Quality Investigation**: Manajemen investigasi kendala mutu dan klasifikasi dampak produk.
+7. **Audit Trail**: Verifikasi integritas catatan kejadian (*hash integrity match*).
+8. **Design System**: Dokumentasi fondasi warna, tipografi, dan komponen antarmuka.
