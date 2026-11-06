@@ -269,44 +269,6 @@ export const App: React.FC = () => {
     }
   }
 
-  const quickNavPages: { id: NavPage; label: string }[] = [
-    { id: 'production-planning', label: 'Production Planning' },
-    { id: 'ai-recommendation', label: 'AI: Recommendation' },
-    { id: 'schedule-simulation', label: 'AI: Schedule Simulation' },
-    { id: 'planning-approval', label: 'AI: Planning Approval' },
-    { id: 'planning-rejection', label: 'AI: Planning Rejection' },
-    { id: 'ai-prediction-detail', label: 'AI: Prediction Detail' },
-    { id: 'prediction-insufficient', label: 'AI: Insufficient Data' },
-    { id: 'ai-production-risk', label: 'AI: Production Risk' },
-    { id: 'traceability-overview', label: 'Traceability: Overview' },
-    { id: 'traceability-graph', label: 'Traceability: Material Graph' },
-    { id: 'traceability-forward', label: 'Traceability: Forward Trace' },
-    { id: 'traceability-backward', label: 'Traceability: Backward Trace' },
-    { id: 'traceability-batch', label: 'Traceability: Batch Detail' },
-    { id: 'quality-investigation-overview', label: 'QI: Overview' },
-    { id: 'quality-investigation-detail', label: 'QI: QI-2026-014 Detail' },
-    { id: 'affected-batch-analysis', label: 'QI: Affected Batch' },
-    { id: 'affected-products', label: 'QI: Affected Products' },
-    { id: 'audit-trail-overview', label: 'Audit: Overview' },
-    { id: 'audit-event-detail', label: 'Audit: Event Detail' },
-    { id: 'audit-integrity-check', label: 'Audit: Integrity Check' },
-    { id: 'tanker-overview', label: 'Tanker: Monitoring' },
-    { id: 'tanker-detail', label: 'Tanker: TRK-042' },
-    { id: 'tanker-lab-status', label: 'Tanker: Lab Status' },
-    { id: 'tanker-lab-pending', label: 'Tanker: Lab Pending' },
-    { id: 'tanker-unloading', label: 'Tanker: Unloading' },
-    { id: 'tanker-delayed', label: 'Tanker: TRK-045 Delayed' },
-    { id: 'data-management-overview', label: 'DM: Overview' },
-    { id: 'data-management-upload', label: 'DM: Excel Upload' },
-    { id: 'data-management-mapping', label: 'DM: Column Mapping' },
-    { id: 'data-management-validation', label: 'DM: Validate Records' },
-    { id: 'data-management-preview', label: 'DM: Import Preview' },
-    { id: 'data-management-history', label: 'DM: Import History' },
-    { id: 'data-management-error', label: 'DM: Import Error' },
-    { id: 'data-management-mapping-review', label: 'DM: Mapping Review' },
-    { id: 'design-system', label: 'Design System' }
-  ]
-
   return (
     <div className="min-h-screen flex bg-[#F8FAFC]">
       {/* Mobile Menu Backdrop */}
@@ -338,26 +300,6 @@ export const App: React.FC = () => {
           </button>
           <div className="font-bold tracking-wider">ORBIS</div>
           <div className="text-xs text-slate-300">SHIFT A</div>
-        </div>
-
-        {/* Quick Page Switcher Bar */}
-        <div className="bg-white border-b border-slate-200 px-6 py-2 flex items-center gap-2 overflow-x-auto text-xs shrink-0 select-none">
-          <span className="text-slate-400 font-semibold uppercase tracking-wider shrink-0 mr-1">
-            Screens ({quickNavPages.length}):
-          </span>
-          {quickNavPages.map((page) => (
-            <button
-              key={page.id}
-              onClick={() => setCurrentPage(page.id)}
-              className={`px-3 py-1 rounded-full whitespace-nowrap font-medium transition-colors ${
-                currentPage === page.id
-                  ? 'bg-[#142B49] text-white shadow-2xs'
-                  : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              {page.label}
-            </button>
-          ))}
         </div>
 
         {/* Page Content */}
