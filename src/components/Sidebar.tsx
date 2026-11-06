@@ -8,8 +8,7 @@ import {
   GitFork,
   AlertCircle,
   History,
-  Settings as SettingsIcon,
-  Palette
+  Settings as SettingsIcon
 } from 'lucide-react'
 
 export type NavPage = 
@@ -60,9 +59,6 @@ export type NavPage =
   | 'audit-trail-overview'
   | 'audit-event-detail'
   | 'audit-integrity-check'
-
-  // Design System
-  | 'design-system'
 
   // Placeholders
   | 'dashboard'
@@ -146,8 +142,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onNavigate }) => 
       icon: History,
       isActive: isAuditActive
     },
-    { id: 'settings', label: 'Settings', icon: SettingsIcon },
-    { id: 'design-system', label: 'Design System', icon: Palette, isActive: currentPage === 'design-system' }
+    { id: 'settings', label: 'Settings', icon: SettingsIcon }
   ]
 
   return (

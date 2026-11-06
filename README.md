@@ -100,4 +100,3 @@ Aplikasi menyediakan navigasi langsung di bagian atas layar (*quick switcher bar
 5. **Traceability**: Visual graf alur material, penelusuran maju (*forward*), mundur (*backward*), dan rincian batch.
 6. **Quality Investigation**: Manajemen investigasi kendala mutu dan klasifikasi dampak produk.
 7. **Audit Trail**: Verifikasi integritas catatan kejadian (*hash integrity match*).
-8. **Design System**: Dokumentasi fondasi warna, tipografi, dan komponen antarmuka.

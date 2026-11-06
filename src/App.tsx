@@ -49,9 +49,6 @@ import { AuditTrailOverview } from './pages/AuditTrailOverview'
 import { AuditEventDetail } from './pages/AuditEventDetail'
 import { AuditIntegrityCheck } from './pages/AuditIntegrityCheck'
 
-// Design System
-import { DesignSystem } from './pages/DesignSystem'
-
 import { Menu, X } from 'lucide-react'
 
 export const App: React.FC = () => {
@@ -259,10 +256,6 @@ export const App: React.FC = () => {
         return <AuditEventDetail />
       case 'audit-integrity-check':
         return <AuditIntegrityCheck />
-
-      // Design System
-      case 'design-system':
-        return <DesignSystem />
 
       default:
         return <ProductionPlanning />
