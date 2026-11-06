@@ -1,6 +1,6 @@
 # ORBIS (AI Production Intelligence & Dairy Traceability)
 
-Sistem ketertelusuran bahan baku dan pendukung keputusan perencanaan produksi untuk industri pengolahan susu berbasis graf dan kecerdasan buatan.
+Sistem ketertelusuran bahan baku dan pendukung keputusan perencanaan dalam bentuk production plan untuk industri pengolahan susu berbasis graf dan kecerdasan buatan/AI.
 
 ---
 
