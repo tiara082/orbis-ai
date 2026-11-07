@@ -6,11 +6,47 @@ export const id: Messages = {
     tagline: 'Intelijen Produksi AI'
   },
   shell: {
-    search: 'Cari pesanan, tanker...',
+    search: 'Cari log produksi, tanker...',
     language: 'Bahasa',
     mobileShift: 'Shift A',
     userMeta: '30 Okt 2026 · Shift A',
-    toggleNav: 'Buka navigasi'
+    toggleNav: 'Buka navigasi',
+    collapse: 'Tutup sidebar',
+    expand: 'Buka sidebar',
+    notifications: 'Notifikasi',
+    markAllRead: 'Tandai sudah dibaca',
+    noAlerts: 'Tidak ada peringatan saat ini',
+    timezone: 'WIB',
+    profileMenu: 'Menu akun',
+    profile: 'Profil',
+    settings: 'Pengaturan',
+    logout: 'Keluar',
+    role: 'Perencana produksi',
+    plant: 'Pabrik A · Hall filling',
+    shift: 'Shift A',
+    signIn: 'Masuk'
+  },
+  alerts: {
+    tankerDelay: {
+      title: 'TRK-045 tertunda 35 menit',
+      body: 'Cakupan susu mentah sore berisiko'
+    },
+    quality: {
+      title: 'QI-2026-014 perlu tinjauan',
+      body: 'Hasil lab mungkin memengaruhi FG-1030-01'
+    },
+    approval: {
+      title: 'Persetujuan rencana menunggu',
+      body: 'Rekomendasi AI memerlukan keputusan manusia'
+    },
+    labPending: {
+      title: 'Hasil lab tertunda',
+      body: 'TRK-042 tidak dapat dibongkar sampai QA mencatat hasil'
+    },
+    mismatch: {
+      title: 'Ledger tidak cocok pada FG-1030-01',
+      body: 'Integritas telusur perlu cek QA'
+    }
   },
   lang: {
     en: 'EN',
@@ -31,10 +67,12 @@ export const id: Messages = {
       traceability: 'Ketertelusuran',
       'quality-investigation': 'Investigasi Mutu',
       'audit-trail': 'Jejak Audit',
+      account: 'Akun',
       settings: 'Pengaturan'
     },
     page: {
       dashboard: 'Dasbor',
+      profile: 'Profil',
       settings: 'Pengaturan',
       'production-planning': 'Rencana',
       'ai-recommendation': 'Rekomendasi AI',

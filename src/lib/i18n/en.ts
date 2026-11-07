@@ -8,7 +8,43 @@ export const en = {
     language: 'Language',
     mobileShift: 'Shift A',
     userMeta: '30 Oct 2026 · Shift A',
-    toggleNav: 'Toggle navigation'
+    toggleNav: 'Toggle navigation',
+    collapse: 'Collapse sidebar',
+    expand: 'Expand sidebar',
+    notifications: 'Notifications',
+    markAllRead: 'Mark all read',
+    noAlerts: 'No alerts right now',
+    timezone: 'WIB',
+    profileMenu: 'Account menu',
+    profile: 'Profile',
+    settings: 'Settings',
+    logout: 'Log out',
+    role: 'Production planner',
+    plant: 'Plant A · Filling hall',
+    shift: 'Shift A',
+    signIn: 'Sign in'
+  },
+  alerts: {
+    tankerDelay: {
+      title: 'TRK-045 delayed 35 min',
+      body: 'Afternoon raw-milk coverage is at risk'
+    },
+    quality: {
+      title: 'QI-2026-014 needs review',
+      body: 'Lab result may affect FG-1030-01'
+    },
+    approval: {
+      title: 'Plan approval waiting',
+      body: 'AI recommendation needs a human decision'
+    },
+    labPending: {
+      title: 'Lab result pending',
+      body: 'TRK-042 cannot unload until QA records a result'
+    },
+    mismatch: {
+      title: 'Ledger mismatch on FG-1030-01',
+      body: 'Trace integrity needs a QA check'
+    }
   },
   lang: {
     en: 'EN',
@@ -29,10 +65,12 @@ export const en = {
       traceability: 'Traceability',
       'quality-investigation': 'Quality Investigation',
       'audit-trail': 'Audit Trail',
+      account: 'Account',
       settings: 'Settings'
     },
     page: {
       dashboard: 'Dashboard',
+      profile: 'Profile',
       settings: 'Settings',
       'production-planning': 'Plan',
       'ai-recommendation': 'AI recommendation',
@@ -156,9 +194,29 @@ export const en = {
     },
     settings: {
       title: 'Settings',
-      description: 'Workspace, shift and integration preferences',
-      emptyTitle: 'Settings are coming soon',
-      emptyDescription: 'This prototype runs on synthetic operational data only.'
+      description: 'Workspace, shift and notification preferences',
+      language: 'Language',
+      languageHint: 'Applies to the whole workspace on this device',
+      shift: 'Active shift',
+      shiftValue: 'Shift A · 06:00–18:00',
+      alerts: 'Operational alerts',
+      alertsHint: 'Delay, lab hold, quality, and approval items appear in the header bell',
+      timezone: 'Plant timezone',
+      timezoneValue: 'Asia/Jakarta (WIB)'
+    },
+    profile: {
+      title: 'Profile',
+      description: 'Operator identity used on audit events',
+      name: 'Name',
+      role: 'Role',
+      plant: 'Plant',
+      shift: 'Shift',
+      email: 'Email',
+      openSettings: 'Open settings'
+    },
+    signedOut: {
+      title: 'Signed out',
+      description: 'This prototype does not persist a real session. Sign in to return to the plant workspace.'
     },
     'production-planning': {
       title: 'Production plan',

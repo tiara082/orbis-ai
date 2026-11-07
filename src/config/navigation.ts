@@ -6,8 +6,8 @@ import {
   History,
   LayoutGrid,
   SearchCheck,
-  Settings,
   Truck,
+  UserRound,
   type LucideIcon
 } from 'lucide-react'
 
@@ -62,6 +62,7 @@ export type NavPage =
 
   // System
   | 'dashboard'
+  | 'profile'
   | 'settings'
 
 export interface NavTab {
@@ -86,6 +87,8 @@ export interface NavModule {
   statePages?: StatePage[]
   /** Optional per-module header meta, e.g. "Last ledger check" */
   meta?: { label: string; value: string }
+  /** Hidden from the sidebar; still used for breadcrumbs (profile, settings) */
+  hidden?: boolean
 }
 
 export interface NavGroup {
@@ -222,11 +225,15 @@ export const NAV_GROUPS: NavGroup[] = [
     label: 'System',
     modules: [
       {
-        id: 'settings',
-        label: 'Settings',
-        icon: Settings,
-        entry: 'settings',
-        tabs: []
+        id: 'account',
+        label: 'Account',
+        icon: UserRound,
+        entry: 'profile',
+        hidden: true,
+        tabs: [
+          { page: 'profile', label: 'Profile' },
+          { page: 'settings', label: 'Settings' }
+        ]
       }
     ]
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LayoutGrid, Settings } from 'lucide-react'
+import { LayoutGrid, LogOut } from 'lucide-react'
 import type { NavPage } from './config/navigation'
 import { AppShell } from './components/layout/AppShell'
 import { PageHeader } from './components/layout/PageHeader'
@@ -53,9 +53,12 @@ import { AffectedProducts } from './pages/quality-investigation/AffectedProducts
 import { AuditTrailOverview } from './pages/audit-trail/AuditTrailOverview'
 import { AuditEventDetail } from './pages/audit-trail/AuditEventDetail'
 import { AuditIntegrityCheck } from './pages/audit-trail/AuditIntegrityCheck'
+import { Profile } from './pages/account/Profile'
+import { AccountSettings } from './pages/account/Settings'
 
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<NavPage>('production-planning')
+  const [signedOut, setSignedOut] = useState(false)
   const { t } = useTranslation()
 
   const renderContent = () => {
@@ -201,22 +204,30 @@ export const App: React.FC = () => {
             />
           </>
         )
+      case 'profile':
+        return <Profile />
       case 'settings':
-        return (
-          <>
-            <PageHeader title={t('pages.settings.title')} description={t('pages.settings.description')} />
-            <EmptyState
-              icon={Settings}
-              title={t('pages.settings.emptyTitle')}
-              description={t('pages.settings.emptyDescription')}
-            />
-          </>
-        )
+        return <AccountSettings />
     }
   }
 
+  if (signedOut) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-white px-4">
+        <div className="w-full max-w-md text-center">
+          <EmptyState
+            icon={LogOut}
+            title={t('pages.signedOut.title')}
+            description={t('pages.signedOut.description')}
+            action={{ label: t('shell.signIn'), onClick: () => setSignedOut(false) }}
+          />
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <AppShell currentPage={currentPage} onNavigate={setCurrentPage}>
+    <AppShell currentPage={currentPage} onNavigate={setCurrentPage} onLogout={() => setSignedOut(true)}>
       {renderContent()}
     </AppShell>
   )

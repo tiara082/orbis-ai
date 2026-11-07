@@ -4,6 +4,7 @@ import type { NavPage } from '../../config/navigation'
 interface NavigationContextValue {
   currentPage: NavPage
   navigate: (page: NavPage) => void
+  logout: () => void
 }
 
 export const NavigationContext = createContext<NavigationContextValue | null>(null)

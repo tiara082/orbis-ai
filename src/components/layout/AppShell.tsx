@@ -3,17 +3,25 @@ import { Menu, X } from 'lucide-react'
 import type { NavPage } from '../../config/navigation'
 import { useTranslation } from '../../lib/i18n'
 import { cn } from '../../lib/cn'
+import { AppHeader } from './AppHeader'
 import { NavigationContext } from './NavigationContext'
 import { Sidebar } from './Sidebar'
+
+const COLLAPSE_KEY = 'orbis-sidebar-collapsed'
 
 interface AppShellProps {
   currentPage: NavPage
   onNavigate: (page: NavPage) => void
+  onLogout: () => void
   children: React.ReactNode
 }
 
-export const AppShell: React.FC<AppShellProps> = ({ currentPage, onNavigate, children }) => {
+export const AppShell: React.FC<AppShellProps> = ({ currentPage, onNavigate, onLogout, children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.localStorage.getItem(COLLAPSE_KEY) === '1'
+  })
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
 
@@ -21,15 +29,20 @@ export const AppShell: React.FC<AppShellProps> = ({ currentPage, onNavigate, chi
     contentRef.current?.scrollTo({ top: 0 })
   }, [currentPage])
 
+  useEffect(() => {
+    window.localStorage.setItem(COLLAPSE_KEY, collapsed ? '1' : '0')
+  }, [collapsed])
+
   const navigation = useMemo(
     () => ({
       currentPage,
       navigate: (page: NavPage) => {
         onNavigate(page)
         setMobileMenuOpen(false)
-      }
+      },
+      logout: onLogout
     }),
-    [currentPage, onNavigate]
+    [currentPage, onNavigate, onLogout]
   )
 
   return (
@@ -41,31 +54,32 @@ export const AppShell: React.FC<AppShellProps> = ({ currentPage, onNavigate, chi
 
         <div
           className={cn(
-            'fixed inset-y-0 left-0 z-50 p-3 transform transition-transform duration-200 ease-in-out',
-            'md:relative md:h-full md:shrink-0 md:translate-x-0 md:p-0',
+            'fixed inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out',
+            'md:relative md:h-full md:shrink-0 md:translate-x-0',
             mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
-          <Sidebar currentPage={currentPage} onNavigate={navigation.navigate} />
+          <Sidebar
+            currentPage={currentPage}
+            onNavigate={navigation.navigate}
+            collapsed={collapsed}
+            onToggleCollapsed={() => setCollapsed((value) => !value)}
+          />
         </div>
 
         <div className="flex-1 flex flex-col min-w-0 min-h-0">
-          <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white">
+          <div className="flex items-stretch border-b border-gray-200">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 rounded-lg text-ink-strong hover:bg-gray-100"
+              className="md:hidden w-12 shrink-0 inline-flex items-center justify-center text-ink-strong hover:bg-gray-50"
               aria-label={t('shell.toggleNav')}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center">
-                O
-              </div>
-              <span className="font-extrabold tracking-wide text-ink-strong">{t('brand.name')}</span>
+            <div className="flex-1 min-w-0">
+              <AppHeader />
             </div>
-            <span className="text-xs text-ink">{t('shell.mobileShift')}</span>
           </div>
 
           <div ref={contentRef} className="flex-1 min-h-0 overflow-y-auto thin-scrollbar bg-white">

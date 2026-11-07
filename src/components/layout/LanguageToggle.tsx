@@ -9,7 +9,7 @@ export const LanguageToggle: React.FC<{ className?: string }> = ({ className }) 
 
   return (
     <div
-      className={cn('flex items-center rounded-full bg-white p-0.5 border border-gray-200', className)}
+      className={cn('inline-flex w-fit items-center rounded-full bg-white p-0.5 border border-gray-200', className)}
       role="group"
       aria-label={t('shell.language')}
     >
