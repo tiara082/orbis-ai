@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Sidebar, type NavPage } from './components/Sidebar'
 
 // Production Planning
@@ -54,6 +54,11 @@ import { Menu, X } from 'lucide-react'
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<NavPage>('production-planning')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0 })
+  }, [currentPage])
 
   const handleNavigate = (page: NavPage) => {
     setCurrentPage(page)
@@ -263,7 +268,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex bg-[#F8FAFC]">
+    <div className="h-screen overflow-hidden flex bg-[#F8FAFC]">
       {/* Mobile Menu Backdrop */}
       {mobileMenuOpen && (
         <div
@@ -274,7 +279,7 @@ export const App: React.FC = () => {
 
       {/* Sidebar for Desktop & Mobile Drawer */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 transform md:relative md:translate-x-0 transition-transform duration-200 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 transform md:relative md:h-full md:shrink-0 md:translate-x-0 transition-transform duration-200 ease-in-out ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -282,7 +287,7 @@ export const App: React.FC = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      <div ref={contentRef} className="flex-1 flex flex-col min-w-0 min-h-0 overflow-y-auto">
         {/* Mobile Header Bar */}
         <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[#142B49] text-white">
           <button

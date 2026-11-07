@@ -146,7 +146,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onNavigate }) => 
   ]
 
   return (
-    <aside className="w-64 bg-[#142B49] text-slate-300 flex flex-col min-h-screen shrink-0 select-none">
+    <aside className="w-64 bg-[#142B49] text-slate-300 flex flex-col h-full shrink-0 select-none">
       {/* Brand Header */}
       <div className="px-6 pt-7 pb-6">
         <h1 className="text-xl font-bold tracking-wider text-white">ORBIS</h1>
@@ -156,7 +156,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onNavigate }) => 
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 px-3 space-y-1">
+      <nav className="flex-1 min-h-0 overflow-y-auto px-3 space-y-1">
         {navItems.map((item) => {
           const Icon = item.icon
           const active = item.isActive
