@@ -7,30 +7,32 @@ import { KeyValueList } from '../../components/common/KeyValueList'
 import { StepFlow } from '../../components/common/StepFlow'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 export const BatchDetail: React.FC = () => {
   const { navigate } = useNavigation()
+  const { t } = useTranslation()
 
   return (
     <>
       <PageHeader
-        title="Batch B-2026-1030-01"
-        description="Production date 30 Oct · synthetic relationship record"
-        titleAddon={<Badge status="Pending" size="md">Ledger pending</Badge>}
+        title={t('pages.traceability-batch.title')}
+        description={t('pages.traceability-batch.description')}
+        titleAddon={<Badge status="Pending" size="md">{t('pages.traceability-batch.ledgerPending')}</Badge>}
         actions={
           <>
             <Button variant="secondary" icon={Download}>
-              Export
+              {t('common.export')}
             </Button>
             <Button icon={Network} onClick={() => navigate('traceability-graph')}>
-              Open in graph
+              {t('pages.traceability-batch.openGraph')}
             </Button>
           </>
         }
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <SectionPanel title="Batch facts" className="lg:col-span-6">
+        <SectionPanel title={t('pages.traceability-batch.facts')} className="lg:col-span-6">
           <div className="bg-white rounded-xl border border-gray-200 shadow-xs px-5 py-2">
             <KeyValueList
               items={[
@@ -44,7 +46,7 @@ export const BatchDetail: React.FC = () => {
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Trace relationships" className="lg:col-span-6">
+        <SectionPanel title={t('pages.traceability-batch.relationships')} className="lg:col-span-6">
           <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5 space-y-5">
             <StepFlow
               steps={[
@@ -59,7 +61,7 @@ export const BatchDetail: React.FC = () => {
                 Relationships recorded
               </Badge>
               <Button variant="link" size="sm" onClick={() => navigate('traceability-backward')}>
-                View backward trace
+                {t('pages.traceability-batch.openBackward')}
               </Button>
             </div>
           </div>

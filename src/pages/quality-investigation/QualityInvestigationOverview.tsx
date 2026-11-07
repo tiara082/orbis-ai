@@ -8,6 +8,7 @@ import { EntityCell } from '../../components/common/EntityCell'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { SegmentedFilter } from '../../components/ui/SegmentedFilter'
+import { useTranslation } from '../../lib/i18n'
 
 interface QualityInvestigationOverviewProps {
   onSelectInvestigation: (id: string) => void
@@ -31,6 +32,7 @@ type Filter = 'all' | 'open' | 'closed'
 
 export const QualityInvestigationOverview: React.FC<QualityInvestigationOverviewProps> = ({ onSelectInvestigation }) => {
   const [filter, setFilter] = useState<Filter>('all')
+  const { t } = useTranslation()
 
   const rows = useMemo(
     () =>
@@ -55,17 +57,17 @@ export const QualityInvestigationOverview: React.FC<QualityInvestigationOverview
   return (
     <>
       <PageHeader
-        title="Quality investigation"
-        description="Use traceability to separate confirmed and potential impact"
+        title={t('pages.quality-investigation-overview.title')}
+        description={t('pages.quality-investigation-overview.description')}
         actions={
           <Button icon={Plus} onClick={() => onSelectInvestigation('QI-2026-014')}>
-            Create investigation
+            {t('pages.quality-investigation-overview.newInvestigation')}
           </Button>
         }
       />
 
       <div className="space-y-5">
-        <SectionPanel title="Summary">
+        <SectionPanel title={t('pages.quality-investigation-overview.summary')}>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
             <StatCard icon={SearchCheck} label="Open investigations" value="2" caption="Start from material, batch or lot" captionTone="brand" />
             <StatCard icon={TriangleAlert} label="Potentially affected lots" value="1" caption="Hold review required" captionStatus="Warning" />
@@ -73,7 +75,7 @@ export const QualityInvestigationOverview: React.FC<QualityInvestigationOverview
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Investigations">
+        <SectionPanel title={t('pages.quality-investigation-overview.investigations')}>
           <DataTable
             columns={columns}
             rows={rows}

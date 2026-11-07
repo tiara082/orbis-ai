@@ -7,6 +7,7 @@ import { StatCard } from '../../components/common/StatCard'
 import { StepFlow } from '../../components/common/StepFlow'
 import { TraceStepsTable, type TraceStep } from '../../components/traceability/TraceStepsTable'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 const steps: TraceStep[] = [
   { kind: 'tanker', entity: 'TRK-042', quantity: '8,200 L', timestamp: '30 Oct 09:18', relationship: 'SUPPLIED_TO', integrity: 'Verified' },
@@ -17,21 +18,22 @@ const steps: TraceStep[] = [
 
 export const ForwardTrace: React.FC = () => {
   const { navigate } = useNavigation()
+  const { t } = useTranslation()
 
   return (
     <>
       <PageHeader
-        title="Forward trace · TRK-042"
-        description="Source tanker → storage tank → production batch → finished goods"
+        title={t('pages.traceability-forward.title')}
+        description={t('pages.traceability-forward.description')}
         actions={
           <Button variant="secondary" icon={Download}>
-            Export
+            {t('common.export')}
           </Button>
         }
       />
 
       <div className="space-y-5">
-        <SectionPanel title="Impact summary" subtitle="Everything downstream of the selected tanker">
+        <SectionPanel title={t('pages.traceability-forward.impact')} subtitle={t('pages.traceability-forward.impactSubtitle')}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <StatCard icon={Waypoints} label="Hops" value="4" caption="tanker to finished lot" />
             <StatCard icon={Layers} label="Traced volume" value="8,200 L" caption="100% of tanker volume" />
@@ -39,7 +41,7 @@ export const ForwardTrace: React.FC = () => {
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Trace path">
+        <SectionPanel title={t('pages.traceability-forward.path')}>
           <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-4">
             <StepFlow
               steps={[
@@ -52,7 +54,7 @@ export const ForwardTrace: React.FC = () => {
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Trace steps">
+        <SectionPanel title={t('pages.traceability-forward.steps')}>
           <TraceStepsTable
             steps={steps}
             onRowClick={(step) => navigate(step.kind === 'batch' ? 'traceability-batch' : 'traceability-graph')}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { ChevronRight } from 'lucide-react'
 import { resolveNav } from '../../config/navigation'
+import { useTranslation } from '../../lib/i18n'
 import { cn } from '../../lib/cn'
 import { ModuleTabs } from './ModuleTabs'
 import { useNavigation } from './NavigationContext'
@@ -27,9 +28,12 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   className
 }) => {
   const { currentPage, navigate } = useNavigation()
+  const { t } = useTranslation()
   const { module, pageLabel } = resolveNav(currentPage)
   const ModuleIcon = module.icon
   const headerMeta = meta === null ? undefined : meta ?? module.meta
+  const moduleLabel = t(`nav.module.${module.id}`)
+  const translatedPage = t(`nav.page.${currentPage}`)
   const showPageCrumb = pageLabel !== module.label
 
   return (
@@ -42,18 +46,18 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             onClick={() => navigate(module.entry)}
             className={cn('hover:text-ink-strong transition-colors', !showPageCrumb && 'text-ink-strong font-medium')}
           >
-            {module.label}
+            {moduleLabel}
           </button>
           {showPageCrumb && (
             <>
               <ChevronRight className="w-3 h-3 text-gray-300" />
-              <span className="text-ink-strong font-medium">{pageLabel}</span>
+              <span className="text-ink-strong font-medium">{translatedPage}</span>
             </>
           )}
         </nav>
         {headerMeta && (
           <p className="text-xs text-ink">
-            {headerMeta.label} <span className="font-semibold text-ink-strong">{headerMeta.value}</span>
+            {t(`nav.meta.${module.id}`)} <span className="font-semibold text-ink-strong">{headerMeta.value}</span>
           </p>
         )}
       </div>

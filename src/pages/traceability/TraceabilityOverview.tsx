@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { useNavigation } from '../../components/layout/NavigationContext'
+import { useTranslation } from '../../lib/i18n'
 import { SectionPanel } from '../../components/common/SectionPanel'
 import { StatCard } from '../../components/common/StatCard'
 import { ToolCard } from '../../components/common/ToolCard'
@@ -62,6 +63,7 @@ export const TraceabilityOverview: React.FC<TraceabilityOverviewProps> = ({
   onOpenBatch
 }) => {
   const { navigate } = useNavigation()
+  const { t } = useTranslation()
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
 
@@ -107,32 +109,32 @@ export const TraceabilityOverview: React.FC<TraceabilityOverviewProps> = ({
   return (
     <>
       <PageHeader
-        title="Traceability overview"
+        title={t('pages.traceability-overview.title')}
         actions={
           <>
             <Button variant="secondary" icon={Download}>
-              Export
+              {t('common.export')}
             </Button>
             <Button icon={Network} onClick={onOpenGraph}>
-              Relationship graph
+              {t('pages.traceability-overview.relationshipGraph')}
             </Button>
           </>
         }
       />
 
       <div className="space-y-5">
-        <SectionPanel title="Quick stats" subtitle="Graph-based material relationships from farm to finished goods">
+        <SectionPanel title={t('pages.traceability-overview.quickStats')} subtitle={t('pages.traceability-overview.quickStatsSubtitle')}>
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
-            <StatCard icon={Waypoints} label="Relationships" value="04" caption="TRK-042 → FG-1030-01" />
-            <StatCard icon={ShieldCheck} label="Verified" value="02" caption="matches blockchain proof" captionStatus="Verified" />
-            <StatCard icon={Clock} label="Pending" value="01" caption="awaiting confirmation" captionStatus="Pending" />
-            <StatCard icon={TriangleAlert} label="Mismatch" value="01" caption="needs QA review" captionStatus="Failed" />
+            <StatCard icon={Waypoints} label={t('pages.traceability-overview.relationships')} value="04" caption="TRK-042 → FG-1030-01" />
+            <StatCard icon={ShieldCheck} label={t('status.verified')} value="02" caption={t('pages.traceability-overview.matchesProof')} captionStatus="Verified" />
+            <StatCard icon={Clock} label={t('status.pending')} value="01" caption={t('pages.traceability-overview.awaiting')} captionStatus="Pending" />
+            <StatCard icon={TriangleAlert} label={t('status.mismatch')} value="01" caption={t('pages.traceability-overview.needsQa')} captionStatus="Failed" />
             <StatCard icon={Layers} label="Traced volume" value="8,200 L" caption="via ST-04" />
             <StatCard icon={BookCheck} label="Ledger check" value="15:02" caption="30 Oct 2026 · Shift A" />
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Trace tools">
+        <SectionPanel title={t('pages.traceability-overview.tools')}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <ToolCard
               icon={Search}

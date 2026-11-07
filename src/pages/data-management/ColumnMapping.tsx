@@ -6,6 +6,7 @@ import { DataTable, type DataTableColumn } from '../../components/common/DataTab
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { ProgressBar } from '../../components/ui/ProgressBar'
+import { useTranslation } from '../../lib/i18n'
 import type { Tone } from '../../lib/status'
 
 interface ColumnMappingProps {
@@ -33,6 +34,7 @@ const mappingData: MappingRow[] = [
 const confidenceTone = (value: number): Tone => (value >= 90 ? 'success' : value >= 60 ? 'warning' : 'danger')
 
 export const ColumnMapping: React.FC<ColumnMappingProps> = ({ onContinue, onReviewKeterangan }) => {
+  const { t } = useTranslation()
   const columns: DataTableColumn<MappingRow>[] = [
     { key: 'original', header: 'Original column', render: (row) => <span className="font-semibold">{row.original}</span> },
     { key: 'standard', header: 'Standard field', render: (row) => <span className="font-mono text-xs">{row.standard}</span> },
@@ -55,7 +57,7 @@ export const ColumnMapping: React.FC<ColumnMappingProps> = ({ onContinue, onRevi
       render: (row) =>
         row.clickable && onReviewKeterangan ? (
           <Button variant="link" size="sm" onClick={onReviewKeterangan}>
-            Review
+            {t('pages.data-management-mapping.reviewKeterangan')}
           </Button>
         ) : null
     }
@@ -66,11 +68,11 @@ export const ColumnMapping: React.FC<ColumnMappingProps> = ({ onContinue, onRevi
   return (
     <>
       <PageHeader
-        title="Review AI column mapping"
-        description="Low-confidence mappings require human review"
+        title={t('pages.data-management-mapping.title')}
+        description={t('pages.data-management-mapping.description')}
         actions={
           <Button iconRight={ArrowRight} onClick={onContinue}>
-            Continue to validation
+            {t('pages.data-management-mapping.continue')}
           </Button>
         }
       />

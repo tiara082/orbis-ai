@@ -6,24 +6,26 @@ import { SectionPanel, Card } from '../../components/common/SectionPanel'
 import { KeyValueList } from '../../components/common/KeyValueList'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 export const AuditEventDetail: React.FC = () => {
   const { navigate } = useNavigation()
+  const { t } = useTranslation()
 
   return (
     <>
       <PageHeader
-        title="Event EVT-1030-882"
-        description="Schedule approval event · supporting integrity evidence"
-        titleAddon={<Badge status="Verified" size="md" shape="pill">8/8 verified</Badge>}
+        title={t('pages.audit-event-detail.title')}
+        description={t('pages.audit-event-detail.description')}
+        titleAddon={<Badge status="Verified" size="md" shape="pill">{t('pages.audit-event-detail.verifiedCount')}</Badge>}
         actions={
           <Button variant="secondary" icon={ShieldCheck} onClick={() => navigate('audit-integrity-check')}>
-            Verify integrity
+            {t('pages.audit-event-detail.integrity')}
           </Button>
         }
       />
 
-      <SectionPanel title="Event record">
+      <SectionPanel title={t('pages.audit-event-detail.record')}>
         <Card className="p-5">
           <KeyValueList
             layout="grid"

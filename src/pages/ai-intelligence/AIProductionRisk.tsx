@@ -5,6 +5,7 @@ import { SectionPanel } from '../../components/common/SectionPanel'
 import { Callout } from '../../components/common/Callout'
 import { Badge } from '../../components/ui/Badge'
 import { IconTile } from '../../components/ui/IconTile'
+import { useTranslation } from '../../lib/i18n'
 import type { Tone } from '../../lib/status'
 
 interface Risk {
@@ -23,9 +24,11 @@ const risks: Risk[] = [
   { category: 'Schedule conflict', icon: CalendarClock, tone: 'warning', severity: 'Medium', title: 'Strawberry order after Full Cream', description: '45 min changeover remains required' }
 ]
 
-export const AIProductionRisk: React.FC = () => (
+export const AIProductionRisk: React.FC = () => {
+  const { t } = useTranslation()
+  return (
   <>
-    <PageHeader title="Production risk analysis" description="Risks detected from the delayed tanker scenario" />
+    <PageHeader title={t('pages.ai-production-risk.title')} description={t('pages.ai-production-risk.description')} />
 
     <div className="space-y-5">
       <SectionPanel
@@ -65,4 +68,5 @@ export const AIProductionRisk: React.FC = () => (
       />
     </div>
   </>
-)
+  )
+}

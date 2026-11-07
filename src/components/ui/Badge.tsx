@@ -1,6 +1,7 @@
 import React from 'react'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '../../lib/cn'
+import { useTranslation } from '../../lib/i18n'
 import { getStatusStyle, toneSoft, toneSolid, type Tone } from '../../lib/status'
 
 interface BadgeProps {
@@ -25,9 +26,13 @@ export const Badge: React.FC<BadgeProps> = ({
   className,
   children
 }) => {
+  const { t } = useTranslation()
   const resolved = status ? getStatusStyle(status) : undefined
   const finalTone: Tone = tone ?? resolved?.tone ?? 'neutral'
   const Icon = icon === null ? undefined : icon ?? resolved?.icon
+  const statusKey = status ? `status.${status.trim().toLowerCase()}` : undefined
+  const translatedStatus = statusKey ? t(statusKey) : undefined
+  const statusLabel = translatedStatus && translatedStatus !== statusKey ? translatedStatus : status
 
   const variantClass =
     variant === 'solid'
@@ -47,7 +52,7 @@ export const Badge: React.FC<BadgeProps> = ({
       )}
     >
       {Icon && <Icon className={size === 'sm' ? 'w-3 h-3' : 'w-3.5 h-3.5'} strokeWidth={2.25} />}
-      {children ?? status}
+      {children ?? statusLabel ?? status}
     </span>
   )
 }

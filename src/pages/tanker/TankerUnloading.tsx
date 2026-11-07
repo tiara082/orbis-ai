@@ -6,6 +6,7 @@ import { DataTable, type DataTableColumn } from '../../components/common/DataTab
 import { Badge } from '../../components/ui/Badge'
 import { IconTile } from '../../components/ui/IconTile'
 import { ProgressBar } from '../../components/ui/ProgressBar'
+import { useTranslation } from '../../lib/i18n'
 
 interface UnloadEvent {
   event: string
@@ -27,12 +28,14 @@ const columns: DataTableColumn<UnloadEvent>[] = [
   { key: 'status', header: 'Status', render: (row) => <Badge status={row.status} variant="outline" /> }
 ]
 
-export const TankerUnloading: React.FC = () => (
+export const TankerUnloading: React.FC = () => {
+  const { t } = useTranslation()
+  return (
   <>
-    <PageHeader title="Unloading detail" description="Track transfer into destination storage tank" />
+    <PageHeader title={t('pages.tanker-unloading.title')} description={t('pages.tanker-unloading.description')} />
 
     <div className="space-y-5">
-      <SectionPanel title="Transfer progress" actions={<Badge status="Unloading">60% complete</Badge>}>
+      <SectionPanel title={t('pages.tanker-unloading.progress')} actions={<Badge status="Unloading">{t('pages.tanker-unloading.progressBadge')}</Badge>}>
         <Card className="p-5">
           <div className="flex items-center gap-3">
             <IconTile icon={Truck} />
@@ -49,9 +52,10 @@ export const TankerUnloading: React.FC = () => (
         </Card>
       </SectionPanel>
 
-      <SectionPanel title="Unloading events" subtitle="Each event is hashed into the audit ledger">
+      <SectionPanel title={t('pages.tanker-unloading.events')} subtitle={t('pages.tanker-unloading.eventsSubtitle')}>
         <DataTable columns={columns} rows={events} rowKey={(row) => row.event} />
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

@@ -6,6 +6,7 @@ import { StatCard } from '../../components/common/StatCard'
 import { DataTable, type DataTableColumn } from '../../components/common/DataTable'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 interface ValidationRecordsProps {
   onOpenPreview: () => void
@@ -33,20 +34,22 @@ const columns: DataTableColumn<IssueRow>[] = [
   { key: 'status', header: 'Status', render: (row) => <Badge status={row.status} /> }
 ]
 
-export const ValidationRecords: React.FC<ValidationRecordsProps> = ({ onOpenPreview }) => (
+export const ValidationRecords: React.FC<ValidationRecordsProps> = ({ onOpenPreview }) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="Validate records"
-      description="Validation separates structural errors from records needing review"
+      title={t('pages.data-management-validation.title')}
+      description={t('pages.data-management-validation.description')}
       actions={
         <Button iconRight={ArrowRight} onClick={onOpenPreview}>
-          Open import preview
+          {t('pages.data-management-validation.preview')}
         </Button>
       }
     />
 
     <div className="space-y-5">
-      <SectionPanel title="Validation summary">
+      <SectionPanel title={t('pages.data-management-validation.summary')}>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <StatCard icon={Rows3} label="Records analyzed" value="1,248" caption="production_shift_A.xlsx" />
           <StatCard icon={CircleCheck} label="Valid records" value="1,228" caption="98.4% of total" captionStatus="Valid" />
@@ -55,9 +58,10 @@ export const ValidationRecords: React.FC<ValidationRecordsProps> = ({ onOpenPrev
         </div>
       </SectionPanel>
 
-      <SectionPanel title="Issues" subtitle="Records flagged during schema and business-rule checks">
+      <SectionPanel title={t('pages.data-management-validation.issues')} subtitle={t('pages.data-management-validation.issuesSubtitle')}>
         <DataTable columns={columns} rows={records} rowKey={(row) => row.row} footer={`Showing ${records.length} of 20 issues`} />
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

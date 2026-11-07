@@ -6,6 +6,7 @@ import { ToolCard } from '../../components/common/ToolCard'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { IconTile } from '../../components/ui/IconTile'
+import { useTranslation } from '../../lib/i18n'
 
 interface ExcelUploadProps {
   onAnalyze: () => void
@@ -58,6 +59,7 @@ const checklist = [
 
 export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onAnalyze }) => {
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null)
+  const { t } = useTranslation()
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -68,18 +70,18 @@ export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onAnalyze }) => {
   return (
     <>
       <PageHeader
-        title="Upload operational data"
-        description="AI analyzes structure before records are imported"
+        title={t('pages.data-management-upload.title')}
+        description={t('pages.data-management-upload.description')}
         actions={
           <Button icon={ScanSearch} onClick={onAnalyze}>
-            Analyze file
+            {t('pages.data-management-upload.analyze')}
           </Button>
         }
       />
 
       <div className="space-y-5">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-          <SectionPanel title="File" className="lg:col-span-8">
+          <SectionPanel title={t('pages.data-management-upload.file')} className="lg:col-span-8">
             <label className="cursor-pointer bg-white rounded-xl border-2 border-dashed border-gray-200 hover:border-brand-subtle hover:bg-brand-muted/30 transition-colors p-10 min-h-[300px] flex flex-col items-center justify-center text-center">
               <input type="file" accept=".xlsx, .xls, .csv" onChange={handleFileChange} className="hidden" />
               <IconTile icon={selectedFileName ? FileSpreadsheet : Upload} tone="brand" size="lg" shape="circle" />
@@ -99,7 +101,7 @@ export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onAnalyze }) => {
             </label>
           </SectionPanel>
 
-          <SectionPanel title="Before you import" className="lg:col-span-4">
+          <SectionPanel title={t('pages.data-management-upload.before')} className="lg:col-span-4">
             <Card className="p-5 h-full">
               <ul className="space-y-3.5 text-sm text-ink-strong">
                 {checklist.map((item) => (
@@ -113,7 +115,7 @@ export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onAnalyze }) => {
           </SectionPanel>
         </div>
 
-        <SectionPanel title="Available templates" subtitle="Download a template, fill it in Excel, then upload it above">
+        <SectionPanel title={t('pages.data-management-upload.templates')} subtitle={t('pages.data-management-upload.templatesSubtitle')}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {templates.map((template) => (
               <a key={template.file} href={`/templates/${template.file}`} download className="block group">

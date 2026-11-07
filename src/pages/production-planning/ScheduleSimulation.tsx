@@ -6,25 +6,28 @@ import { StatCard } from '../../components/common/StatCard'
 import { Callout } from '../../components/common/Callout'
 import { ScheduleTimeline } from '../../components/planning/ScheduleTimeline'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 interface ScheduleSimulationProps {
   onApprove: () => void
 }
 
-export const ScheduleSimulation: React.FC<ScheduleSimulationProps> = ({ onApprove }) => (
+export const ScheduleSimulation: React.FC<ScheduleSimulationProps> = ({ onApprove }) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="Schedule simulation"
-      description="Corrected operational logic · the 45-minute changeover is preserved because product order is unchanged"
+      title={t('pages.schedule-simulation.title')}
+      description={t('pages.schedule-simulation.description')}
       actions={
         <Button icon={CircleCheck} onClick={onApprove}>
-          Approve sequence
+          {t('pages.schedule-simulation.approve')}
         </Button>
       }
     />
 
     <div className="space-y-5">
-      <SectionPanel title="Scenario result" subtitle="Baseline vs valid alternative on Filling Machine 1">
+      <SectionPanel title={t('pages.schedule-simulation.scenario')} subtitle={t('pages.schedule-simulation.scenarioSubtitle')}>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <StatCard icon={Clock} label="Completion" value="13:45" caption="both sequences" />
           <StatCard icon={Timer} label="Changeover" value="45 min" caption="one flavour transition" captionTone="warning" />
@@ -33,7 +36,7 @@ export const ScheduleSimulation: React.FC<ScheduleSimulationProps> = ({ onApprov
         </div>
       </SectionPanel>
 
-      <SectionPanel title="Compare sequences" subtitle="07:00–14:00 · Filling Machine 1">
+      <SectionPanel title={t('pages.schedule-simulation.compare')} subtitle={t('pages.schedule-simulation.compareSubtitle')}>
         <Card className="p-4">
           <ScheduleTimeline
             startHour={7}
@@ -63,7 +66,7 @@ export const ScheduleSimulation: React.FC<ScheduleSimulationProps> = ({ onApprov
         </Card>
       </SectionPanel>
 
-      <SectionPanel title="Optimization result">
+      <SectionPanel title={t('pages.schedule-simulation.optimization')}>
         <div className="space-y-3">
           <Callout
             tone="danger"
@@ -80,4 +83,5 @@ export const ScheduleSimulation: React.FC<ScheduleSimulationProps> = ({ onApprov
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

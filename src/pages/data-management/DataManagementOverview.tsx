@@ -8,6 +8,7 @@ import { EntityCell } from '../../components/common/EntityCell'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { ProgressBar } from '../../components/ui/ProgressBar'
+import { useTranslation } from '../../lib/i18n'
 
 interface DataManagementOverviewProps {
   onOpenUpload: () => void
@@ -34,20 +35,22 @@ const columns: DataTableColumn<ImportRow>[] = [
   { key: 'imported', header: 'Imported', render: (row) => <span className="text-ink">{row.imported}</span> }
 ]
 
-export const DataManagementOverview: React.FC<DataManagementOverviewProps> = ({ onOpenUpload, onOpenRecent }) => (
+export const DataManagementOverview: React.FC<DataManagementOverviewProps> = ({ onOpenUpload, onOpenRecent }) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="Data Management"
-      description="Governed ingestion and validation for operational production data"
+      title={t('pages.data-management-overview.title')}
+      description={t('pages.data-management-overview.description')}
       actions={
         <Button icon={Upload} onClick={onOpenUpload}>
-          Upload file
+          {t('pages.data-management-overview.upload')}
         </Button>
       }
     />
 
     <div className="space-y-5">
-      <SectionPanel title="Ingestion tools">
+      <SectionPanel title={t('pages.data-management-overview.tools')}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <ToolCard
             icon={Upload}
@@ -74,7 +77,7 @@ export const DataManagementOverview: React.FC<DataManagementOverviewProps> = ({ 
         </div>
       </SectionPanel>
 
-      <SectionPanel title="Import log" subtitle="Latest files ingested into the operational store">
+      <SectionPanel title={t('pages.data-management-overview.importLog')} subtitle={t('pages.data-management-overview.importLogSubtitle')}>
         <DataTable
           columns={columns}
           rows={imports}
@@ -85,4 +88,5 @@ export const DataManagementOverview: React.FC<DataManagementOverviewProps> = ({ 
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

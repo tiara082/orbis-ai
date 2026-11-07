@@ -7,26 +7,29 @@ import { StepFlow } from '../../components/common/StepFlow'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { IconTile } from '../../components/ui/IconTile'
+import { useTranslation } from '../../lib/i18n'
 
 interface TankerDetailProps {
   onOpenLabStatus: () => void
 }
 
-export const TankerDetail: React.FC<TankerDetailProps> = ({ onOpenLabStatus }) => (
+export const TankerDetail: React.FC<TankerDetailProps> = ({ onOpenLabStatus }) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="Tanker TRK-042"
-      description="Farm Cooperative A · Synthetic Demo Data"
+      title={t('pages.tanker-detail.title')}
+      description={t('pages.tanker-detail.description')}
       titleAddon={<Badge status="Lab Test" size="md" shape="pill" />}
       actions={
         <Button icon={FlaskConical} onClick={onOpenLabStatus}>
-          Open lab status
+          {t('pages.tanker-detail.openLab')}
         </Button>
       }
     />
 
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-      <SectionPanel title="Delivery" className="lg:col-span-5">
+      <SectionPanel title={t('pages.tanker-detail.delivery')} className="lg:col-span-5">
         <Card className="p-5">
           <div className="flex items-center gap-3">
             <IconTile icon={Truck} tone="brand" size="lg" />
@@ -47,7 +50,7 @@ export const TankerDetail: React.FC<TankerDetailProps> = ({ onOpenLabStatus }) =
         </Card>
       </SectionPanel>
 
-      <SectionPanel title="Process timeline" subtitle="Farm to storage, 7 checkpoints" className="lg:col-span-7">
+      <SectionPanel title={t('pages.tanker-detail.timeline')} subtitle={t('pages.tanker-detail.timelineSubtitle')} className="lg:col-span-7">
         <Card className="p-5">
           <StepFlow
             variant="progress"
@@ -65,4 +68,5 @@ export const TankerDetail: React.FC<TankerDetailProps> = ({ onOpenLabStatus }) =
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

@@ -4,6 +4,7 @@ import { SectionPanel } from '../../components/common/SectionPanel'
 import { ResultState } from '../../components/common/ResultState'
 import { DataTable, type DataTableColumn } from '../../components/common/DataTable'
 import { Badge } from '../../components/ui/Badge'
+import { useTranslation } from '../../lib/i18n'
 
 interface CheckRow {
   reference: string
@@ -23,9 +24,11 @@ const columns: DataTableColumn<CheckRow>[] = [
   { key: 'status', header: 'Status', render: (row) => <Badge status={row.status} variant="outline" /> }
 ]
 
-export const AuditIntegrityCheck: React.FC = () => (
+export const AuditIntegrityCheck: React.FC = () => {
+  const { t } = useTranslation()
+  return (
   <>
-    <PageHeader title="Integrity check" description="Compare operational references with integrity evidence" />
+    <PageHeader title={t('pages.audit-integrity-check.title')} description={t('pages.audit-integrity-check.description')} />
 
     <div className="space-y-5">
       <ResultState
@@ -34,9 +37,10 @@ export const AuditIntegrityCheck: React.FC = () => (
         description="8/8 is a progress indicator only; verification stages are not specified here."
       />
 
-      <SectionPanel title="Compared references">
+      <SectionPanel title={t('pages.audit-integrity-check.compared')}>
         <DataTable columns={columns} rows={checkData} rowKey={(row) => row.reference} />
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

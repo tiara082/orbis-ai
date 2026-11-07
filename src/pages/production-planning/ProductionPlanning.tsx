@@ -17,30 +17,31 @@ import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { IconTile } from '../../components/ui/IconTile'
 import { ProgressBar } from '../../components/ui/ProgressBar'
+import { useTranslation } from '../../lib/i18n'
 import type { Tone } from '../../lib/status'
 
 interface ProductionPlanningProps {
   onOpenRecommendation?: () => void
 }
 
-const lanes: ScheduleLane[] = [
+const buildLanes = (t: (key: string) => string): ScheduleLane[] => [
   {
-    label: 'Filling Machine 1',
+    label: t('pages.production-planning.filling1'),
     sublabel: 'via AT-02',
     blocks: [
       { label: 'Full Cream 1L', start: 7, end: 11.5, kind: 'plain' },
-      { label: 'Changeover', start: 11.5, end: 12.25, kind: 'changeover' },
+      { label: t('pages.production-planning.changeover'), start: 11.5, end: 12.25, kind: 'changeover' },
       { label: 'Strawberry 1L', start: 12.25, end: 15.75, kind: 'flavoured' },
       { label: 'Full Cream 250ml', start: 15.75, end: 19, kind: 'plain' }
     ]
   },
   {
-    label: 'Filling Machine 2',
+    label: t('pages.production-planning.filling2'),
     sublabel: 'via AT-02',
     blocks: [
-      { label: 'CIP', start: 7, end: 8.5, kind: 'cip' },
+      { label: t('schedule.cip'), start: 7, end: 8.5, kind: 'cip' },
       { label: 'Strawberry 250ml', start: 8.5, end: 12.75, kind: 'flavoured' },
-      { label: 'Changeover', start: 12.75, end: 13.5, kind: 'changeover' },
+      { label: t('pages.production-planning.changeover'), start: 12.75, end: 13.5, kind: 'changeover' },
       { label: 'Full Cream 1L', start: 14.25, end: 19, kind: 'plain' }
     ]
   }
@@ -55,74 +56,75 @@ interface StatusRow {
   marker?: number
 }
 
-const statusRows: StatusRow[] = [
-  { label: 'Raw milk availability', value: '18,420 L / 24,000 L', percent: 77, badge: '77%', tone: 'success' },
-  { label: 'Storage Tank ST-04', value: '8,200 L / 12,000 L', percent: 68, badge: '68%', tone: 'success' },
-  { label: 'Aseptic Tank AT-02', value: '6,300 L / 12,000 L', percent: 52.5, badge: '52.5% · 2 fillers', tone: 'success', marker: 50 },
-  { label: 'Machine readiness', value: 'Filling 1 + Filling 2', percent: 100, badge: 'Ready', tone: 'success' }
-]
-
 export const ProductionPlanning: React.FC<ProductionPlanningProps> = ({ onOpenRecommendation }) => {
   const { navigate } = useNavigation()
+  const { t } = useTranslation()
+  const lanes = buildLanes(t)
+  const statusRows: StatusRow[] = [
+    { label: t('pages.production-planning.rawMilkAvailability'), value: '18,420 L / 24,000 L', percent: 77, badge: '77%', tone: 'success' },
+    { label: 'Storage Tank ST-04', value: '8,200 L / 12,000 L', percent: 68, badge: '68%', tone: 'success' },
+    { label: 'Aseptic Tank AT-02', value: '6,300 L / 12,000 L', percent: 52.5, badge: '52.5% · 2 fillers', tone: 'success', marker: 50 },
+    { label: t('pages.production-planning.machineReadiness'), value: t('pages.production-planning.machineReadyValue'), percent: 100, badge: t('status.ready'), tone: 'success' }
+  ]
 
   return (
     <>
       <PageHeader
-        title="Production plan"
-        description="AI-assisted scheduling for raw milk, tanks, and filling lines"
+        title={t('pages.production-planning.title')}
+        description={t('pages.production-planning.description')}
         actions={
           <>
             <Button variant="secondary" icon={Upload} onClick={() => navigate('data-management-upload')}>
-              Upload orders
+              {t('pages.production-planning.uploadOrders')}
             </Button>
             <Button icon={Sparkles} onClick={onOpenRecommendation}>
-              AI recommendation
+              {t('pages.production-planning.aiRecommendation')}
             </Button>
           </>
         }
       />
 
       <div className="space-y-5">
-        <SectionPanel title="Shift KPIs" subtitle="Snapshot at 06:00 opening stock · Shift A">
+        <SectionPanel title={t('pages.production-planning.shiftKpis')} subtitle={t('pages.production-planning.shiftKpisSubtitle')}>
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
-            <StatCard icon={Milk} label="Available raw milk" value="18,420 L" caption="+8.4% vs yesterday" captionTone="success" />
-            <StatCard icon={ClipboardList} label="Planned orders" value="12" caption="3 due this shift" captionTone="info" />
-            <StatCard icon={Cylinder} label="Tank utilization" value="72%" caption="Within operating range" captionStatus="Valid" />
-            <StatCard icon={Factory} label="Active lines" value="2 / 2" caption="Ready to run" captionStatus="Completed" />
-            <StatCard icon={TriangleAlert} label="Schedule alerts" value="2" caption="Needs review" captionStatus="Review" />
+            <StatCard icon={Milk} label={t('pages.production-planning.availableRawMilk')} value="18,420 L" caption={t('pages.production-planning.vsYesterday')} captionTone="success" />
+            <StatCard icon={ClipboardList} label={t('pages.production-planning.plannedOrders')} value="12" caption={t('pages.production-planning.dueThisShift')} captionTone="info" />
+            <StatCard icon={Cylinder} label={t('pages.production-planning.tankUtilization')} value="72%" caption={t('pages.production-planning.withinRange')} captionStatus="Valid" />
+            <StatCard icon={Factory} label={t('pages.production-planning.activeLines')} value="2 / 2" caption={t('pages.production-planning.readyToRun')} captionStatus="Completed" />
+            <StatCard icon={TriangleAlert} label={t('pages.production-planning.scheduleAlerts')} value="2" caption={t('pages.production-planning.needsReview')} captionStatus="Review" />
           </div>
         </SectionPanel>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <SectionPanel
-            title="Shift outlook"
-            subtitle="AI forecast for the afternoon sequence"
+            title={t('pages.production-planning.shiftOutlook')}
+            subtitle={t('pages.production-planning.shiftOutlookSubtitle')}
             className="lg:col-span-5"
-            actions={<Badge status="Ready" shape="pill">Analysis ready</Badge>}
+            actions={<Badge status="Ready" shape="pill">{t('pages.production-planning.analysisReady')}</Badge>}
           >
             <Card className="p-5 flex flex-col gap-4 h-full" onClick={onOpenRecommendation}>
               <div className="flex items-start gap-3">
                 <IconTile icon={Sparkles} tone="brand" />
                 <div>
-                  <p className="text-xs text-ink">Predicted bottleneck</p>
-                  <p className="text-base font-bold text-ink-strong mt-0.5">Flavour changeover may add 45 min</p>
-                  <p className="text-sm text-ink">to the afternoon sequence.</p>
+                  <p className="text-xs text-ink">{t('pages.production-planning.predictedBottleneck')}</p>
+                  <p className="text-base font-bold text-ink-strong mt-0.5">{t('pages.production-planning.flavourDelayTitle')}</p>
+                  <p className="text-sm text-ink">{t('pages.production-planning.flavourDelayBody')}</p>
                 </div>
               </div>
               <div className="rounded-lg bg-brand-muted border border-brand-subtle px-3 py-2.5 text-sm font-medium text-ink-strong">
-                Recommendation: run Full Cream before Strawberry
+                {t('pages.production-planning.recommendation')}
               </div>
-              <p className="text-[11px] text-ink">Confidence is model output — validate constraints before approval.</p>
+              <p className="text-[11px] text-ink">{t('pages.production-planning.confidenceNote')}</p>
             </Card>
           </SectionPanel>
 
           <SectionPanel
-            title="Production schedule"
-            subtitle="Today · 07:00–19:00"
+            title={t('pages.production-planning.productionSchedule')}
+            subtitle={t('pages.production-planning.scheduleSubtitle')}
             className="lg:col-span-7"
             actions={
               <Button variant="link" size="sm" onClick={() => navigate('schedule-simulation')}>
-                Open simulation
+                {t('pages.production-planning.openSimulation')}
               </Button>
             }
           >
@@ -133,7 +135,7 @@ export const ProductionPlanning: React.FC<ProductionPlanningProps> = ({ onOpenRe
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-          <SectionPanel title="Operational status" className="lg:col-span-7">
+          <SectionPanel title={t('pages.production-planning.operationalStatus')} className="lg:col-span-7">
             <Card className="px-5 py-2 divide-y divide-gray-100">
               {statusRows.map((row) => (
                 <div key={row.label} className="py-3 grid grid-cols-1 sm:grid-cols-12 items-center gap-2 sm:gap-4">
@@ -151,14 +153,14 @@ export const ProductionPlanning: React.FC<ProductionPlanningProps> = ({ onOpenRe
           </SectionPanel>
 
           <SectionPanel
-            title="Schedule alerts"
+            title={t('pages.production-planning.scheduleAlerts')}
             className="lg:col-span-5"
-            actions={<Badge status="Review" shape="pill">2 review items</Badge>}
+            actions={<Badge status="Review" shape="pill">{t('pages.production-planning.reviewItems')}</Badge>}
           >
             <Card className="p-4 space-y-3">
               {[
-                { title: 'Changeover window is 45 min', detail: 'Strawberry → Full Cream on Filling Machine 1 needs CIP_FLAVOUR' },
-                { title: 'AT-02 threshold validated at 52.5%', detail: 'Two fillers allowed above the 50% minimum level' }
+                { title: t('pages.production-planning.alertChangeoverTitle'), detail: t('pages.production-planning.alertChangeoverDetail') },
+                { title: t('pages.production-planning.alertAtTitle'), detail: t('pages.production-planning.alertAtDetail') }
               ].map((alert) => (
                 <div key={alert.title} className="flex items-start gap-3">
                   <IconTile icon={TriangleAlert} tone="warning" size="sm" />
@@ -169,7 +171,7 @@ export const ProductionPlanning: React.FC<ProductionPlanningProps> = ({ onOpenRe
                 </div>
               ))}
               <p className="text-[11px] text-ink pt-2 border-t border-gray-100">
-                Synthetic data · Constraint rules shown separately from AI forecasts.
+                {t('pages.production-planning.syntheticNote')}
               </p>
             </Card>
           </SectionPanel>

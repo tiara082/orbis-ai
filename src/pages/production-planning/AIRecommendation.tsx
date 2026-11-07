@@ -8,6 +8,7 @@ import { ToolCard } from '../../components/common/ToolCard'
 import { KeyValueList } from '../../components/common/KeyValueList'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 interface AIRecommendationProps {
   onCompareSchedule: () => void
@@ -15,23 +16,25 @@ interface AIRecommendationProps {
   onReject?: () => void
 }
 
-export const AIRecommendation: React.FC<AIRecommendationProps> = ({ onCompareSchedule, onApprove, onReject }) => (
+export const AIRecommendation: React.FC<AIRecommendationProps> = ({ onCompareSchedule, onApprove, onReject }) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="AI recommendation"
-      description="Review model output, validate constraints, then approve with confidence"
+      title={t('pages.ai-recommendation.title')}
+      description={t('pages.ai-recommendation.description')}
       actions={
         <>
           <Button variant="outline" icon={GitCompare} onClick={onCompareSchedule}>
-            Compare schedule
+            {t('pages.ai-recommendation.compareSchedule')}
           </Button>
           {onReject && (
             <Button variant="secondary" icon={X} onClick={onReject}>
-              Reject
+              {t('pages.ai-recommendation.reject')}
             </Button>
           )}
           <Button icon={UserCheck} onClick={onApprove}>
-            Approve recommendation
+            {t('pages.ai-recommendation.approve')}
           </Button>
         </>
       }
@@ -41,12 +44,12 @@ export const AIRecommendation: React.FC<AIRecommendationProps> = ({ onCompareSch
       <Callout
         variant="strong"
         icon={Sparkles}
-        eyebrow="Recommended sequence"
-        title="Move Full Cream 1L before Strawberry 1L"
-        description="Expected impact: recover 45 min · keep both filling lines active"
+        eyebrow={t('pages.ai-recommendation.eyebrow')}
+        title={t('pages.ai-recommendation.recTitle')}
+        description={t('pages.ai-recommendation.recDescription')}
       />
 
-      <SectionPanel title="Decision pipeline" subtitle="Each step must pass before the plan reaches the floor">
+      <SectionPanel title={t('pages.ai-recommendation.pipeline')} subtitle={t('pages.ai-recommendation.pipelineSubtitle')}>
         <Card className="p-5 mb-3">
           <StepFlow
             variant="progress"
@@ -88,7 +91,7 @@ export const AIRecommendation: React.FC<AIRecommendationProps> = ({ onCompareSch
         </div>
       </SectionPanel>
 
-      <SectionPanel title="Why this recommendation?">
+      <SectionPanel title={t('pages.ai-recommendation.why')}>
         <Card className="p-5 grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="text-sm text-ink leading-relaxed space-y-2">
             <p>The model prioritizes the sequence with the lowest predicted transition delay.</p>
@@ -109,4 +112,5 @@ export const AIRecommendation: React.FC<AIRecommendationProps> = ({ onCompareSch
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

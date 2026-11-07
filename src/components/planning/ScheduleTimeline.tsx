@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from '../../lib/i18n'
 import { cn } from '../../lib/cn'
 
 export type BlockKind = 'plain' | 'flavoured' | 'changeover' | 'cip' | 'idle'
@@ -35,12 +36,7 @@ const kindClasses: Record<BlockKind, string> = {
   idle: 'bg-transparent border-dashed border-gray-200 text-ink'
 }
 
-const legend: { kind: BlockKind; label: string }[] = [
-  { kind: 'plain', label: 'Plain (Full Cream)' },
-  { kind: 'flavoured', label: 'Flavoured' },
-  { kind: 'changeover', label: 'Changeover' },
-  { kind: 'cip', label: 'CIP' }
-]
+const legendKinds: BlockKind[] = ['plain', 'flavoured', 'changeover', 'cip']
 
 const formatHour = (h: number) => {
   const hours = Math.floor(h)
@@ -56,6 +52,7 @@ export const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({
   showLegend = true,
   className
 }) => {
+  const { t } = useTranslation()
   const span = endHour - startHour
   const pct = (h: number) => ((h - startHour) / span) * 100
   const ticks: number[] = []
@@ -111,10 +108,10 @@ export const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({
 
       {showLegend && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-ink">
-          {legend.map((item) => (
-            <span key={item.kind} className="flex items-center gap-1.5">
-              <span className={cn('w-2.5 h-2.5 rounded-sm border', kindClasses[item.kind])} />
-              {item.label}
+          {legendKinds.map((kind) => (
+            <span key={kind} className="flex items-center gap-1.5">
+              <span className={cn('w-2.5 h-2.5 rounded-sm border', kindClasses[kind])} />
+              {t(`schedule.${kind}`)}
             </span>
           ))}
         </div>

@@ -7,6 +7,7 @@ import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { IconTile } from '../../components/ui/IconTile'
 import { ENTITY_META, type EntityKind } from '../../lib/entities'
+import { useTranslation } from '../../lib/i18n'
 
 interface MaterialGraphProps {
   onOpenBatchDetail?: () => void
@@ -40,6 +41,7 @@ const edges: [string, string, string][] = [
 ]
 
 export const MaterialGraph: React.FC<MaterialGraphProps> = ({ onOpenBatchDetail }) => {
+  const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState('ST-04')
   const selected = nodes.find((n) => n.id === selectedId) ?? nodes[0]
   const byId = (id: string) => nodes.find((n) => n.id === id)!
@@ -47,11 +49,11 @@ export const MaterialGraph: React.FC<MaterialGraphProps> = ({ onOpenBatchDetail 
   return (
     <>
       <PageHeader
-        title="Material relationship graph"
-        description="Directed relationships with event and quantity context"
+        title={t('pages.traceability-graph.title')}
+        description={t('pages.traceability-graph.description')}
         actions={
           <Button variant="secondary" icon={Download}>
-            Export
+            {t('common.export')}
           </Button>
         }
       />
@@ -132,7 +134,7 @@ export const MaterialGraph: React.FC<MaterialGraphProps> = ({ onOpenBatchDetail 
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Selected node" className="lg:col-span-4">
+        <SectionPanel title={t('pages.traceability-graph.selected')} className="lg:col-span-4">
           <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5 flex flex-col h-full">
             <div className="flex items-center gap-3">
               <IconTile icon={ENTITY_META[selected.kind].icon} tone="brand" shape="circle" />
@@ -158,7 +160,7 @@ export const MaterialGraph: React.FC<MaterialGraphProps> = ({ onOpenBatchDetail 
             />
 
             <Button className="mt-6 w-full" icon={Factory} onClick={onOpenBatchDetail}>
-              Open batch detail
+              {t('pages.traceability-graph.openBatch')}
             </Button>
           </div>
         </SectionPanel>

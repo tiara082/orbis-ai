@@ -7,6 +7,7 @@ import { EntityCell } from '../../components/common/EntityCell'
 import { Callout } from '../../components/common/Callout'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 interface ImportPreviewProps {
   onConfirm: () => void
@@ -35,21 +36,23 @@ const columns: DataTableColumn<PreviewRow>[] = [
   { key: 'validation', header: 'Validation', render: (row) => <Badge status={row.validation} /> }
 ]
 
-export const ImportPreview: React.FC<ImportPreviewProps> = ({ onConfirm }) => (
+export const ImportPreview: React.FC<ImportPreviewProps> = ({ onConfirm }) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="Import preview"
-      description="Confirm records and event ledger before import"
-      titleAddon={<Badge status="Ready" size="md" shape="pill">Ready for confirmation</Badge>}
+      title={t('pages.data-management-preview.title')}
+      description={t('pages.data-management-preview.description')}
+      titleAddon={<Badge status="Ready" size="md" shape="pill">{t('pages.data-management-preview.ready')}</Badge>}
       actions={
         <Button icon={CircleCheck} onClick={onConfirm}>
-          Confirm import
+          {t('pages.data-management-preview.confirm')}
         </Button>
       }
     />
 
     <div className="space-y-5">
-      <SectionPanel title="Records to import" subtitle="First 4 of 1,248 records">
+      <SectionPanel title={t('pages.data-management-preview.records')} subtitle={t('pages.data-management-preview.recordsSubtitle')}>
         <DataTable columns={columns} rows={previewData} rowKey={(row) => row.batchId} />
       </SectionPanel>
 
@@ -60,4 +63,5 @@ export const ImportPreview: React.FC<ImportPreviewProps> = ({ onConfirm }) => (
       />
     </div>
   </>
-)
+  )
+}

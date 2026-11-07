@@ -4,6 +4,7 @@ import { PageHeader } from '../../components/layout/PageHeader'
 import { useNavigation } from '../../components/layout/NavigationContext'
 import { ResultState } from '../../components/common/ResultState'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 interface TankerDelayedProps {
   onReturn: () => void
@@ -11,13 +12,14 @@ interface TankerDelayedProps {
 
 export const TankerDelayed: React.FC<TankerDelayedProps> = ({ onReturn }) => {
   const { navigate } = useNavigation()
+  const { t } = useTranslation()
 
   return (
     <>
-      <PageHeader title="Tanker TRK-045" description="Synthetic Demo Data · human review required where indicated" />
+      <PageHeader title={t('pages.tanker-delayed.title')} description={t('common.syntheticReview')} />
       <ResultState
         status="Delayed"
-        title="TRK-045 delayed by 35 minutes · ETA 12:15"
+        title={t('pages.tanker-delayed.resultTitle')}
         description="The delay reduces raw milk available for the afternoon sequence. ORBIS has flagged the production plan for review."
         details={[
           { label: 'Supplier', value: 'Farm Cooperative C' },
@@ -26,9 +28,9 @@ export const TankerDelayed: React.FC<TankerDelayedProps> = ({ onReturn }) => {
         ]}
         actions={
           <>
-            <Button onClick={onReturn}>Return to workflow</Button>
+            <Button onClick={onReturn}>{t('common.returnToWorkflow')}</Button>
             <Button variant="outline" icon={BrainCircuit} onClick={() => navigate('ai-production-risk')}>
-              View production risk
+              {t('pages.tanker-delayed.openRisk')}
             </Button>
           </>
         }

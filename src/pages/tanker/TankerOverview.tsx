@@ -9,6 +9,7 @@ import { Badge } from '../../components/ui/Badge'
 import { SegmentedFilter } from '../../components/ui/SegmentedFilter'
 import { SearchInput } from '../../components/ui/SearchInput'
 import { getStatusStyle } from '../../lib/status'
+import { useTranslation } from '../../lib/i18n'
 
 interface TankerOverviewProps {
   onSelectTanker: (tankerId: string) => void
@@ -43,6 +44,7 @@ const matchesFilter = (row: TankerRow, filter: Filter) => {
 export const TankerOverview: React.FC<TankerOverviewProps> = ({ onSelectTanker }) => {
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
+  const { t } = useTranslation()
 
   const rows = useMemo(
     () =>
@@ -82,10 +84,10 @@ export const TankerOverview: React.FC<TankerOverviewProps> = ({ onSelectTanker }
 
   return (
     <>
-      <PageHeader title="Incoming tanker monitoring" description="Monitor raw milk availability from farm through storage" />
+      <PageHeader title={t('pages.tanker-overview.title')} description={t('pages.tanker-overview.description')} />
 
       <div className="space-y-5">
-        <SectionPanel title="Today" subtitle="Raw milk intake · 06:00–06:00 period">
+        <SectionPanel title={t('pages.tanker-overview.today')} subtitle={t('pages.tanker-overview.todaySubtitle')}>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <StatCard icon={Milk} label="Incoming milk" value="31,600 L" caption="6 tankers scheduled" />
             <StatCard icon={Truck} label="Received" value="2" caption="Receiving active" captionStatus="Active" />
@@ -94,7 +96,7 @@ export const TankerOverview: React.FC<TankerOverviewProps> = ({ onSelectTanker }
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Tanker queue" subtitle="Select a tanker to follow it through lab and unloading">
+        <SectionPanel title={t('pages.tanker-overview.queue')} subtitle={t('pages.tanker-overview.queueSubtitle')}>
           <DataTable
             columns={columns}
             rows={rows}

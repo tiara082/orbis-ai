@@ -8,6 +8,7 @@ import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { IconTile } from '../../components/ui/IconTile'
 import { ProgressBar } from '../../components/ui/ProgressBar'
+import { useTranslation } from '../../lib/i18n'
 
 interface AIPredictionDetailProps {
   onOpenInsufficient?: () => void
@@ -43,15 +44,17 @@ const factors = [
   { icon: Cylinder, label: 'AT-02 at 52.5%', detail: 'Two-filler threshold' }
 ]
 
-export const AIPredictionDetail: React.FC<AIPredictionDetailProps> = ({ onOpenInsufficient }) => (
+export const AIPredictionDetail: React.FC<AIPredictionDetailProps> = ({ onOpenInsufficient }) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="Processing duration prediction"
-      description="Synthetic prediction for B-2026-1030-01 · generated after TRK-045 delay signal"
+      title={t('pages.ai-prediction-detail.title')}
+      description={t('pages.ai-prediction-detail.description')}
       actions={
         onOpenInsufficient && (
           <Button variant="secondary" onClick={onOpenInsufficient}>
-            Run with low data
+            {t('pages.ai-prediction-detail.insufficient')}
           </Button>
         )
       }
@@ -59,7 +62,7 @@ export const AIPredictionDetail: React.FC<AIPredictionDetailProps> = ({ onOpenIn
 
     <div className="space-y-5">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <SectionPanel title="Model output" className="lg:col-span-8">
+        <SectionPanel title={t('pages.ai-prediction-detail.modelOutput')} className="lg:col-span-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <StatCard icon={Clock} label="Predicted completion" value="17:30" caption="45 min impact" captionStatus="Warning" />
             <StatCard
@@ -74,7 +77,7 @@ export const AIPredictionDetail: React.FC<AIPredictionDetailProps> = ({ onOpenIn
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Input factors" className="lg:col-span-4">
+        <SectionPanel title={t('pages.ai-prediction-detail.inputFactors')} className="lg:col-span-4">
           <Card className="p-4 space-y-3">
             {factors.map((factor) => (
               <div key={factor.label} className="flex items-center gap-3">
@@ -89,9 +92,10 @@ export const AIPredictionDetail: React.FC<AIPredictionDetailProps> = ({ onOpenIn
         </SectionPanel>
       </div>
 
-      <SectionPanel title="Historical comparison" subtitle="How the prediction compares with similar shifts">
+      <SectionPanel title={t('pages.ai-prediction-detail.historical')} subtitle={t('pages.ai-prediction-detail.historicalSubtitle')}>
         <DataTable columns={columns} rows={comparisonData} rowKey={(row) => row.comparison} />
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

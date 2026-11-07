@@ -6,6 +6,7 @@ import { DataTable, type DataTableColumn } from '../../components/common/DataTab
 import { EntityCell } from '../../components/common/EntityCell'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 interface ImportHistoryProps {
   onOpenError?: () => void
@@ -27,6 +28,7 @@ const historyData: HistoryRow[] = [
 ]
 
 export const ImportHistory: React.FC<ImportHistoryProps> = ({ onOpenError }) => {
+  const { t } = useTranslation()
   const columns: DataTableColumn<HistoryRow>[] = [
     { key: 'importId', header: 'Import ID', render: (row) => <span className="font-mono text-xs font-semibold">{row.importId}</span> },
     { key: 'file', header: 'File', render: (row) => <EntityCell icon={FileSpreadsheet} id={row.file} /> },
@@ -40,7 +42,7 @@ export const ImportHistory: React.FC<ImportHistoryProps> = ({ onOpenError }) => 
       render: (row) =>
         row.status === 'Failed' && onOpenError ? (
           <Button variant="link" size="sm" onClick={onOpenError}>
-            View errors
+            {t('pages.data-management-history.viewError')}
           </Button>
         ) : null
     }
@@ -48,8 +50,8 @@ export const ImportHistory: React.FC<ImportHistoryProps> = ({ onOpenError }) => 
 
   return (
     <>
-      <PageHeader title="Import history" description="Track who imported data and how validation performed" />
-      <SectionPanel title="Imports" subtitle="Every import is recorded as an audit event">
+      <PageHeader title={t('pages.data-management-history.title')} description={t('pages.data-management-history.description')} />
+      <SectionPanel title={t('pages.data-management-history.imports')} subtitle={t('pages.data-management-history.importsSubtitle')}>
         <DataTable
           columns={columns}
           rows={historyData}

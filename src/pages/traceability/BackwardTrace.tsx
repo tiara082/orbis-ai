@@ -7,6 +7,7 @@ import { StatCard } from '../../components/common/StatCard'
 import { StepFlow } from '../../components/common/StepFlow'
 import { TraceStepsTable, type TraceStep } from '../../components/traceability/TraceStepsTable'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 const steps: TraceStep[] = [
   { kind: 'finished', entity: 'FG-1030-01', quantity: 'Derived lot', timestamp: '30 Oct 14:00', relationship: 'PRODUCED_FROM', integrity: 'Mismatch' },
@@ -17,21 +18,22 @@ const steps: TraceStep[] = [
 
 export const BackwardTrace: React.FC = () => {
   const { navigate } = useNavigation()
+  const { t } = useTranslation()
 
   return (
     <>
       <PageHeader
-        title="Backward trace · FG-1030-01"
-        description="Finished goods → production batch → tank → source tanker"
+        title={t('pages.traceability-backward.title')}
+        description={t('pages.traceability-backward.description')}
         actions={
           <Button variant="secondary" icon={Download}>
-            Export
+            {t('common.export')}
           </Button>
         }
       />
 
       <div className="space-y-5">
-        <SectionPanel title="Origin summary" subtitle="Where the selected finished lot came from">
+        <SectionPanel title={t('pages.traceability-backward.origin')} subtitle={t('pages.traceability-backward.originSubtitle')}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <StatCard icon={Waypoints} label="Hops" value="4" caption="finished lot to tanker" />
             <StatCard icon={Truck} label="Source tankers" value="1" caption="TRK-042 · 8,200 L" captionStatus="Verified" />
@@ -39,7 +41,7 @@ export const BackwardTrace: React.FC = () => {
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Trace path">
+        <SectionPanel title={t('pages.traceability-backward.path')}>
           <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-4">
             <StepFlow
               steps={[
@@ -53,7 +55,7 @@ export const BackwardTrace: React.FC = () => {
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Trace steps">
+        <SectionPanel title={t('pages.traceability-backward.steps')}>
           <TraceStepsTable
             steps={steps}
             onRowClick={(step) => navigate(step.kind === 'batch' ? 'traceability-batch' : 'traceability-graph')}

@@ -6,33 +6,36 @@ import { KeyValueList } from '../../components/common/KeyValueList'
 import { Callout } from '../../components/common/Callout'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 interface TankerLabStatusProps {
   onRecordResult: () => void
   onOpenPending?: () => void
 }
 
-export const TankerLabStatus: React.FC<TankerLabStatusProps> = ({ onRecordResult, onOpenPending }) => (
+export const TankerLabStatus: React.FC<TankerLabStatusProps> = ({ onRecordResult, onOpenPending }) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="Sampling & lab status"
-      description="Quality release remains human-controlled"
+      title={t('pages.tanker-lab-status.title')}
+      description={t('pages.tanker-lab-status.description')}
       actions={
         <>
           {onOpenPending && (
             <Button variant="secondary" onClick={onOpenPending}>
-              Mark as pending
+              {t('pages.tanker-lab-status.pendingCase')}
             </Button>
           )}
           <Button icon={ClipboardCheck} onClick={onRecordResult}>
-            Record lab result
+            {t('pages.tanker-lab-status.recordResult')}
           </Button>
         </>
       }
     />
 
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-      <SectionPanel title="Sample S-042-01" actions={<Badge status="In progress">Lab test in progress</Badge>}>
+      <SectionPanel title={t('pages.tanker-lab-status.sample')} actions={<Badge status="In progress">{t('pages.tanker-lab-status.labInProgress')}</Badge>}>
         <Card className="px-5 py-2">
           <KeyValueList
             items={[
@@ -45,7 +48,7 @@ export const TankerLabStatus: React.FC<TankerLabStatusProps> = ({ onRecordResult
         </Card>
       </SectionPanel>
 
-      <SectionPanel title="Release decision">
+      <SectionPanel title={t('pages.tanker-lab-status.release')}>
         <div className="space-y-3">
           <Callout
             tone="neutral"
@@ -62,4 +65,5 @@ export const TankerLabStatus: React.FC<TankerLabStatusProps> = ({ onRecordResult
       </SectionPanel>
     </div>
   </>
-)
+  )
+}

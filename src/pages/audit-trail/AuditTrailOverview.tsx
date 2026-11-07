@@ -7,6 +7,7 @@ import { DataTable, type DataTableColumn } from '../../components/common/DataTab
 import { EntityCell } from '../../components/common/EntityCell'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
+import { useTranslation } from '../../lib/i18n'
 
 interface AuditTrailOverviewProps {
   onSelectEvent: (eventId: string) => void
@@ -28,6 +29,7 @@ const events: EventRow[] = [
 ]
 
 export const AuditTrailOverview: React.FC<AuditTrailOverviewProps> = ({ onSelectEvent, onOpenIntegrityCheck }) => {
+  const { t } = useTranslation()
   const columns: DataTableColumn<EventRow>[] = [
     { key: 'id', header: 'Event', render: (row) => <EntityCell icon={History} id={row.id} type={row.type} mono /> },
     { key: 'timestamp', header: 'Timestamp', render: (row) => <span className="tabular-nums text-ink">{row.timestamp}</span> },
@@ -39,17 +41,17 @@ export const AuditTrailOverview: React.FC<AuditTrailOverviewProps> = ({ onSelect
   return (
     <>
       <PageHeader
-        title="Audit trail"
-        description="Supporting integrity evidence for operational records"
+        title={t('pages.audit-trail-overview.title')}
+        description={t('pages.audit-trail-overview.description')}
         actions={
           <Button icon={ShieldCheck} onClick={onOpenIntegrityCheck}>
-            Run integrity check
+            {t('pages.audit-trail-overview.integrity')}
           </Button>
         }
       />
 
       <div className="space-y-5">
-        <SectionPanel title="Ledger health">
+        <SectionPanel title={t('pages.audit-trail-overview.health')}>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
             <StatCard icon={ShieldCheck} label="Verification indicator" value="8 / 8" valueClassName="text-success" caption="Latest event verified" captionStatus="Verified" />
             <StatCard icon={Database} label="Events recorded" value="1,248" caption="Since 01 Oct 2026" />
@@ -57,7 +59,7 @@ export const AuditTrailOverview: React.FC<AuditTrailOverviewProps> = ({ onSelect
           </div>
         </SectionPanel>
 
-        <SectionPanel title="Recent events">
+        <SectionPanel title={t('pages.audit-trail-overview.recent')}>
           <DataTable
             columns={columns}
             rows={events}

@@ -8,6 +8,7 @@ import { EntityCell } from '../../components/common/EntityCell'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { ENTITY_META, type EntityKind } from '../../lib/entities'
+import { useTranslation } from '../../lib/i18n'
 
 interface QualityInvestigationDetailProps {
   onOpenAnalysis?: () => void
@@ -24,26 +25,28 @@ const material: { kind: EntityKind; id: string }[] = [
 export const QualityInvestigationDetail: React.FC<QualityInvestigationDetailProps> = ({
   onOpenAnalysis,
   onOpenAffectedProducts
-}) => (
+}) => {
+  const { t } = useTranslation()
+  return (
   <>
     <PageHeader
-      title="Investigation QI-2026-014"
-      description="Lab result review · Synthetic Demo Data"
+      title={t('pages.quality-investigation-detail.title')}
+      description={t('pages.quality-investigation-detail.description')}
       titleAddon={<Badge status="Under Investigation" size="md" shape="pill" />}
       actions={
         <>
           <Button variant="secondary" icon={GitFork} onClick={onOpenAnalysis}>
-            Batch analysis
+            {t('pages.quality-investigation-detail.openAnalysis')}
           </Button>
           <Button icon={Package} onClick={onOpenAffectedProducts}>
-            Affected products
+            {t('pages.quality-investigation-detail.affectedProducts')}
           </Button>
         </>
       }
     />
 
     <div className="space-y-5">
-      <SectionPanel title="Trace path" subtitle="Backward and forward from the lab sample">
+      <SectionPanel title={t('pages.quality-investigation-detail.tracePath')} subtitle={t('pages.quality-investigation-detail.tracePathSubtitle')}>
         <Card className="p-5">
           <StepFlow
             steps={[
@@ -74,7 +77,7 @@ export const QualityInvestigationDetail: React.FC<QualityInvestigationDetailProp
           </Card>
         </SectionPanel>
 
-        <SectionPanel title="Traceability findings" actions={<Badge status="Potential impact" shape="pill" />}>
+        <SectionPanel title={t('pages.quality-investigation-detail.findings')} actions={<Badge status="Potential impact" shape="pill" />}>
           <div className="space-y-3">
             <Callout
               tone="warning"
@@ -99,4 +102,5 @@ export const QualityInvestigationDetail: React.FC<QualityInvestigationDetailProp
       </div>
     </div>
   </>
-)
+  )
+}

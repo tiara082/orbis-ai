@@ -6,6 +6,7 @@ import { EntityCell } from '../../components/common/EntityCell'
 import { Callout } from '../../components/common/Callout'
 import { Badge } from '../../components/ui/Badge'
 import { ENTITY_META, type EntityKind } from '../../lib/entities'
+import { useTranslation } from '../../lib/i18n'
 
 interface AffectedBatchAnalysisProps {
   onOpenAffectedProducts?: () => void
@@ -38,12 +39,14 @@ const columns: DataTableColumn<AnalysisRow>[] = [
   { key: 'review', header: 'Review', render: (row) => <Badge status={row.review} /> }
 ]
 
-export const AffectedBatchAnalysis: React.FC<AffectedBatchAnalysisProps> = ({ onOpenAffectedProducts }) => (
+export const AffectedBatchAnalysis: React.FC<AffectedBatchAnalysisProps> = ({ onOpenAffectedProducts }) => {
+  const { t } = useTranslation()
+  return (
   <>
-    <PageHeader title="Affected batch analysis" description="Forward and backward trace results for human review" />
+    <PageHeader title={t('pages.affected-batch-analysis.title')} description={t('pages.affected-batch-analysis.description')} />
 
     <div className="space-y-5">
-      <SectionPanel title="Trace results" subtitle="QI-2026-014 · 4 linked entities">
+      <SectionPanel title={t('pages.affected-batch-analysis.results')} subtitle={t('pages.affected-batch-analysis.resultsSubtitle')}>
         <DataTable
           columns={columns}
           rows={rows}
@@ -60,4 +63,5 @@ export const AffectedBatchAnalysis: React.FC<AffectedBatchAnalysisProps> = ({ on
       />
     </div>
   </>
-)
+  )
+}
