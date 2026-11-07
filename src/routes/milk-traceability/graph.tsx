@@ -7,8 +7,8 @@ import { PageHeader } from '../../components/layout/PageHeader'
 import { Button } from '../../components/ui/Button'
 import { BATCHES } from '../../data/scenario'
 import { useTranslation } from '../../lib/i18n'
-import { BatchDrawer } from './-components/BatchDrawer'
-import { GenealogyGraph } from './-components/GenealogyGraph'
+import { BatchDrawer } from './components/BatchDrawer'
+import { GenealogyGraph } from './components/GenealogyGraph'
 
 export const Route = createFileRoute('/milk-traceability/graph')({ component: GraphPage })
 

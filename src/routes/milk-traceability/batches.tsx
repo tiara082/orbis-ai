@@ -9,7 +9,7 @@ import { farmOfTanker, massBalance } from '../../domain/genealogy'
 import { useFormat } from '../../lib/format'
 import { useTranslation } from '../../lib/i18n'
 import { ScenarioNote } from '../../components/common/SourceNote'
-import { BatchDrawer } from './-components/BatchDrawer'
+import { BatchDrawer } from './components/BatchDrawer'
 
 export const Route = createFileRoute('/milk-traceability/batches')({ component: BatchesPage })
 

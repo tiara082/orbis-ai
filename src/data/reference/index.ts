@@ -145,11 +145,27 @@ export const ASSET_TYPE_ORDER = [
   'Logical Routing Header'
 ]
 
-const assetIndex = new Map(ASSETS.map((asset) => [asset.id, asset]))
+export interface CatalogOverlay {
+  liquidSkus?: LiquidSku[]
+  finishedSkus?: FinishedSku[]
+  packSizes?: PackSize[]
+  assets?: Asset[]
+  connections?: Connection[]
+  lineDedication?: LineDedication[]
+  lineProducts?: LineProductCompatibility[]
+  lineFinished?: LineFinishedSkuCompatibility[]
+}
 
-export const getAsset = (id: string) => assetIndex.get(id)
+/** Session edits from Master Data. Lookups read this when a category has been changed. */
+let overlay: CatalogOverlay = {}
 
-export const assetsOfType = (type: string) => ASSETS.filter((asset) => asset.type === type)
+export function setCatalogOverlay(next: CatalogOverlay) {
+  overlay = next
+}
+
+export const getAsset = (id: string) => (overlay.assets ?? ASSETS).find((asset) => asset.id === id)
+
+export const assetsOfType = (type: string) => (overlay.assets ?? ASSETS).filter((asset) => asset.type === type)
 
 // ---------- Routes ----------
 
@@ -174,7 +190,7 @@ export const CONNECTIONS: Connection[] = parseCsv(assetConnectionsCsv).map((row)
 }))
 
 export const findConnection = (source: string, destination: string) =>
-  CONNECTIONS.find((c) => c.source === source && c.destination === destination)
+  (overlay.connections ?? CONNECTIONS).find((c) => c.source === source && c.destination === destination)
 
 // ---------- Filling line eligibility ----------
 
@@ -282,13 +298,10 @@ export const getConstraint = (ruleId: string) => CONSTRAINTS.find((rule) => rule
 
 // ---------- Lookups ----------
 
-const liquidIndex = new Map(LIQUID_SKUS.map((sku) => [sku.skuId, sku]))
-const finishedIndex = new Map(FINISHED_SKUS.map((sku) => [sku.finishedSkuId, sku]))
-const packIndex = new Map(PACK_SIZES.map((pack) => [pack.code, pack]))
-
-export const getLiquidSku = (skuId: string) => liquidIndex.get(skuId)
-export const getFinishedSku = (finishedSkuId: string) => finishedIndex.get(finishedSkuId)
-export const getPackSize = (code: string) => packIndex.get(code)
+export const getLiquidSku = (skuId: string) => (overlay.liquidSkus ?? LIQUID_SKUS).find((sku) => sku.skuId === skuId)
+export const getFinishedSku = (finishedSkuId: string) =>
+  (overlay.finishedSkus ?? FINISHED_SKUS).find((sku) => sku.finishedSkuId === finishedSkuId)
+export const getPackSize = (code: string) => (overlay.packSizes ?? PACK_SIZES).find((pack) => pack.code === code)
 
 export function describeFinishedSku(finishedSkuId: string) {
   const finished = getFinishedSku(finishedSkuId)
@@ -298,13 +311,15 @@ export function describeFinishedSku(finishedSkuId: string) {
 }
 
 export const isLineEligible = (lineId: string, finishedSkuId: string) =>
-  LINE_FINISHED_SKU_COMPATIBILITY.some((row) => row.lineId === lineId && row.finishedSkuId === finishedSkuId && row.eligible)
+  (overlay.lineFinished ?? LINE_FINISHED_SKU_COMPATIBILITY).some(
+    (row) => row.lineId === lineId && row.finishedSkuId === finishedSkuId && row.eligible
+  )
 
 /** Aseptic tank and dedicated pipe feeding a filling line, from asset_connections */
 export function lineSupply(lineId: string) {
-  const connection = CONNECTIONS.find((c) => c.destination === lineId && c.flowType === 'aseptic_supply')
+  const connection = (overlay.connections ?? CONNECTIONS).find((c) => c.destination === lineId && c.flowType === 'aseptic_supply')
   return { asepticTankId: connection?.source, pipeId: connection?.via, connectionId: connection?.id }
 }
 
 export const linesFedBy = (asepticTankId: string) =>
-  LINE_DEDICATION.filter((line) => line.sourceAsepticTankId === asepticTankId).map((line) => line.lineId)
+  (overlay.lineDedication ?? LINE_DEDICATION).filter((line) => line.sourceAsepticTankId === asepticTankId).map((line) => line.lineId)

@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { PageHeader } from '../../components/layout/PageHeader'
-import { TraceView } from './-components/TraceView'
+import { TraceView } from './components/TraceView'
 
 export const Route = createFileRoute('/milk-traceability/forward')({
   validateSearch: (search: Record<string, unknown>): { batch?: string } => ({

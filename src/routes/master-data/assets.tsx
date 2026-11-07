@@ -6,9 +6,13 @@ import { ParamValue } from '../../components/common/ParamValue'
 import { StatCard } from '../../components/common/StatCard'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { Select } from '../../components/ui/Select'
-import { ASSETS, ASSET_PARAMS, ASSET_TYPE_ORDER, ASSET_UNITS, type Asset, type AssetUnit } from '../../data/reference'
+import { ASSET_PARAMS, ASSET_TYPE_ORDER, ASSET_UNITS, type Asset, type AssetUnit } from '../../data/reference'
 import { useTranslation } from '../../lib/i18n'
 import { CatalogNote } from '../../components/common/SourceNote'
+import { upsertCatalog, useCatalog } from '../../state/catalog'
+import { CatalogBanner } from './-components/CatalogBanner'
+import { RecordActions } from './-components/RecordActions'
+import { assetFields, parseAsset } from './-components/fields'
 
 export const Route = createFileRoute('/master-data/assets')({ component: AssetsPage })
 
@@ -17,10 +21,12 @@ const PHYSICAL_ROLES = ['process_asset', 'physical_pipe']
 
 function AssetsPage() {
   const { t } = useTranslation()
+  const { data } = useCatalog()
   const [type, setType] = useState(ALL)
+  const assets = data.assets
 
-  const rows = type === ALL ? ASSETS : ASSETS.filter((asset) => asset.type === type)
-  const pendingCount = ASSETS.reduce((sum, asset) => sum + ASSET_PARAMS.filter((param) => asset.params[param] === 'pending').length, 0)
+  const rows = type === ALL ? assets : assets.filter((asset) => asset.type === type)
+  const pendingCount = assets.reduce((sum, asset) => sum + ASSET_PARAMS.filter((param) => asset.params[param] === 'pending').length, 0)
   const unitOf = (param: string) => ASSET_UNITS.find((unit) => unit.field === param)?.unit
 
   const paramColumns: DataTableColumn<Asset>[] = ASSET_PARAMS.map((param) => ({
@@ -48,26 +54,27 @@ function AssetsPage() {
   ]
 
   const typeOptions = [
-    { value: ALL, label: t('master.assets.allTypes', { count: ASSETS.length }) },
-    ...ASSET_TYPE_ORDER.map((name) => ({ value: name, label: `${name} (${ASSETS.filter((a) => a.type === name).length})` }))
+    { value: ALL, label: t('master.assets.allTypes', { count: assets.length }) },
+    ...ASSET_TYPE_ORDER.map((name) => ({ value: name, label: `${name} (${assets.filter((a) => a.type === name).length})` }))
   ]
 
   return (
     <>
       <PageHeader />
       <div className="space-y-5">
+        <CatalogBanner />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <StatCard icon={Boxes} label={t('master.assets.total')} value={ASSETS.length} caption={t('master.assets.totalCaption', { types: ASSET_TYPE_ORDER.length })} />
+          <StatCard icon={Boxes} label={t('master.assets.total')} value={assets.length} caption={t('master.assets.totalCaption', { types: ASSET_TYPE_ORDER.length })} />
           <StatCard
             icon={Factory}
             label={t('master.assets.physical')}
-            value={ASSETS.filter((a) => PHYSICAL_ROLES.includes(a.nodeRole)).length}
+            value={assets.filter((a) => PHYSICAL_ROLES.includes(a.nodeRole)).length}
             caption={t('master.assets.physicalCaption')}
           />
           <StatCard
             icon={Waypoints}
             label={t('master.assets.logical')}
-            value={ASSETS.filter((a) => !PHYSICAL_ROLES.includes(a.nodeRole)).length}
+            value={assets.filter((a) => !PHYSICAL_ROLES.includes(a.nodeRole)).length}
             caption={t('master.assets.logicalCaption')}
           />
           <StatCard
@@ -82,7 +89,18 @@ function AssetsPage() {
         <DataTable
           title={t('master.assets.table')}
           subtitle={t('master.assets.tableHint')}
-          toolbar={<Select className="w-60" value={type} onChange={setType} options={typeOptions} aria-label={t('col.type')} />}
+          toolbar={
+            <>
+              <RecordActions
+                title={t('master.assets.table')}
+                fileName="asset_configuration"
+                fields={assetFields(t)}
+                parse={parseAsset}
+                onApply={(assetRows) => upsertCatalog('assets', assetRows, (row) => row.id)}
+              />
+              <Select className="w-60" value={type} onChange={setType} options={typeOptions} aria-label={t('col.type')} />
+            </>
+          }
           columns={columns}
           rows={rows}
           rowKey={(row) => row.id}

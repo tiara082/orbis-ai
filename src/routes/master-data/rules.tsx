@@ -6,18 +6,15 @@ import { SectionPanel, Card } from '../../components/common/SectionPanel'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { Badge } from '../../components/ui/Badge'
 import type { AppPath } from '../../config/navigation'
-import {
-  CHANGEOVER_RULES,
-  CIP_RULES,
-  CONSTRAINTS,
-  type ChangeoverRule,
-  type CipRule,
-  type ConstraintRule
-} from '../../data/reference'
+import { type ChangeoverRule, type CipRule, type ConstraintRule } from '../../data/reference'
 import { DEFAULT_CONFIG } from '../../domain/plan'
 import { useFormat } from '../../lib/format'
 import { useTranslation } from '../../lib/i18n'
 import { CatalogNote } from '../../components/common/SourceNote'
+import { upsertCatalog, useCatalog } from '../../state/catalog'
+import { CatalogBanner } from './-components/CatalogBanner'
+import { RecordActions } from './-components/RecordActions'
+import { changeoverFields, cipFields, constraintFields, parseChangeover, parseCip, parseConstraint } from './-components/fields'
 
 export const Route = createFileRoute('/master-data/rules')({ component: RulesPage })
 
@@ -55,6 +52,7 @@ const SCENARIO_DURATION: Record<string, number | undefined> = {
 function RulesPage() {
   const { t } = useTranslation()
   const fmt = useFormat()
+  const { data } = useCatalog()
 
   const scenarioValue = (ruleId: string) => {
     const value = SCENARIO_DURATION[ruleId]
@@ -113,11 +111,21 @@ function RulesPage() {
     <>
       <PageHeader />
       <div className="space-y-5">
+        <CatalogBanner />
         <DataTable
           title={t('master.rules.constraints')}
           subtitle={t('master.rules.constraintsHint')}
+          toolbar={
+            <RecordActions
+              title={t('master.rules.constraints')}
+              fileName="constraint_catalog"
+              fields={constraintFields(t)}
+              parse={parseConstraint}
+              onApply={(rows) => upsertCatalog('constraints', rows, (row) => row.ruleId)}
+            />
+          }
           columns={constraintColumns}
-          rows={CONSTRAINTS}
+          rows={data.constraints}
           rowKey={(row) => row.ruleId}
           searchText={(row) => `${row.ruleId} ${row.scope} ${row.description}`}
           dense
@@ -126,8 +134,17 @@ function RulesPage() {
         <DataTable
           title={t('master.rules.changeover')}
           subtitle={t('master.rules.changeoverHint')}
+          toolbar={
+            <RecordActions
+              title={t('master.rules.changeover')}
+              fileName="changeover_rules"
+              fields={changeoverFields(t)}
+              parse={parseChangeover}
+              onApply={(rows) => upsertCatalog('changeovers', rows, (row) => row.ruleId)}
+            />
+          }
           columns={changeoverColumns}
-          rows={CHANGEOVER_RULES}
+          rows={data.changeovers}
           rowKey={(row) => row.ruleId}
           dense
           note={<CatalogNote files={['changeover_rules.csv']} />}
@@ -135,8 +152,17 @@ function RulesPage() {
         <DataTable
           title={t('master.rules.cip')}
           subtitle={t('master.rules.cipHint')}
+          toolbar={
+            <RecordActions
+              title={t('master.rules.cip')}
+              fileName="cip_rules"
+              fields={cipFields(t)}
+              parse={parseCip}
+              onApply={(rows) => upsertCatalog('cipRules', rows, (row) => row.ruleId)}
+            />
+          }
           columns={cipColumns}
-          rows={CIP_RULES}
+          rows={data.cipRules}
           rowKey={(row) => row.ruleId}
           dense
           note={<CatalogNote files={['cip_rules.csv']} />}

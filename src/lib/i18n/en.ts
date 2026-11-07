@@ -710,6 +710,24 @@ export const en = {
   },
   master: {
     milkContentHint: 'Project assumption: Full Cream 100% milk, flavoured 90% milk',
+    edit: {
+      add: 'Add row',
+      upload: 'Upload Excel',
+      template: 'Template',
+      save: 'Save',
+      reset: 'Restore official catalog',
+      formEyebrow: 'Input form',
+      formHint: 'A row with the same ID replaces the existing one. Lists use a semicolon.',
+      session: 'This master data differs from the official catalog. Changes stay in this browser session and feed the rest of the app.',
+      result: '{added} added, {updated} updated, {skipped} skipped',
+      noRows: 'The file has no data rows',
+      headerMismatch: 'Missing columns: {columns}. Download the template and keep its header row.',
+      required: 'Row {row}: {field} is required',
+      notNumber: 'Row {row}: {field} must be a number',
+      unreadable: 'The file could not be read. Use .xlsx or .csv.',
+      yes: 'Yes',
+      no: 'No'
+    },
     products: {
       liquid: 'Liquid SKUs',
       liquidHint: 'Product families and flavours, with allowed pack sizes and markets',

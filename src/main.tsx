@@ -6,6 +6,7 @@ import './index.css'
 import { LanguageProvider } from './lib/i18n'
 import { router } from './router'
 import { PlanningProvider } from './state/planning'
+import './state/catalog'
 
 registerSW({ immediate: true })
 

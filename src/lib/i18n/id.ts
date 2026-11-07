@@ -712,6 +712,24 @@ export const id: Messages = {
   },
   master: {
     milkContentHint: 'Asumsi proyek: Full Cream 100% susu, berperisa 90% susu',
+    edit: {
+      add: 'Tambah data',
+      upload: 'Unggah Excel',
+      template: 'Template',
+      save: 'Simpan',
+      reset: 'Kembalikan katalog resmi',
+      formEyebrow: 'Form input',
+      formHint: 'Baris dengan ID yang sama menggantikan data yang ada. Daftar dipisah titik koma.',
+      session: 'Master data ini berbeda dari katalog resmi. Perubahan tersimpan di sesi browser ini dan dipakai bagian lain aplikasi.',
+      result: '{added} ditambah, {updated} diperbarui, {skipped} dilewati',
+      noRows: 'File tidak berisi baris data',
+      headerMismatch: 'Kolom belum lengkap: {columns}. Unduh template dan pertahankan baris judulnya.',
+      required: 'Baris {row}: {field} wajib diisi',
+      notNumber: 'Baris {row}: {field} harus angka',
+      unreadable: 'File tidak bisa dibaca. Gunakan .xlsx atau .csv.',
+      yes: 'Ya',
+      no: 'Tidak'
+    },
     products: {
       liquid: 'Liquid SKU',
       liquidHint: 'Family dan rasa produk, dengan ukuran kemasan dan market yang diizinkan',
