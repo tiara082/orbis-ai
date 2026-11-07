@@ -1,238 +1,144 @@
 import {
-  BrainCircuit,
   CalendarRange,
   Database,
   GitFork,
-  History,
   LayoutGrid,
-  SearchCheck,
-  Truck,
+  Library,
+  Sparkles,
   UserRound,
   type LucideIcon
 } from 'lucide-react'
+import type { FileRouteTypes } from '../routeTree.gen'
 
-export type NavPage =
-  // Production Planning
-  | 'production-planning'
-  | 'ai-recommendation'
-  | 'schedule-simulation'
-  | 'planning-approval'
-  | 'planning-rejection'
+export type AppPath = FileRouteTypes['to']
 
-  // AI Intelligence
-  | 'ai-prediction-detail'
-  | 'ai-production-risk'
-  | 'prediction-insufficient'
-
-  // Incoming Tanker
-  | 'tanker-overview'
-  | 'tanker-detail'
-  | 'tanker-lab-status'
-  | 'tanker-lab-pending'
-  | 'tanker-unloading'
-  | 'tanker-delayed'
-
-  // Data Management
-  | 'data-management-overview'
-  | 'data-management-upload'
-  | 'data-management-mapping'
-  | 'data-management-validation'
-  | 'data-management-preview'
-  | 'data-management-history'
-  | 'data-management-error'
-  | 'data-management-mapping-review'
-
-  // Traceability
-  | 'traceability-overview'
-  | 'traceability-graph'
-  | 'traceability-forward'
-  | 'traceability-backward'
-  | 'traceability-batch'
-
-  // Quality Investigation
-  | 'quality-investigation-overview'
-  | 'quality-investigation-detail'
-  | 'affected-batch-analysis'
-  | 'affected-products'
-
-  // Audit Trail
-  | 'audit-trail-overview'
-  | 'audit-event-detail'
-  | 'audit-integrity-check'
-
-  // System
+export type ModuleId =
   | 'dashboard'
-  | 'profile'
-  | 'settings'
+  | 'operational-data'
+  | 'milk-traceability'
+  | 'ai-planning'
+  | 'production-schedule'
+  | 'master-data'
+  | 'account'
 
 export interface NavTab {
-  page: NavPage
-  label: string
-}
-
-export interface StatePage {
-  page: NavPage
-  label: string
-  /** Tab that stays highlighted while this page is shown */
-  parentTab: NavPage
+  /** Translation keys live under nav.tab.<module>.<id> */
+  id: string
+  path: AppPath
 }
 
 export interface NavModule {
-  id: string
-  label: string
+  id: ModuleId
   icon: LucideIcon
-  /** Page opened from the sidebar */
-  entry: NavPage
+  path: AppPath
   tabs: NavTab[]
-  statePages?: StatePage[]
-  /** Optional per-module header meta, e.g. "Last ledger check" */
-  meta?: { label: string; value: string }
-  /** Hidden from the sidebar; still used for breadcrumbs (profile, settings) */
+  /** Which data source the module reads; shown as a chip in the page header */
+  source?: 'scenario' | 'catalog'
+  /** Hidden from the sidebar; still used for breadcrumbs (opened from the avatar menu) */
   hidden?: boolean
 }
 
 export interface NavGroup {
-  id: 'operations' | 'traceability' | 'system'
-  label: string
+  id: 'monitor' | 'operations' | 'planning' | 'system'
   modules: NavModule[]
 }
 
 export const NAV_GROUPS: NavGroup[] = [
   {
+    id: 'monitor',
+    modules: [{ id: 'dashboard', icon: LayoutGrid, path: '/dashboard', tabs: [], source: 'scenario' }]
+  },
+  {
     id: 'operations',
-    label: 'Operations',
     modules: [
       {
-        id: 'dashboard',
-        label: 'Dashboard',
-        icon: LayoutGrid,
-        entry: 'dashboard',
-        tabs: []
-      },
-      {
-        id: 'ai-intelligence',
-        label: 'AI Intelligence',
-        icon: BrainCircuit,
-        entry: 'ai-prediction-detail',
-        tabs: [
-          { page: 'ai-prediction-detail', label: 'Prediction detail' },
-          { page: 'ai-production-risk', label: 'Production risk' }
-        ],
-        statePages: [
-          { page: 'prediction-insufficient', label: 'Insufficient data', parentTab: 'ai-prediction-detail' }
-        ],
-        meta: { label: 'Model refreshed', value: '30 Oct 06:00' }
-      },
-      {
-        id: 'production-planning',
-        label: 'Production Planning',
-        icon: CalendarRange,
-        entry: 'production-planning',
-        tabs: [
-          { page: 'production-planning', label: 'Plan' },
-          { page: 'ai-recommendation', label: 'AI recommendation' },
-          { page: 'schedule-simulation', label: 'Simulation' }
-        ],
-        statePages: [
-          { page: 'planning-approval', label: 'Approval', parentTab: 'ai-recommendation' },
-          { page: 'planning-rejection', label: 'Rejection', parentTab: 'ai-recommendation' }
-        ],
-        meta: { label: 'Plan horizon', value: '30 Oct 06:00 – 31 Oct 06:00' }
-      },
-      {
-        id: 'incoming-tanker',
-        label: 'Incoming Tanker',
-        icon: Truck,
-        entry: 'tanker-overview',
-        tabs: [
-          { page: 'tanker-overview', label: 'Overview' },
-          { page: 'tanker-detail', label: 'Tanker detail' },
-          { page: 'tanker-lab-status', label: 'Lab status' },
-          { page: 'tanker-unloading', label: 'Unloading' }
-        ],
-        statePages: [
-          { page: 'tanker-lab-pending', label: 'Lab pending', parentTab: 'tanker-lab-status' },
-          { page: 'tanker-delayed', label: 'Delayed', parentTab: 'tanker-overview' }
-        ],
-        meta: { label: 'ETA feed', value: '30 Oct 09:05' }
-      },
-      {
-        id: 'data-management',
-        label: 'Data Management',
+        id: 'operational-data',
         icon: Database,
-        entry: 'data-management-overview',
+        path: '/operational-data',
+        source: 'scenario',
         tabs: [
-          { page: 'data-management-overview', label: 'Overview' },
-          { page: 'data-management-upload', label: 'Upload' },
-          { page: 'data-management-mapping', label: 'Column mapping' },
-          { page: 'data-management-validation', label: 'Validation' },
-          { page: 'data-management-preview', label: 'Preview' },
-          { page: 'data-management-history', label: 'History' }
-        ],
-        statePages: [
-          { page: 'data-management-error', label: 'Import error', parentTab: 'data-management-history' },
-          { page: 'data-management-mapping-review', label: 'Mapping review', parentTab: 'data-management-mapping' }
+          { id: 'delivery', path: '/operational-data/delivery' },
+          { id: 'lab-release', path: '/operational-data/lab-release' },
+          { id: 'unloading-bay', path: '/operational-data/unloading-bay' },
+          { id: 'raw-milk-process', path: '/operational-data/raw-milk-process' },
+          { id: 'sfp-storage', path: '/operational-data/sfp-storage' },
+          { id: 'aseptic-tank', path: '/operational-data/aseptic-tank' },
+          { id: 'production-order', path: '/operational-data/production-order' },
+          { id: 'production-actual', path: '/operational-data/production-actual' }
+        ]
+      },
+      {
+        id: 'milk-traceability',
+        icon: GitFork,
+        path: '/milk-traceability',
+        source: 'scenario',
+        tabs: [
+          { id: 'batches', path: '/milk-traceability/batches' },
+          { id: 'transfers', path: '/milk-traceability/transfers' },
+          { id: 'graph', path: '/milk-traceability/graph' },
+          { id: 'backward', path: '/milk-traceability/backward' },
+          { id: 'forward', path: '/milk-traceability/forward' },
+          { id: 'audit-log', path: '/milk-traceability/audit-log' }
         ]
       }
     ]
   },
   {
-    id: 'traceability',
-    label: 'Traceability',
+    id: 'planning',
     modules: [
       {
-        id: 'traceability',
-        label: 'Traceability',
-        icon: GitFork,
-        entry: 'traceability-overview',
+        id: 'ai-planning',
+        icon: Sparkles,
+        path: '/ai-planning',
+        source: 'scenario',
         tabs: [
-          { page: 'traceability-overview', label: 'Overview' },
-          { page: 'traceability-graph', label: 'Relationship graph' },
-          { page: 'traceability-forward', label: 'Forward trace' },
-          { page: 'traceability-backward', label: 'Backward trace' },
-          { page: 'traceability-batch', label: 'Batch detail' }
-        ],
-        meta: { label: 'Last ledger check', value: '30 Oct 15:02' }
-      },
-      {
-        id: 'quality-investigation',
-        label: 'Quality Investigation',
-        icon: SearchCheck,
-        entry: 'quality-investigation-overview',
-        tabs: [
-          { page: 'quality-investigation-overview', label: 'Overview' },
-          { page: 'quality-investigation-detail', label: 'Investigation detail' },
-          { page: 'affected-batch-analysis', label: 'Affected batches' },
-          { page: 'affected-products', label: 'Affected products' }
+          { id: 'forecasting', path: '/ai-planning/forecasting' },
+          { id: 'configuration', path: '/ai-planning/configuration' },
+          { id: 'generate', path: '/ai-planning/generate' },
+          { id: 'scenarios', path: '/ai-planning/scenarios' },
+          { id: 'recommendations', path: '/ai-planning/recommendations' }
         ]
       },
       {
-        id: 'audit-trail',
-        label: 'Audit Trail',
-        icon: History,
-        entry: 'audit-trail-overview',
+        id: 'production-schedule',
+        icon: CalendarRange,
+        path: '/production-schedule',
+        source: 'scenario',
         tabs: [
-          { page: 'audit-trail-overview', label: 'Overview' },
-          { page: 'audit-event-detail', label: 'Event detail' },
-          { page: 'audit-integrity-check', label: 'Integrity check' }
-        ],
-        meta: { label: 'Last ledger check', value: '30 Oct 15:02' }
+          { id: 'recommended', path: '/production-schedule/recommended' },
+          { id: 'calendar', path: '/production-schedule/calendar' },
+          { id: 'machine-allocation', path: '/production-schedule/machine-allocation' },
+          { id: 'tank-allocation', path: '/production-schedule/tank-allocation' },
+          { id: 'approval', path: '/production-schedule/approval' },
+          { id: 'planned-vs-actual', path: '/production-schedule/planned-vs-actual' }
+        ]
       }
     ]
   },
   {
     id: 'system',
-    label: 'System',
     modules: [
       {
+        id: 'master-data',
+        icon: Library,
+        path: '/master-data',
+        source: 'catalog',
+        tabs: [
+          { id: 'products', path: '/master-data/products' },
+          { id: 'assets', path: '/master-data/assets' },
+          { id: 'routes', path: '/master-data/routes' },
+          { id: 'line-eligibility', path: '/master-data/line-eligibility' },
+          { id: 'rules', path: '/master-data/rules' }
+        ]
+      },
+      {
         id: 'account',
-        label: 'Account',
         icon: UserRound,
-        entry: 'profile',
+        path: '/account',
         hidden: true,
         tabs: [
-          { page: 'profile', label: 'Profile' },
-          { page: 'settings', label: 'Settings' }
+          { id: 'profile', path: '/account/profile' },
+          { id: 'settings', path: '/account/settings' }
         ]
       }
     ]
@@ -243,30 +149,13 @@ export const NAV_MODULES: NavModule[] = NAV_GROUPS.flatMap((group) => group.modu
 
 export interface ActiveNav {
   module: NavModule
-  group: NavGroup
-  /** Tab to highlight (state pages resolve to their parent tab) */
-  activeTab?: NavPage
-  /** Label of the current page, used for breadcrumb */
-  pageLabel: string
-  isStatePage: boolean
+  tab?: NavTab
 }
 
-export function resolveNav(page: NavPage): ActiveNav {
-  for (const group of NAV_GROUPS) {
-    for (const module of group.modules) {
-      if (module.entry === page && module.tabs.length === 0) {
-        return { module, group, pageLabel: module.label, isStatePage: false }
-      }
-      const tab = module.tabs.find((t) => t.page === page)
-      if (tab) {
-        return { module, group, activeTab: tab.page, pageLabel: tab.label, isStatePage: false }
-      }
-      const state = module.statePages?.find((s) => s.page === page)
-      if (state) {
-        return { module, group, activeTab: state.parentTab, pageLabel: state.label, isStatePage: true }
-      }
-    }
-  }
-  const fallback = NAV_GROUPS[0]
-  return { module: fallback.modules[0], group: fallback, pageLabel: fallback.modules[0].label, isStatePage: false }
+const matches = (pathname: string, path: string) => pathname === path || pathname.startsWith(`${path}/`)
+
+export function resolveNav(pathname: string): ActiveNav {
+  const module = NAV_MODULES.find((m) => matches(pathname, m.path)) ?? NAV_MODULES[0]
+  const tab = module.tabs.find((t) => matches(pathname, t.path))
+  return { module, tab }
 }

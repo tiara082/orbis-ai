@@ -40,9 +40,7 @@ export const ResultState: React.FC<ResultStateProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-start gap-5">
           {Icon && <IconTile icon={Icon} tone={finalTone} size="lg" shape="circle" />}
           <div className="flex-1 min-w-0">
-            <Badge status={status} tone={finalTone} icon={null} size="md" shape="pill">
-              {status}
-            </Badge>
+            <Badge status={status} tone={finalTone} icon={null} size="md" shape="pill" />
             <h2 className="mt-3 text-lg font-bold tracking-tight text-ink-strong">{title}</h2>
             {description && <div className="text-sm text-ink mt-1.5 max-w-2xl">{description}</div>}
             {details && details.length > 0 && (

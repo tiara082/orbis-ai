@@ -3,481 +3,1133 @@ import type { Messages } from './en'
 export const id: Messages = {
   brand: {
     name: 'ORBIS',
-    tagline: 'Intelijen Produksi AI'
+    tagline: 'Production Intelligence'
   },
   shell: {
-    search: 'Cari log produksi, tanker...',
+    search: 'Cari menu dan tab...',
     language: 'Bahasa',
-    mobileShift: 'Shift A',
-    userMeta: '30 Okt 2026 · Shift A',
-    toggleNav: 'Buka navigasi',
-    collapse: 'Tutup sidebar',
-    expand: 'Buka sidebar',
-    notifications: 'Notifikasi',
+    toggleNav: 'Buka/tutup navigasi',
+    collapse: 'Ciutkan sidebar',
+    expand: 'Lebarkan sidebar',
+    notifications: 'Peringatan',
     markAllRead: 'Tandai sudah dibaca',
-    noAlerts: 'Tidak ada peringatan saat ini',
+    noAlerts: 'Tidak ada peringatan',
     timezone: 'WIB',
     profileMenu: 'Menu akun',
     profile: 'Profil',
     settings: 'Pengaturan',
     logout: 'Keluar',
     role: 'Perencana produksi',
-    plant: 'Pabrik A · Hall filling',
+    plant: 'Pabrik susu · ESL & UHT',
     shift: 'Shift A',
     signIn: 'Masuk'
   },
   alerts: {
-    tankerDelay: {
-      title: 'TRK-045 tertunda 35 menit',
-      body: 'Cakupan susu mentah sore berisiko'
-    },
-    quality: {
-      title: 'QI-2026-014 perlu tinjauan',
-      body: 'Hasil lab mungkin memengaruhi FG-1030-01'
-    },
     approval: {
-      title: 'Persetujuan rencana menunggu',
-      body: 'Rekomendasi AI memerlukan keputusan manusia'
-    },
-    labPending: {
-      title: 'Hasil lab tertunda',
-      body: 'TRK-042 tidak dapat dibongkar sampai QA mencatat hasil'
-    },
-    mismatch: {
-      title: 'Ledger tidak cocok pada FG-1030-01',
-      body: 'Integritas telusur perlu cek QA'
+      title: 'Rencana menunggu persetujuan',
+      body: 'Revisi rencana yang baru dibuat perlu keputusan manusia sebelum aktif'
     }
   },
   lang: {
     en: 'EN',
     id: 'ID'
   },
+  source: {
+    scenario: 'Skenario demo · {date} · snapshot {time}',
+    catalog: 'Katalog resmi · {count} file CSV',
+    scenarioNote: 'Data demo sintetis · ID dari katalog resmi'
+  },
   nav: {
     group: {
-      operations: 'Operasi',
-      traceability: 'Ketertelusuran',
+      monitor: 'Pantau',
+      operations: 'Operasional',
+      planning: 'Perencanaan',
       system: 'Sistem'
     },
     module: {
-      dashboard: 'Dasbor',
-      'ai-intelligence': 'Intelijen AI',
-      'production-planning': 'Perencanaan Produksi',
-      'incoming-tanker': 'Tanker Masuk',
-      'data-management': 'Manajemen Data',
-      traceability: 'Ketertelusuran',
-      'quality-investigation': 'Investigasi Mutu',
-      'audit-trail': 'Jejak Audit',
-      account: 'Akun',
-      settings: 'Pengaturan'
+      dashboard: 'Dashboard',
+      'operational-data': 'Data Operasional',
+      'milk-traceability': 'Ketertelusuran Susu',
+      'ai-planning': 'Perencanaan Produksi AI',
+      'production-schedule': 'Jadwal Produksi',
+      'master-data': 'Master Data & Pengaturan',
+      account: 'Akun'
     },
-    page: {
-      dashboard: 'Dasbor',
-      profile: 'Profil',
-      settings: 'Pengaturan',
-      'production-planning': 'Rencana',
-      'ai-recommendation': 'Rekomendasi AI',
-      'schedule-simulation': 'Simulasi',
-      'planning-approval': 'Persetujuan',
-      'planning-rejection': 'Penolakan',
-      'ai-prediction-detail': 'Detail prediksi',
-      'ai-production-risk': 'Risiko produksi',
-      'prediction-insufficient': 'Data tidak cukup',
-      'tanker-overview': 'Ringkasan',
-      'tanker-detail': 'Detail tanker',
-      'tanker-lab-status': 'Status lab',
-      'tanker-unloading': 'Bongkar muat',
-      'tanker-lab-pending': 'Lab tertunda',
-      'tanker-delayed': 'Tertunda',
-      'data-management-overview': 'Ringkasan',
-      'data-management-upload': 'Unggah',
-      'data-management-mapping': 'Pemetaan kolom',
-      'data-management-validation': 'Validasi',
-      'data-management-preview': 'Pratinjau',
-      'data-management-history': 'Riwayat',
-      'data-management-error': 'Gagal impor',
-      'data-management-mapping-review': 'Tinjauan pemetaan',
-      'traceability-overview': 'Ringkasan',
-      'traceability-graph': 'Graf relasi',
-      'traceability-forward': 'Telusur maju',
-      'traceability-backward': 'Telusur mundur',
-      'traceability-batch': 'Detail batch',
-      'quality-investigation-overview': 'Ringkasan',
-      'quality-investigation-detail': 'Detail investigasi',
-      'affected-batch-analysis': 'Batch terdampak',
-      'affected-products': 'Produk terdampak',
-      'audit-trail-overview': 'Ringkasan',
-      'audit-event-detail': 'Detail peristiwa',
-      'audit-integrity-check': 'Cek integritas'
+    moduleInfo: {
+      dashboard: {
+        title: 'Dashboard',
+        description: 'Ringkasan hari ini: susu diterima, rencana, peringatan, dan ketertelusuran'
+      }
     },
-    meta: {
-      'ai-intelligence': 'Model diperbarui',
-      'production-planning': 'Horizon rencana',
-      'incoming-tanker': 'Umpan ETA',
-      traceability: 'Cek ledger terakhir',
-      'audit-trail': 'Cek ledger terakhir'
+    tab: {
+      'operational-data': {
+        delivery: {
+          label: 'Pengiriman',
+          title: 'Farm & pengiriman susu',
+          description: 'Keberangkatan tanker, ETA, kedatangan, keterlambatan, dan bongkar per truk'
+        },
+        'lab-release': {
+          label: 'Penerimaan & QC',
+          title: 'Sampling, uji lab & release',
+          description: 'Bongkar baru boleh dimulai setelah QA me-release tanker (RECEIVING_GATE)'
+        },
+        'unloading-bay': {
+          label: 'Bay bongkar',
+          title: 'Bay bongkar',
+          description: 'Ketersediaan bay, laju pompa, durasi bongkar, dan CIP antar tanker'
+        },
+        'raw-milk-process': {
+          label: 'Susu mentah & proses',
+          title: 'Tangki susu mentah & mesin proses',
+          description: 'Tangki susu mentah, degassing, thermizer, separator, tangki cream dan mixing'
+        },
+        'sfp-storage': {
+          label: 'Tangki simpan (SFP)',
+          title: 'Tangki simpan SFP',
+          description: '15 tangki simpan dengan level, aliran, holding time, dan status CIP'
+        },
+        'aseptic-tank': {
+          label: 'Sterilizer & aseptik',
+          title: 'Sterilizer & tangki aseptik',
+          description: 'Level tangki aseptik terhadap batas minimum dinamis untuk satu atau dua filler'
+        },
+        'production-order': {
+          label: 'Order produksi',
+          title: 'Order produksi',
+          description: 'Order dengan volume, kebutuhan susu, prioritas, batas waktu, dan line yang eligible'
+        },
+        'production-actual': {
+          label: 'Aktual produksi',
+          title: 'Aktual produksi',
+          description: 'Output tercatat per order dan status filling line'
+        }
+      },
+      'milk-traceability': {
+        batches: {
+          label: 'Batch',
+          title: 'Batch',
+          description: 'Semua batch dari tanker sampai barang jadi, lengkap dengan mass balance'
+        },
+        transfers: {
+          label: 'Riwayat transfer',
+          title: 'Riwayat transfer',
+          description: 'Tiap transfer mencatat asal, tujuan, waktu, volume, dan rute'
+        },
+        graph: {
+          label: 'Graf relasi',
+          title: 'Graf relasi',
+          description: 'Genealogi dari farm sampai barang jadi, termasuk split dan mix'
+        },
+        backward: {
+          label: 'Telusur mundur',
+          title: 'Telusur mundur',
+          description: 'Dari batch produk kembali ke tanker dan farm asalnya'
+        },
+        forward: {
+          label: 'Telusur maju',
+          title: 'Telusur maju',
+          description: 'Dari tanker atau tangki ke semua batch dan barang jadi yang dicapainya'
+        },
+        'audit-log': {
+          label: 'Audit log',
+          title: 'Audit log',
+          description: 'Siapa melakukan apa dan kapan, termasuk pembuatan dan persetujuan rencana'
+        }
+      },
+      'ai-planning': {
+        forecasting: {
+          label: 'Forecasting',
+          title: 'Forecast & insight perencanaan',
+          description: 'Prediksi ketersediaan susu, waktu kedatangan, dan kebutuhan susu rencana'
+        },
+        configuration: {
+          label: 'Konfigurasi',
+          title: 'Konfigurasi perencanaan',
+          description: 'Jumlah order, kecepatan line, durasi changeover dan CIP yang dipakai planner'
+        },
+        generate: {
+          label: 'Generate plan',
+          title: 'Generate plan',
+          description: 'Pratinjau rencana dari konfigurasi saat ini, cek aturan, lalu kirim untuk persetujuan'
+        },
+        scenarios: {
+          label: 'Skenario',
+          title: 'Skenario',
+          description: 'Alternatif what-if yang dinilai dengan aturan yang sama'
+        },
+        recommendations: {
+          label: 'Rekomendasi',
+          title: 'Rekomendasi',
+          description: 'Jadwal rekomendasi, risiko, dan alternatif untuk tiap peringatan'
+        }
+      },
+      'production-schedule': {
+        recommended: {
+          label: 'Jadwal rekomendasi',
+          title: 'Jadwal produksi rekomendasi',
+          description: 'Rencana yang disetujui per filling line: produksi, changeover, dan CIP'
+        },
+        calendar: {
+          label: 'Kalender',
+          title: 'Kalender produksi',
+          description: 'Line, tangki aseptik, dan jendela maintenance sepanjang hari'
+        },
+        'machine-allocation': {
+          label: 'Alokasi mesin',
+          title: 'Alokasi mesin',
+          description: 'Order per filling line dan mesin hulu yang menyuplainya'
+        },
+        'tank-allocation': {
+          label: 'Alokasi tangki',
+          title: 'Alokasi tangki',
+          description: 'Tangki dan batch yang menyuplai tiap order, serta urutan tangki aseptik'
+        },
+        approval: {
+          label: 'Persetujuan',
+          title: 'Persetujuan rencana',
+          description: 'Tinjau revisi yang dibuat, lalu setujui atau tolak'
+        },
+        'planned-vs-actual': {
+          label: 'Rencana vs aktual',
+          title: 'Rencana vs aktual',
+          description: 'Jendela waktu dan jumlah rencana dibandingkan produksi tercatat'
+        }
+      },
+      'master-data': {
+        products: {
+          label: 'Produk & SKU',
+          title: 'Produk & SKU',
+          description: 'Liquid SKU, finished SKU, ukuran kemasan, dan market variant'
+        },
+        assets: {
+          label: 'Aset',
+          title: 'Aset & parameter',
+          description: 'Semua aset pabrik dengan parameter dan satuan dari katalog'
+        },
+        routes: {
+          label: 'Rute',
+          title: 'Rute & koneksi',
+          description: 'Rute material yang diizinkan antar aset'
+        },
+        'line-eligibility': {
+          label: 'Eligibilitas line',
+          title: 'Eligibilitas filling line',
+          description: 'SKU dan ukuran kemasan yang boleh berjalan di tiap filling line'
+        },
+        rules: {
+          label: 'Aturan & asumsi',
+          title: 'Aturan & asumsi',
+          description: 'Katalog constraint, aturan changeover dan CIP, serta asumsi proyek'
+        }
+      },
+      account: {
+        profile: {
+          label: 'Profil',
+          title: 'Profil',
+          description: 'Identitas operator yang tercatat di audit'
+        },
+        settings: {
+          label: 'Pengaturan',
+          title: 'Pengaturan',
+          description: 'Bahasa, shift, dan zona waktu'
+        }
+      }
     }
   },
+  units: {
+    min: 'mnt',
+    h: 'jam',
+    hShort: 'jam',
+    packs: 'pack',
+    packsPerHour: 'pack/jam'
+  },
   status: {
-    recorded: 'Tercatat',
-    verified: 'Terverifikasi',
-    'hash verified': 'Hash terverifikasi',
-    mismatch: 'Tidak cocok',
-    match: 'Cocok',
-    'integrity match': 'Integritas cocok',
-    'not recorded': 'Belum tercatat',
     ready: 'Siap',
-    pending: 'Tertunda',
-    review: 'Tinjauan',
-    'in review': 'Sedang ditinjau',
-    validated: 'Tervalidasi',
-    valid: 'Valid',
+    pending: 'Menunggu',
+    'pending approval': 'Menunggu persetujuan',
     approved: 'Disetujui',
-    completed: 'Selesai',
-    complete: 'Selesai',
-    imported: 'Diimpor',
-    success: 'Berhasil',
-    passed: 'Lulus',
-    pass: 'Lulus',
     rejected: 'Ditolak',
-    failed: 'Gagal',
-    error: 'Error',
+    superseded: 'Digantikan',
+    completed: 'Selesai',
+    running: 'Berjalan',
+    valid: 'Valid',
     invalid: 'Tidak valid',
-    critical: 'Kritis',
+    pass: 'Lolos',
+    warning: 'Peringatan',
+    violation: 'Pelanggaran',
+    'not computable': 'Belum bisa dihitung',
     high: 'Tinggi',
     medium: 'Sedang',
-    warning: 'Peringatan',
     low: 'Rendah',
-    open: 'Terbuka',
-    investigating: 'Investigasi',
-    'under investigation': 'Dalam investigasi',
-    'potentially affected': 'Berpotensi terdampak',
-    'potential impact': 'Dampak potensial',
-    confirmed: 'Terkonfirmasi',
-    hold: 'Ditahan',
-    'on hold': 'Ditahan',
-    closed: 'Ditutup',
-    'in progress': 'Berjalan',
-    running: 'Berjalan',
-    draft: 'Draf',
-    insufficient: 'Tidak cukup',
-    'needs review': 'Perlu tinjauan',
-    active: 'Aktif',
+    late: 'Terlambat',
+    'on time': 'Tepat waktu',
     'on the way': 'Dalam perjalanan',
     arrived: 'Tiba',
-    sampling: 'Pengambilan sampel',
-    'lab test': 'Uji lab',
-    'lab pending': 'Lab tertunda',
-    receiving: 'Penerimaan',
-    released: 'Dirilis',
-    unloading: 'Bongkar muat',
+    'lab pending': 'Menunggu lab',
+    passed: 'Lolos',
+    'within spec': 'Sesuai spesifikasi',
+    'awaiting result': 'Menunggu hasil',
     stored: 'Tersimpan',
-    delayed: 'Tertunda',
-    'insufficient data': 'Data tidak cukup'
+    'pending qa': 'Menunggu QA',
+    released: 'Di-release',
+    idle: 'Idle',
+    available: 'Tersedia',
+    occupied: 'Terpakai',
+    inactive: 'Nonaktif',
+    cip: 'CIP',
+    'cip required': 'Perlu CIP',
+    maintenance: 'Maintenance',
+    'holding risk': 'Risiko holding',
+    empty: 'Kosong',
+    eligible: 'Eligible',
+    'not eligible': 'Tidak eligible',
+    computed: 'Dihitung',
+    reference: 'Referensi'
   },
   common: {
-    returnToWorkflow: 'Kembali ke alur kerja',
-    export: 'Ekspor',
-    downloadCsv: 'Unduh CSV',
-    syntheticReview: 'Data demo sintetis · tinjauan manusia diperlukan jika ditandai'
+    close: 'Tutup',
+    all: 'Semua',
+    today: 'Hari ini',
+    open: 'Buka',
+    details: 'Detail'
+  },
+  table: {
+    count: '{count} baris',
+    countFiltered: '{shown} dari {total} baris',
+    search: 'Cari...',
+    empty: 'Tidak ada baris yang cocok',
+    previous: 'Halaman sebelumnya',
+    next: 'Halaman berikutnya'
+  },
+  catalog: {
+    pending: 'Nilai menunggu',
+    pendingHint: 'Katalog menandai parameter ini X: berlaku, nilainya belum diberikan',
+    naHint: 'Katalog menandai parameter ini N/A: tidak berlaku untuk aset ini'
+  },
+  col: {
+    action: 'Aksi',
+    active: 'Aktif',
+    activeLines: 'Line aktif',
+    activity: 'Aktivitas',
+    actor: 'Pelaku',
+    actualDuration: 'Durasi aktual',
+    actualWindow: 'Aktual',
+    alert: 'Peringatan',
+    allowedSkus: 'SKU diizinkan',
+    appliesTo: 'Berlaku untuk',
+    arrival: 'Tiba',
+    asepticTank: 'Tangki aseptik',
+    asset: 'Aset',
+    availability: 'Ketersediaan',
+    batch: 'Batch',
+    batchVolume: 'Volume batch',
+    bay: 'Bay',
+    capacity: 'Kapasitas',
+    catalogDuration: 'Durasi katalog',
+    category: 'Kategori',
+    changeoverTime: 'Changeover',
+    cipDuration: 'CIP',
+    cipTime: 'CIP',
+    condition: 'Kondisi',
+    connection: 'Koneksi',
+    currentTanker: 'Tanker saat ini',
+    decided: 'Diputuskan',
+    decidedBy: 'Diputuskan oleh',
+    definition: 'Definisi',
+    delay: 'Terlambat',
+    departure: 'Berangkat',
+    description: 'Deskripsi',
+    destination: 'Tujuan',
+    due: 'Batas waktu',
+    duration: 'Durasi',
+    eligible: 'Eligible',
+    eligibleLines: 'Line eligible',
+    end: 'Selesai',
+    entity: 'Entitas',
+    estimatedDuration: 'Estimasi',
+    eta: 'ETA',
+    event: 'Event',
+    expectedByNow: 'Rencana s.d. {time}',
+    family: 'Family',
+    farm: 'Farm',
+    feeds: 'Menyuplai',
+    finish: 'Selesai',
+    finishedSku: 'Finished SKU',
+    flavour: 'Rasa',
+    flowType: 'Jenis aliran',
+    freeAt: 'Kosong pukul',
+    from: 'Dari',
+    fromBatch: 'Dari batch',
+    generated: 'Dibuat',
+    generatedBy: 'Dibuat oleh',
+    goodPacks: 'Pack bagus',
+    holding: 'Holding time',
+    impact: 'Dampak',
+    implementation: 'Di aplikasi',
+    inflow: 'Aliran masuk',
+    keyIssue: 'Isu utama',
+    labDuration: 'Durasi lab',
+    labEnd: 'Lab selesai',
+    labStart: 'Lab mulai',
+    lastFinish: 'Selesai terakhir',
+    lateOrders: 'Order terlambat',
+    level: 'Level',
+    line: 'Line',
+    linesFed: 'Line yang disuplai',
+    liquidDraw: 'Tarikan cairan',
+    liters: 'Liter',
+    litersFromSource: 'Liter dari sumber',
+    litersInTarget: 'Liter dalam target',
+    maintenance: 'Maintenance',
+    market: 'Market',
+    markets: 'Market',
+    massBalance: 'Mass balance',
+    material: 'Material',
+    maxFlow: 'Aliran maks',
+    metric: 'Metrik',
+    milkBalance: 'Sisa susu',
+    milkContent: 'Kandungan susu',
+    milkNeed: 'Kebutuhan susu',
+    minLevel: 'Level min',
+    name: 'Nama',
+    note: 'Catatan',
+    order: 'Order',
+    orders: 'Order',
+    outflow: 'Aliran keluar',
+    packs: 'Pack',
+    packSize: 'Ukuran kemasan',
+    packSizes: 'Ukuran kemasan',
+    parameter: 'Parameter',
+    pipe: 'Pipa',
+    planned: 'Rencana',
+    plannedLiters: 'Liter rencana',
+    plannedPacks: 'Pack rencana',
+    plannedWindow: 'Rencana',
+    precedence: 'Prioritas',
+    predicted: 'Prediksi',
+    prediction: 'Prediksi',
+    priority: 'Prioritas',
+    product: 'Produk',
+    productGroup: 'Kelompok produk',
+    productionDate: 'Tanggal produksi',
+    productionTime: 'Produksi',
+    progress: 'Progres',
+    pumpFlow: 'Laju pompa',
+    qcResult: 'Hasil QC',
+    qcStatus: 'Status QC',
+    reason: 'Alasan',
+    recommendation: 'Rekomendasi',
+    rejectPacks: 'Reject',
+    releasedBy: 'Di-release oleh',
+    releaseTime: 'Waktu release',
+    requirement: 'Ketentuan',
+    revision: 'Revisi',
+    role: 'Peran',
+    route: 'Rute',
+    routeCheck: 'Cek rute',
+    rule: 'Aturan',
+    ruleCheck: 'Cek aturan',
+    runTime: 'Waktu jalan',
+    sample: 'Sampel',
+    sampling: 'Sampling',
+    scenario: 'Skenario',
+    scenarioDuration: 'Nilai skenario',
+    scope: 'Cakupan',
+    sentTo: 'Dikirim ke',
+    shareFromSource: 'Porsi dari sumber',
+    shareOfTarget: 'Porsi dalam target',
+    sizeMl: 'Ukuran (ml)',
+    sku: 'Liquid SKU',
+    source: 'Sumber',
+    speed: 'Kecepatan',
+    speedPackph: 'Kecepatan (pack/jam)',
+    stage: 'Tahap',
+    start: 'Mulai',
+    startDeviation: 'Deviasi mulai',
+    status: 'Status',
+    tank: 'Tangki',
+    tankersPerBay: 'Tanker per bay',
+    time: 'Waktu',
+    to: 'Ke',
+    toBatch: 'Ke batch',
+    transfer: 'Transfer',
+    transferType: 'Jenis',
+    trigger: 'Pemicu',
+    truck: 'Truk',
+    truckCapacity: 'Kapasitas truk',
+    type: 'Tipe',
+    unit: 'Satuan',
+    unloadEnd: 'Bongkar selesai',
+    unloading: 'Bongkar',
+    unloadStart: 'Bongkar mulai',
+    unloadsToday: 'Bongkar hari ini',
+    unloadVolume: 'Volume bongkar',
+    usedIn: 'Dipakai di',
+    utilization: 'Utilisasi',
+    variance: 'Selisih',
+    via: 'Lewat',
+    volume: 'Volume',
+    volumeNow: 'Volume saat ini',
+    volumeToProcess: 'Volume diproses',
+    window: 'Jendela',
+    yield: 'Yield',
+    param: {
+      capacity_l: 'Kapasitas',
+      input_flow_lph: 'Aliran masuk',
+      output_flow_lph: 'Aliran keluar',
+      process_speed_lph: 'Kecepatan proses',
+      holding_time_limit_hours: 'Batas holding',
+      cip_duration_minutes: 'CIP',
+      speed_packph: 'Kecepatan filling'
+    }
+  },
+  checks: {
+    allPass: 'Semua aturan lolos',
+    assumption: 'Asumsi proyek',
+    RECEIVING_GATE: {
+      title: 'Gerbang penerimaan',
+      early: '{tanker} mulai bongkar sebelum lab release',
+      blocked: '{tanker} menunggu lab release ({volumeL}); bongkar tetap ditahan',
+      pass: 'Semua {count} tanker yang dibongkar sudah di-release QA lebih dulu'
+    },
+    BAY_EXCLUSIVE: {
+      title: 'Satu tanker per bay',
+      overlap: '{bay} melayani {tankerA} dan {tankerB} bersamaan',
+      pass: '{count} bongkar, tidak ada bay yang bentrok'
+    },
+    CAPACITY: {
+      title: 'Kapasitas tangki',
+      exceeded: '{asset} di bawah nol atau melebihi kapasitas pakai',
+      pass: '{count} tangki dalam batas kapasitas',
+      incoming: 'Susu masuk {incomingL} melebihi kapasitas tangki susu mentah kosong {emptyCapacityL}',
+      incomingOk: 'Tangki susu mentah kosong cukup untuk susu masuk {incomingL}'
+    },
+    CIP_EMPTY: {
+      title: 'CIP sebelum isi ulang',
+      beforeReceiving: '{asset} kosong dan perlu CIP sebelum bisa menerima susu masuk {incomingL}'
+    },
+    HOLDING: {
+      title: 'Holding time',
+      expired: '{asset} sudah melewati batas holding time',
+      risk: '{asset} mencapai batas holding pukul {expiryTime} (sisa {remainingMin})',
+      pass: '{count} tangki dalam batas holding time'
+    },
+    LINE_PRODUCT: {
+      title: 'Eligibilitas line',
+      ineligible: '{sku} tidak eligible di {line}',
+      pass: 'Semua {count} produksi berjalan di line yang eligible'
+    },
+    AT_SAME_PRODUCT: {
+      title: 'Produk sama di tangki aseptik bersama',
+      conflict: '{at} akan menyuplai {lineA} dan {lineB} pukul {startTime}',
+      pass: 'Line yang berbagi tangki aseptik menjalankan produk yang sama pada waktu yang sama'
+    },
+    AT_SHARED_FLOW: {
+      title: 'Batas output tangki aseptik',
+      over: 'Tarikan puncak {at} {peakLph} melebihi batas output {limitLph}',
+      pass: 'Tarikan puncak {at} {peakLph} dalam batas {limitLph}'
+    },
+    SIMULTANEOUS: {
+      title: 'Level minimum tangki aseptik',
+      minLevel: '{at} siap pukul {readyTime} setelah CIP dan isi ulang ke {minPct}%; filling yang direncanakan {startTime} mundur {lateMin}',
+      pass: 'Tangki aseptik mencapai level minimum sebelum tiap pergantian produk'
+    },
+    CHANGEOVER_PRECEDENCE: {
+      title: 'Prioritas changeover',
+      pass: 'Changeover mengikuti Variant > Size > Paper: {list}'
+    },
+    CIP_END_PRODUCTION: {
+      title: 'CIP di akhir produksi',
+      pass: '{count} blok CIP terjadwal'
+    },
+    FILLING_SPEED_UNIT: {
+      title: 'Satuan kecepatan filling',
+      empty: 'Tidak ada produksi untuk dikonversi',
+      pass: '{line} menarik {drawLph} (pack/jam × ml kemasan ÷ 1000)'
+    },
+    PLAN: {
+      title: 'Batas waktu',
+      late: '{order} selesai {lateMin} setelah batas waktu {dueTime}',
+      pass: 'Semua {count} order selesai sebelum batas waktu'
+    },
+    MILK_BALANCE: {
+      title: 'Neraca susu',
+      short: 'Rencana butuh {requiredL}; baru {availableL} yang di-release (kurang {shortL})',
+      pass: 'Rencana butuh {requiredL} dari {availableL} yang di-release (sisa {spareL})'
+    },
+    HEADER_RESOURCE: {
+      title: 'Resource header',
+      missing: 'Jumlah transfer paralel dan kapasitas header bersama belum ada di katalog'
+    },
+    CATALOG_DURATIONS: {
+      title: 'Durasi katalog',
+      scenario: 'Durasi changeover dan CIP bernilai X di katalog; rencana memakai nilai skenario'
+    }
   },
   schedule: {
-    plain: 'Plain (Full Cream)',
-    flavoured: 'Berperisa',
-    changeover: 'Pergantian',
-    cip: 'CIP'
+    kind: {
+      plain: 'Full Cream',
+      flavoured: 'Berperisa',
+      changeover: 'Changeover',
+      cip: 'CIP',
+      wait: 'Menunggu',
+      maintenance: 'Maintenance',
+      level: 'Isi ulang ke level min'
+    },
+    block: {
+      production: 'Produksi',
+      VARIANT: 'Variant changeover',
+      SIZE: 'Size change',
+      PAPER: 'Paper change',
+      CIP: 'CIP',
+      wait: 'Menunggu tangki aseptik',
+      maintenance: 'Maintenance',
+      CIP_EMPTY: 'CIP (tangki kosong)',
+      refill: 'Isi ulang'
+    },
+    asepticLane: 'Tangki aseptik',
+    lateBy: 'Terlambat {time}',
+    ordersFooter: '{count} order · kebutuhan susu {milk} · blok terakhir selesai {end}',
+    activeRevision: '{id} · disetujui {time}',
+    pendingTitle: '{id} menunggu persetujuan',
+    pendingBody: 'Halaman ini menampilkan rencana yang disetujui sampai revisi baru disetujui.',
+    timeline: 'Jadwal per filling line',
+    timelineHint: 'Rencana disetujui · {start}–{end}',
+    table: 'Jadwal produksi',
+    tableHint: 'Changeover, CIP, dan maintenance adalah aktivitas terpisah',
+    orders: 'Hasil per order',
+    calendar: {
+      day: 'Kalender · {date}',
+      dayHint: 'Filling line, urutan tangki aseptik, dan maintenance peralatan',
+      next: 'Hari produksi berikutnya',
+      nextHint: 'Order yang sudah diketahui untuk besok'
+    },
+    machines: {
+      lines: 'Filling line',
+      linesHint: 'Waktu per aktivitas dan utilisasi terhadap jendela rencana',
+      utilHint: 'Waktu produksi ÷ jendela rencana {window}',
+      upstream: 'Mesin hulu',
+      upstreamHint: 'Waktu jalan yang dibutuhkan pada kecepatan nominal untuk menyuplai rencana hari ini',
+      role: {
+        sterilize: 'Sterilisasi ke tangki aseptik',
+        thermize: 'Thermisasi susu mentah',
+        separate: 'Separasi dan standardisasi'
+      }
+    },
+    tanks: {
+      aseptic: 'Urutan tangki aseptik',
+      asepticHint: 'Segmen produk, CIP setelah kosong, dan isi ulang ke level minimum',
+      table: 'Alokasi tangki & batch',
+      tableHint: 'Batch simpan dan aseptik yang menyuplai order hari ini'
+    },
+    approval: {
+      reviewTitle: 'Tinjau {id}',
+      reviewHint: 'Dibuat oleh {by} pukul {time}',
+      activeCol: 'Aktif {id}',
+      pendingCol: 'Menunggu {id}',
+      compare: {
+        end: 'Blok terakhir selesai',
+        late: 'Order terlambat',
+        milk: 'Kebutuhan susu'
+      },
+      checks: 'Cek aturan revisi ini',
+      decision: 'Keputusan',
+      decisionHint: 'Persetujuan menjadikan revisi ini jadwal aktif. Penolakan mempertahankan jadwal saat ini.',
+      note: 'Catatan',
+      notePlaceholder: 'Opsional untuk setuju, wajib untuk menolak',
+      reasonRequired: 'Isi alasan sebelum menolak',
+      blocked: 'Revisi ini melanggar aturan; perbaiki konfigurasi lalu generate ulang',
+      approve: 'Setujui rencana',
+      reject: 'Tolak',
+      approvedTitle: '{id} disetujui',
+      approvedBody: 'Halaman jadwal, dashboard, dan alokasi kini membaca revisi ini.',
+      rejectedTitle: '{id} ditolak',
+      rejectedBody: '{active} tetap menjadi jadwal aktif.',
+      openSchedule: 'Buka jadwal',
+      openAudit: 'Buka audit log',
+      emptyTitle: 'Tidak ada yang menunggu persetujuan',
+      emptyBody: '{id} adalah jadwal aktif. Generate rencana baru untuk memulai tinjauan.',
+      emptyAction: 'Generate plan',
+      history: 'Riwayat revisi'
+    },
+    pva: {
+      planned: 'Rencana',
+      actual: 'Aktual',
+      timeline: 'Rencana vs aktual per line',
+      timelineHint: 'Garis merah menandai produksi dengan deviasi tercatat',
+      table: 'Per produksi',
+      tableHint: 'Pack yang diharapkan sebanding dengan porsi waktu rencana yang sudah lewat'
+    }
+  },
+  audit: {
+    action: {
+      labRelease: 'Lab release',
+      transfer: 'Transfer',
+      split: 'Transfer split',
+      batchCreated: 'Batch dibuat',
+      coProduct: 'Co-product dicatat',
+      tankerArrived: 'Tanker tiba',
+      cipStarted: 'CIP dimulai',
+      productionStarted: 'Produksi dimulai',
+      planGenerated: 'Rencana dibuat',
+      planApproved: 'Rencana disetujui',
+      planRejected: 'Rencana ditolak'
+    }
+  },
+  dashboard: {
+    greeting: 'Produksi hari ini',
+    kpi: {
+      received: 'Susu diterima',
+      receivedCaption: 'Di-release QA dan tersimpan',
+      available: 'Tersedia untuk rencana',
+      availableCaption: '{spare} di atas kebutuhan susu rencana',
+      waiting: 'Menunggu',
+      waitingCaption: '{pending} menunggu lab · {incoming} dalam perjalanan',
+      plan: 'Rencana aktif',
+      planApproved: 'Disetujui',
+      planPending: '{id} menunggu persetujuan'
+    },
+    plan: 'Rencana hari ini',
+    planHint: '{id} · {start}–{end}',
+    openSchedule: 'Buka jadwal',
+    alerts: 'Peringatan AI',
+    alertsHint: '{count} item dari cek aturan dan perencanaan',
+    openRecommendations: 'Alternatif',
+    pva: 'Rencana vs aktual',
+    pvaGood: 'Pack bagus sejauh ini',
+    pvaExpected: 'Rencana s.d. {time}',
+    pvaCaption: '{pct}% dari output rencana untuk waktu yang sudah berjalan',
+    trace: 'Status ketertelusuran',
+    traceBatches: 'Batch tercatat',
+    traceTransfers: 'Transfer di rute terdaftar',
+    traceBalance: 'Batch seimbang (mass balance)',
+    tracePendingQa: 'Barang jadi menunggu QA',
+    openGraph: 'Buka graf',
+    assets: 'Status tangki & mesin',
+    assetsHint: 'Snapshot pukul {time}',
+    openOperational: 'Data operasional',
+    footer: 'Output AI diberi label; cek aturan berasal dari katalog constraint resmi. Data demo sintetis.'
+  },
+  master: {
+    milkContentHint: 'Asumsi proyek: Full Cream 100% susu, berperisa 90% susu',
+    products: {
+      liquid: 'Liquid SKU',
+      liquidHint: 'Family dan rasa produk, dengan ukuran kemasan dan market yang diizinkan',
+      finished: 'Finished SKU',
+      finishedHint: 'Liquid SKU × ukuran kemasan × market variant',
+      packSizes: 'Ukuran kemasan',
+      markets: 'Market variant',
+      marketsHint: 'Market variant terpisah dari varian rasa'
+    },
+    assets: {
+      total: 'Aset',
+      totalCaption: '{types} tipe aset',
+      physical: 'Aset fisik',
+      physicalCaption: 'Mesin, tangki, bay, pipa',
+      logical: 'Node logis',
+      logicalCaption: 'Header dan batas sistem',
+      pendingParams: 'Parameter menunggu',
+      pendingCaption: 'Bertanda X di katalog',
+      table: 'Konfigurasi aset',
+      tableHint: '“Nilai menunggu” = parameter berlaku, nilai belum ada · “—” = tidak berlaku',
+      allTypes: 'Semua tipe ({count})',
+      units: 'Satuan parameter',
+      unitsHint: 'Satuan dan arti tiap parameter aset',
+      role: {
+        process_asset: 'Aset proses',
+        physical_pipe: 'Pipa khusus',
+        logical_junction: 'Header logis',
+        material_source: 'Batas farm',
+        delivery_source: 'Batas tanker',
+        finished_goods_sink: 'Batas barang jadi'
+      }
+    },
+    routes: {
+      table: 'Koneksi aset',
+      tableHint: 'Material hanya boleh berpindah lewat edge yang terdaftar (CONNECTION)',
+      allFlows: 'Semua jenis aliran ({count})',
+      search: 'Cari aset atau koneksi...',
+      flow: {
+        main_milk: 'Susu utama',
+        sterilized_product: 'Produk steril',
+        aseptic_supply: 'Suplai aseptik',
+        cream: 'Cream',
+        mixed_product: 'Produk mix',
+        premix: 'Premix',
+        to_sterilization: 'Ke sterilisasi',
+        finished_goods: 'Barang jadi'
+      }
+    },
+    lines: {
+      dedication: 'Dedikasi line',
+      dedicationHint: 'Pilih line untuk melihat eligibilitas SKU di bawah',
+      matrixFor: 'Eligibilitas {line}',
+      matrixHint: 'Dari line_product_compatibility dan line_finished_sku_compatibility',
+      onlyEligible: 'Eligible saja',
+      allRows: 'Semua baris',
+      byProduct: 'Liquid SKU × ukuran kemasan',
+      byFinished: 'Finished SKU'
+    },
+    rules: {
+      constraints: 'Katalog constraint',
+      constraintsHint: 'Aturan “Dihitung” dicek langsung di aplikasi',
+      changeover: 'Aturan changeover',
+      changeoverHint: 'Durasi katalog bernilai X; planner memakai nilai skenario',
+      cip: 'Aturan CIP',
+      cipHint: 'CIP independen dari changeover dan satu siklus bisa menutup beberapa pemicu',
+      assumptions: 'Asumsi proyek',
+      assumptionsHint: 'Nilai yang disepakati untuk proyek ini; cek yang memakainya diberi label',
+      assumption: {
+        density: { title: 'Densitas 1 kg/L', body: 'Liter dan kilogram setara di semua perhitungan.' },
+        fullCream: { title: 'Full Cream 100% susu', body: 'Cairan Full Cream seluruhnya dari susu segar.' },
+        flavoured: { title: 'Berperisa 90% susu', body: 'Chocolate dan Strawberry memakai 90% susu; sisanya premix.' },
+        packaging: { title: 'Kemasan & gudang', body: 'Bahan kemasan dan ruang gudang bukan constraint.' },
+        maintenance: { title: 'Maintenance', body: 'Jendela maintenance mencakup trial dan kalibrasi.' },
+        breakdown: { title: 'Breakdown', body: 'Henti tak terencana diwakili persentase utilisasi.' },
+        batchPolicy: { title: '1 tangki = 1 batch', body: 'Tiap tangki menyimpan satu batch per tanggal produksi.' },
+        hold: { title: 'Hold', body: 'Hold dan release batch mengikuti prosedur QA.' }
+      }
+    }
+  },
+  ops: {
+    scenarioNote: 'Data demo sintetis',
+    snapshotAt: 'Snapshot pukul {time}',
+    holdingHint: 'Umur dihitung dari awal batch; isi ulang tidak me-reset umur (HOLDING)',
+    holdingLimit: 'Batas {hours} jam',
+    remaining: 'sisa {time}',
+    delivery: {
+      trucks: 'Truk hari ini',
+      trucksCaption: 'Dari {farms} farm',
+      received: 'Diterima',
+      receivedCaption: '{count} tanker dibongkar',
+      waiting: 'Belum diterima',
+      waitingCaption: '{pending} menunggu lab · {incoming} dalam perjalanan',
+      late: 'Tiba terlambat',
+      lateCaption: 'Tiba setelah ETA',
+      table: 'Pengiriman',
+      tableHint: 'Pilih baris untuk melihat timeline pengiriman dan tangki tujuan',
+      drawerEyebrow: 'Pengiriman',
+      progress: 'Progres',
+      details: 'Detail',
+      destinations: 'Tangki tujuan',
+      noDestination: 'Belum dibongkar',
+      splitNote: 'Pengiriman split: satu tanker ke dua tangki susu mentah, dicatat sebagai dua transfer.',
+      step: {
+        departure: 'Berangkat',
+        arrival: 'Tiba',
+        lab: 'Lab release',
+        unload: 'Dibongkar',
+        stored: 'Tersimpan'
+      }
+    },
+    lab: {
+      table: 'Catatan sampling & lab',
+      tableHint: 'Status QC Pending, Passed, atau Rejected'
+    },
+    bay: {
+      table: 'Bay',
+      tableHint: '{active} dari {total} bay aktif · satu tanker per bay pada satu waktu',
+      maintenanceUntil: 'Maintenance s.d. {time}',
+      timeline: 'Timeline bay',
+      timelineHint: 'Bongkar, CIP setelah tiap tanker, menunggu, dan maintenance',
+      unloadingBlock: 'Bongkar',
+      waitingBlock: 'Menunggu lab release',
+      unloads: 'Catatan bongkar',
+      estimateHint: 'Volume ÷ laju pompa'
+    },
+    raw: {
+      tanks: 'Tangki susu mentah',
+      machines: 'Degassing, thermizer & separator',
+      machinesHint: 'Kecepatan nominal, durasi CIP, dan jendela maintenance',
+      intermediate: 'Tangki cream, premix & mixing',
+      intermediateHint: 'Co-product cream dan mixing produk berperisa'
+    },
+    sfp: {
+      tanks: 'Tangki SFP',
+      tanksCaption: 'Total kapasitas {capacity}',
+      inUse: 'Terisi',
+      cip: 'CIP',
+      holdingRisk: 'Risiko holding',
+      holdingCaption: 'Kurang dari 3 jam ke batas',
+      table: 'Tangki simpan SFP'
+    },
+    aseptic: {
+      ruleTitle: 'Level minimum tergantung jumlah filler yang menarik dari tangki',
+      ruleBody: 'Satu filler butuh minimal 25%, dua filler minimal 50%. Setelah ganti produk, tangki dikosongkan, di-CIP (CIP_EMPTY), lalu diisi ulang ke level ini sebelum filling mulai.',
+      live: 'Tangki aseptik yang berjalan',
+      liveHint: 'Level saat ini terhadap batas minimum untuk satu dan dua filler',
+      level: 'Level',
+      activeLines: 'Line aktif',
+      minNow: 'Minimum untuk {lines} line',
+      minTwo: 'Minimum untuk 2 line',
+      tanks: 'Tangki aseptik',
+      sterilizers: 'Sterilizer',
+      sterilizersHint: 'Mensterilkan produk SFP ke tangki aseptik'
+    },
+    orders: {
+      table: 'Order produksi',
+      tableHint: 'Liter = pack × ukuran kemasan; kebutuhan susu memakai kandungan susu produk',
+      milkHint: 'Full Cream 100% · berperisa 90% (asumsi proyek)',
+      footer: '{count} order hari ini · {liters} produk · {milk} susu'
+    },
+    actual: {
+      table: 'Aktual produksi',
+      runningSince: 'Berjalan',
+      lines: 'Filling line',
+      linesHint: 'Tarikan cairan = pack/jam × ml kemasan ÷ 1000 (FILLING_SPEED_UNIT)',
+      note: {
+        atMinLevel: 'Menunggu level minimum AT-01'
+      }
+    }
+  },
+  trace: {
+    kind: {
+      farm: 'Farm',
+      tanker: 'Tanker',
+      raw: 'Tangki susu mentah',
+      process: 'Separasi',
+      storage: 'Simpan SFP',
+      cream: 'Cream',
+      mix: 'Mixing',
+      aseptic: 'Tangki aseptik',
+      finished: 'Barang jadi'
+    },
+    transferType: {
+      receive: 'Terima',
+      split: 'Split',
+      mix: 'Mix',
+      separation: 'Separasi',
+      'co-product': 'Co-product',
+      transform: 'Transformasi',
+      sterilize: 'Sterilisasi',
+      fill: 'Filling'
+    },
+    sideInput: {
+      premix: 'Premix (bahan)'
+    },
+    allStages: 'Semua tahap ({count})',
+    openBackward: 'Telusur mundur',
+    openForward: 'Telusur maju',
+    massBalance: 'Mass balance',
+    balance: {
+      opening: 'Awal',
+      inflow: 'Masuk',
+      output: 'Keluar',
+      coProduct: 'Co-product',
+      closing: 'Akhir',
+      variance: 'Selisih',
+      formula: 'Awal + masuk = keluar + co-product + akhir + selisih (MASS_BALANCE)'
+    },
+    inputs: 'Input',
+    outputs: 'Output',
+    noInputs: 'Tidak ada input tercatat (batch sumber)',
+    noOutputs: 'Belum ada output',
+    batches: {
+      table: 'Batch',
+      tableHint: 'Satu tangki = satu batch per tanggal produksi · pilih baris untuk mass balance'
+    },
+    transfers: {
+      table: 'Transfer',
+      tableHint: 'Tiap lompatan rute dicek terhadap daftar koneksi aset'
+    },
+    graph: {
+      title: 'Genealogi',
+      subtitle: 'Kolom mengikuti proses: farm, tanker, susu mentah, separasi, simpan, aseptik, barang jadi',
+      hintTitle: 'Pilih node untuk menyorot seluruh garis keturunannya',
+      hintBody: 'Garis adalah transfer; arahkan kursor ke garis untuk melihat ID-nya. Split dan mix tampil sebagai cabang.',
+      selected: 'Garis keturunan {id}',
+      details: 'Detail batch',
+      clear: 'Hapus pilihan'
+    },
+    pickTarget: 'Telusur mundur dari',
+    pickSource: 'Telusur maju dari',
+    summary: {
+      farms: 'Farm',
+      tankers: 'Tanker',
+      batches: 'Batch terkait',
+      transfers: '{count} transfer',
+      finished: 'Barang jadi'
+    },
+    path: 'Jalur telusur',
+    pathBackward: 'Tahap antara batch terpilih dan farm',
+    pathForward: 'Tahap yang dicapai dari batch terpilih',
+    shareHint: 'Porsi mengikuti volume melalui tiap split dan mix',
+    backwardTable: 'Sumber {id}',
+    forwardTable: 'Dicapai dari {id}',
+    lineageTransfers: 'Transfer dalam garis keturunan ini',
+    audit: {
+      table: 'Event',
+      tableHint: 'Event skenario ditambah aksi perencanaan di sesi ini',
+      category: {
+        receiving: 'Penerimaan',
+        process: 'Proses',
+        planning: 'Perencanaan'
+      }
+    }
+  },
+  planning: {
+    aiLabel: {
+      forecast: 'Forecast AI',
+      optimizer: 'Optimizer berbasis aturan (placeholder AI)'
+    },
+    forecast: {
+      availableToday: 'Prediksi susu hari ini',
+      confidence: 'Keyakinan {pct}%',
+      released: 'Di-release & tersimpan',
+      releasedCaption: 'Dikonfirmasi QA',
+      waiting: 'Belum di-release',
+      waitingCaption: 'Menunggu lab atau dalam perjalanan',
+      tomorrow: 'Besok',
+      range: 'Rentang {min}–{max}',
+      intake: 'Penerimaan susu',
+      intakeHint: '7 hari terakhir dan besok · model diperbarui {time}',
+      legendActual: 'Aktual',
+      legendForecast: 'Forecast',
+      demand: 'Kebutuhan susu rencana',
+      demandHint: 'Dari konfigurasi saat ini',
+      demandFooter: 'Kebutuhan susu {milk} · di-release {available}',
+      group: {
+        plain: 'Full Cream',
+        flavoured: 'Berperisa'
+      },
+      etas: 'Prediksi kedatangan & release',
+      etasHint: 'Output model, diperbarui dengan data pengiriman terkini',
+      eta: {
+        arrival: 'Waktu tiba',
+        labResult: 'Hasil lab'
+      }
+    },
+    config: {
+      changed: 'Berbeda dari rencana disetujui',
+      matches: 'Sama dengan {id}',
+      reset: 'Kembalikan ke yang disetujui',
+      toGenerate: 'Pratinjau rencana',
+      orders: 'Order',
+      ordersHint: 'Jumlah dan prioritas per order',
+      lines: 'Filling line',
+      linesHint: 'Kecepatan dan utilisasi; breakdown diwakili utilisasi',
+      speed: 'Kecepatan {line}',
+      utilization: 'Utilisasi',
+      utilizationHint: 'Porsi kecepatan nominal yang benar-benar tercapai',
+      start: 'Mulai rencana',
+      changeover: 'Changeover',
+      changeoverHint: 'Ganti rasa di lapangan 15, 40, atau 60 mnt; contoh rencana memakai 30',
+      variantHint: 'Ganti rasa manual',
+      cip: 'Durasi CIP',
+      cipHint: 'Katalog menandai ini X; nilai di bawah adalah nilai skenario',
+      cipRule: {
+        CIP_FLAVOUR: 'Chocolate atau Strawberry ke Full Cream',
+        CIP_CH_ST: 'Chocolate ke Strawberry atau sebaliknya',
+        CIP_END_PRODUCTION: 'Akhir sebuah produksi'
+      }
+    },
+    generate: {
+      action: 'Generate plan',
+      pendingEyebrow: 'Menunggu persetujuan',
+      pendingTitle: '{id} dibuat pukul {time}',
+      pendingBody: 'Planner atau supervisor menyetujuinya sebelum dijalankan di lantai produksi.',
+      openApproval: 'Buka persetujuan',
+      readyTitle: 'Pratinjau di bawah; generate untuk membuat revisi yang perlu disetujui',
+      readyBody: 'Rencana memakai konfigurasi saat ini dan dicek terhadap semua aturan katalog.',
+      blocked: 'Pratinjau melanggar aturan; sesuaikan konfigurasi dulu',
+      preview: 'Pratinjau rencana',
+      previewHint: '{start}–{end}',
+      orders: 'Order',
+      checks: 'Cek aturan',
+      checksSummary: '{pass} lolos · {warning} peringatan · {violation} pelanggaran · {na} belum bisa dihitung',
+      blocks: 'Blok jadwal'
+    },
+    scenarios: {
+      table: 'Skenario',
+      tableHint: 'Pilih baris untuk melihat jadwal dan isu aturannya',
+      detailHint: 'Jadwal dan isu aturan untuk skenario ini'
+    },
+    scenario: {
+      baseline: {
+        title: 'Baseline rekomendasi',
+        body: 'FL-01 Full Cream lalu Chocolate; FL-02 Full Cream ekspor'
+      },
+      'split-chocolate': {
+        title: 'Bagi chocolate ke FL-01 dan FL-02',
+        body: 'FL-02 menunggu sampai AT-01 berganti ke Chocolate'
+      },
+      'split-naive': {
+        title: 'Bagi chocolate tanpa menunggu',
+        body: 'FL-02 mulai Chocolate saat AT-01 masih berisi Full Cream'
+      },
+      'fl02-breakdown': {
+        title: 'FL-02 breakdown',
+        body: 'Semua order di FL-01'
+      },
+      'variant-60': {
+        title: 'Ganti rasa 60 mnt',
+        body: 'Variant changeover memakai durasi lapangan terpanjang'
+      },
+      'milk-short': {
+        title: 'TRK-B01 ditolak',
+        body: 'Susu tersedia berkurang 13.000 L'
+      }
+    },
+    recs: {
+      eyebrow: 'Jadwal rekomendasi',
+      title: 'Jalankan Full Cream dulu di kedua line, lalu Chocolate di FL-01',
+      openSchedule: 'Buka jadwal',
+      why: 'Mengapa jadwal ini',
+      whyHint: 'Diturunkan dari cek aturan',
+      reason: {
+        onTime: '{count} dari {total} order selesai sebelum batas waktu',
+        milk: 'Kebutuhan susu {required} cukup dari {available} yang di-release',
+        changeover: 'Satu variant changeover ({min} mnt) tanpa CIP tambahan',
+        end: 'Aktivitas terakhir selesai pukul {time}'
+      },
+      risks: 'Risiko yang perlu dipantau',
+      risksHint: 'Peringatan dan aturan yang belum bisa dihitung',
+      alternatives: 'Peringatan & alternatif',
+      alternativesHint: 'Tiap peringatan dengan respons yang direkomendasikan dan cek aturannya',
+      impact: 'Selesai {end} ({delta}) · order terlambat {late}',
+      trigger: {
+        breakdown: 'Mesin breakdown',
+        capacity: 'Kapasitas tangki',
+        holding: 'Risiko holding time',
+        sequence: 'Urutan alternatif',
+        changeover: 'Changeover panjang',
+        milk: 'Kekurangan susu'
+      },
+      alt: {
+        fl02: { title: 'Pindahkan order FL-02 ke FL-01', body: 'Jalankan order ekspor setelah Full Cream lokal dengan paper change.' },
+        rmt: { title: 'CIP RMT-03 sebelum TRK-A03 di-release', body: 'Mulai CIP sekarang agar tangki siap menerima susu masuk.' },
+        sfp: { title: 'Pakai atau putuskan SFP-05 lebih dulu', body: 'Jadwalkan UHT Full Cream di SFP-05 sebelum batas holding atau minta keputusan QA.' },
+        split: { title: 'Bagi chocolate ke dua line', body: 'FL-02 ikut setelah AT-01 ganti produk agar selesai lebih cepat.' },
+        variant: { title: 'Siapkan ganti rasa 60 mnt', body: 'Urutan tetap; chocolate selesai lebih lambat tetapi tepat waktu.' },
+        milk: { title: 'Kurangi atau pindahkan order', body: 'Jika tanker ditolak, kurangi order prioritas terendah atau pindahkan ke besok.' }
+      }
+    }
   },
   pages: {
-    dashboard: {
-      title: 'Dasbor',
-      description: 'Ringkasan pabrik untuk perencanaan dan ketertelusuran',
-      emptyTitle: 'Dasbor segera hadir',
-      emptyDescription: 'Gunakan Perencanaan Produksi atau Ketertelusuran untuk menelusuri alur prototipe.',
-      emptyAction: 'Buka Perencanaan Produksi'
-    },
     settings: {
-      title: 'Pengaturan',
-      description: 'Preferensi ruang kerja, shift, dan integrasi',
-      emptyTitle: 'Pengaturan segera hadir',
-      emptyDescription: 'Prototipe ini hanya berjalan pada data operasional sintetis.'
+      language: 'Bahasa',
+      languageHint: 'Berlaku untuk seluruh workspace di perangkat ini',
+      shift: 'Shift aktif',
+      shiftValue: 'Shift A · 06:00–18:00',
+      timezone: 'Zona waktu pabrik',
+      timezoneValue: 'Asia/Jakarta (WIB)'
     },
-    'production-planning': {
-      title: 'Rencana produksi',
-      description: 'Penjadwalan berbantuan AI untuk susu mentah, tangki, dan jalur filling',
-      uploadOrders: 'Unggah pesanan',
-      aiRecommendation: 'Rekomendasi AI',
-      shiftKpis: 'KPI shift',
-      shiftKpisSubtitle: 'Snapshot stok awal 06:00 · Shift A',
-      availableRawMilk: 'Susu mentah tersedia',
-      vsYesterday: '+8,4% vs kemarin',
-      plannedOrders: 'Pesanan terencana',
-      dueThisShift: '3 jatuh tempo shift ini',
-      tankUtilization: 'Utilisasi tangki',
-      withinRange: 'Dalam rentang operasi',
-      activeLines: 'Jalur aktif',
-      readyToRun: 'Siap jalan',
-      scheduleAlerts: 'Peringatan jadwal',
-      needsReview: 'Perlu tinjauan',
-      shiftOutlook: 'Proyeksi shift',
-      shiftOutlookSubtitle: 'Prakiraan AI untuk urutan sore',
-      analysisReady: 'Analisis siap',
-      predictedBottleneck: 'Bottleneck terprediksi',
-      flavourDelayTitle: 'Pergantian rasa dapat menambah 45 menit',
-      flavourDelayBody: 'pada urutan sore.',
-      recommendation: 'Rekomendasi: jalankan Full Cream sebelum Strawberry',
-      confidenceNote: 'Confidence adalah keluaran model — validasi constraint sebelum persetujuan.',
-      productionSchedule: 'Jadwal produksi',
-      scheduleSubtitle: 'Hari ini · 07:00–19:00',
-      openSimulation: 'Buka simulasi',
-      filling1: 'Mesin Filling 1',
-      filling2: 'Mesin Filling 2',
-      changeover: 'Pergantian',
-      operationalStatus: 'Status operasional',
-      rawMilkAvailability: 'Ketersediaan susu mentah',
-      machineReadiness: 'Kesiapan mesin',
-      machineReadyValue: 'Filling 1 + Filling 2',
-      reviewItems: '2 item tinjauan',
-      alertChangeoverTitle: 'Jendela pergantian 45 menit',
-      alertChangeoverDetail: 'Strawberry → Full Cream di Mesin Filling 1 memerlukan CIP_FLAVOUR',
-      alertAtTitle: 'Ambang AT-02 tervalidasi di 52,5%',
-      alertAtDetail: 'Dua filler diizinkan di atas level minimum 50%',
-      syntheticNote: 'Data sintetis · Aturan constraint ditampilkan terpisah dari prakiraan AI.'
+    profile: {
+      name: 'Nama',
+      role: 'Peran',
+      plant: 'Pabrik',
+      shift: 'Shift',
+      email: 'Email',
+      openSettings: 'Buka pengaturan'
     },
-    'ai-recommendation': {
-      title: 'Rekomendasi AI',
-      description: 'Tinjau keluaran model, validasi constraint, lalu setujui dengan keyakinan',
-      compareSchedule: 'Bandingkan jadwal',
-      reject: 'Tolak',
-      approve: 'Setujui rekomendasi',
-      eyebrow: 'Urutan yang direkomendasikan',
-      recTitle: 'Pindahkan Full Cream 1L sebelum Strawberry 1L',
-      recDescription: 'Dampak yang diharapkan: pulihkan 45 menit · kedua jalur filling tetap aktif',
-      pipeline: 'Alur keputusan',
-      pipelineSubtitle: 'Setiap langkah harus lolos sebelum rencana ke lantai produksi',
-      why: 'Mengapa rekomendasi ini?'
+    signedOut: {
+      title: 'Sudah keluar',
+      description: 'Prototipe ini tidak menyimpan sesi sungguhan. Masuk lagi untuk kembali ke workspace pabrik.'
     },
-    'schedule-simulation': {
-      title: 'Simulasi jadwal',
-      description:
-        'Logika operasional yang dikoreksi · pergantian 45 menit tetap ada karena urutan produk tidak berubah',
-      approve: 'Setujui alternatif',
-      scenario: 'Hasil skenario',
-      scenarioSubtitle: 'Baseline vs alternatif valid pada Mesin Filling 1',
-      compare: 'Bandingkan urutan',
-      compareSubtitle: '07:00–14:00 · Mesin Filling 1',
-      optimization: 'Hasil optimasi'
-    },
-    'planning-approval': {
-      title: 'Rencana disetujui',
-      resultTitle: 'Urutan alternatif disetujui; peristiwa audit EVT-1030-882 tercatat',
-      viewEvent: 'Lihat peristiwa audit'
-    },
-    'planning-rejection': {
-      title: 'Rencana ditolak',
-      resultTitle: 'Alternatif ditolak; jadwal baseline tetap aktif'
-    },
-    'ai-prediction-detail': {
-      title: 'Prediksi durasi proses',
-      description: 'Prediksi sintetis untuk B-2026-1030-01 · dihasilkan setelah sinyal delay TRK-045',
-      insufficient: 'Lihat kasus data tidak cukup',
-      modelOutput: 'Keluaran model',
-      inputFactors: 'Faktor input',
-      historical: 'Perbandingan historis',
-      historicalSubtitle: 'Bagaimana prediksi dibanding shift serupa'
-    },
-    'ai-production-risk': {
-      title: 'Analisis risiko produksi',
-      description: 'Risiko terdeteksi dari skenario tanker tertunda'
-    },
-    'prediction-insufficient': {
-      title: 'Prediksi tidak tersedia',
-      resultTitle: 'Data tidak cukup untuk menghasilkan prediksi yang andal',
-      returnToPrediction: 'Kembali ke prediksi',
-      uploadData: 'Unggah data operasional'
-    },
-    'tanker-overview': {
-      title: 'Pemantauan tanker masuk',
-      description: 'Pantau ketersediaan susu mentah dari peternakan hingga penyimpanan',
-      today: 'Hari ini',
-      todaySubtitle: 'Penerimaan susu mentah · periode 06:00–06:00',
-      queue: 'Antrian tanker',
-      queueSubtitle: 'Pilih tanker untuk mengikuti lab dan bongkar muat'
-    },
-    'tanker-detail': {
-      title: 'Tanker TRK-042',
-      description: 'Koperasi Peternakan A · Data demo sintetis',
-      openLab: 'Buka status lab',
-      delivery: 'Pengiriman',
-      timeline: 'Linimasa proses',
-      timelineSubtitle: 'Dari peternakan ke penyimpanan, 7 checkpoint'
-    },
-    'tanker-lab-status': {
-      title: 'Sampling & status lab',
-      description: 'Rilis mutu tetap dikendalikan manusia',
-      pendingCase: 'Buka kasus tertunda',
-      recordResult: 'Catat hasil',
-      sample: 'Sampel S-042-01',
-      labInProgress: 'Uji lab sedang berjalan',
-      release: 'Keputusan rilis'
-    },
-    'tanker-unloading': {
-      title: 'Detail bongkar muat',
-      description: 'Lacak transfer ke tangki penyimpanan tujuan',
-      progress: 'Progres transfer',
-      progressBadge: '60% selesai',
-      events: 'Peristiwa bongkar muat',
-      eventsSubtitle: 'Setiap peristiwa di-hash ke ledger audit'
-    },
-    'tanker-lab-pending': {
-      title: 'Hasil lab tertunda',
-      resultTitle: 'Hasil lab tertunda · keputusan rilis belum tersedia'
-    },
-    'tanker-delayed': {
-      title: 'Tanker TRK-045',
-      resultTitle: 'TRK-045 tertunda 35 menit · ETA 12:15',
-      openRisk: 'Buka risiko produksi'
-    },
-    'data-management-overview': {
-      title: 'Manajemen Data',
-      description: 'Ingesti dan validasi terkelola untuk data produksi operasional',
-      upload: 'Unggah file',
-      tools: 'Alat ingesti',
-      importLog: 'Log impor',
-      importLogSubtitle: 'File terbaru yang masuk ke store operasional'
-    },
-    'data-management-upload': {
-      title: 'Unggah data operasional',
-      description: 'AI menganalisis struktur sebelum catatan diimpor',
-      analyze: 'Analisis file',
-      file: 'File',
-      before: 'Sebelum mengimpor',
-      templates: 'Template tersedia',
-      templatesSubtitle: 'Unduh template, isi di Excel, lalu unggah di atas'
-    },
-    'data-management-mapping': {
-      title: 'Tinjau pemetaan kolom AI',
-      description: 'Pemetaan ber-confidence rendah memerlukan tinjauan manusia',
-      continue: 'Lanjut ke validasi',
-      reviewKeterangan: 'Tinjau Keterangan'
-    },
-    'data-management-validation': {
-      title: 'Validasi catatan',
-      description: 'Validasi memisahkan error struktural dari catatan yang perlu ditinjau',
-      preview: 'Buka pratinjau impor',
-      summary: 'Ringkasan validasi',
-      issues: 'Isu',
-      issuesSubtitle: 'Catatan yang ditandai pada cek skema dan aturan bisnis'
-    },
-    'data-management-preview': {
-      title: 'Pratinjau impor',
-      description: 'Konfirmasi catatan dan ledger peristiwa sebelum impor',
-      ready: 'Siap dikonfirmasi',
-      confirm: 'Konfirmasi impor',
-      records: 'Catatan yang akan diimpor',
-      recordsSubtitle: '4 pertama dari 1.248 catatan'
-    },
-    'data-management-history': {
-      title: 'Riwayat impor',
-      description: 'Lacak siapa yang mengimpor data dan hasil validasinya',
-      imports: 'Impor',
-      importsSubtitle: 'Setiap impor dicatat sebagai peristiwa audit',
-      viewError: 'Lihat impor gagal'
-    },
-    'data-management-error': {
-      title: 'Impor gagal',
-      resultTitle: 'Impor gagal: 20 catatan berisi error skema yang memblokir'
-    },
-    'data-management-mapping-review': {
-      title: 'Tinjauan pemetaan',
-      resultTitle: 'Tinjauan manual diperlukan untuk Keterangan → belum terpetakan',
-      returnToMapping: 'Kembali ke pemetaan'
-    },
-    'traceability-overview': {
-      title: 'Ringkasan ketertelusuran',
-      relationshipGraph: 'Graf relasi',
-      quickStats: 'Statistik cepat',
-      quickStatsSubtitle: 'Relasi material berbasis graf dari peternakan ke barang jadi',
-      tools: 'Alat telusur',
-      relationships: 'Relasi',
-      awaiting: 'menunggu konfirmasi',
-      needsQa: 'perlu tinjauan QA',
-      matchesProof: 'cocok dengan bukti blockchain'
-    },
-    'traceability-graph': {
-      title: 'Graf relasi material',
-      description: 'Relasi berarah dengan konteks peristiwa dan kuantitas',
-      selected: 'Node terpilih',
-      openBatch: 'Buka detail batch'
-    },
-    'traceability-forward': {
-      title: 'Telusur maju · TRK-042',
-      description: 'Tanker sumber → tangki penyimpanan → batch produksi → barang jadi',
-      impact: 'Ringkasan dampak',
-      impactSubtitle: 'Semua yang di hilir tanker terpilih',
-      path: 'Jalur telusur',
-      steps: 'Langkah telusur'
-    },
-    'traceability-backward': {
-      title: 'Telusur mundur · FG-1030-01',
-      description: 'Barang jadi → batch produksi → tangki → tanker sumber',
-      origin: 'Ringkasan asal',
-      originSubtitle: 'Dari mana lot jadi terpilih berasal',
-      path: 'Jalur telusur',
-      steps: 'Langkah telusur'
-    },
-    'traceability-batch': {
-      title: 'Batch B-2026-1030-01',
-      description: 'Tanggal produksi 30 Okt · catatan relasi sintetis',
-      ledgerPending: 'Ledger tertunda',
-      openGraph: 'Buka graf relasi',
-      facts: 'Fakta batch',
-      relationships: 'Relasi telusur',
-      openBackward: 'Buka telusur mundur'
-    },
-    'quality-investigation-overview': {
-      title: 'Investigasi mutu',
-      description: 'Gunakan ketertelusuran untuk memisahkan dampak terkonfirmasi dan potensial',
-      newInvestigation: 'Investigasi baru',
-      summary: 'Ringkasan',
-      investigations: 'Investigasi'
-    },
-    'quality-investigation-detail': {
-      title: 'Investigasi QI-2026-014',
-      description: 'Tinjauan hasil lab · Data demo sintetis',
-      openAnalysis: 'Analisis batch terdampak',
-      affectedProducts: 'Produk terdampak',
-      tracePath: 'Jalur telusur',
-      tracePathSubtitle: 'Mundur dan maju dari sampel lab',
-      findings: 'Temuan ketertelusuran'
-    },
-    'affected-batch-analysis': {
-      title: 'Analisis batch terdampak',
-      description: 'Hasil telusur maju dan mundur untuk tinjauan manusia',
-      results: 'Hasil telusur',
-      resultsSubtitle: 'QI-2026-014 · 4 entitas terhubung'
-    },
-    'affected-products': {
-      title: 'Produk terdampak',
-      resultTitle: 'Berpotensi terdampak: B-2026-1030-01 → FG-1030-01',
-      openForward: 'Buka telusur maju'
-    },
-    'audit-trail-overview': {
-      title: 'Jejak audit',
-      description: 'Bukti integritas pendukung untuk catatan operasional',
-      integrity: 'Jalankan cek integritas',
-      health: 'Kesehatan ledger',
-      recent: 'Peristiwa terbaru'
-    },
-    'audit-event-detail': {
-      title: 'Peristiwa EVT-1030-882',
-      description: 'Peristiwa persetujuan jadwal · bukti integritas pendukung',
-      verifiedCount: '8/8 terverifikasi',
-      integrity: 'Cek integritas',
-      record: 'Catatan peristiwa'
-    },
-    'audit-integrity-check': {
-      title: 'Cek integritas',
-      description: 'Bandingkan referensi operasional dengan bukti integritas',
-      compared: 'Referensi yang dibanding'
+    notFound: {
+      title: 'Halaman tidak ditemukan',
+      description: 'Alamat ini tidak cocok dengan menu mana pun.',
+      action: 'Ke dashboard'
     }
   }
 }

@@ -1,17 +1,15 @@
 export const en = {
   brand: {
     name: 'ORBIS',
-    tagline: 'AI Production Intelligence'
+    tagline: 'Production Intelligence'
   },
   shell: {
-    search: 'Search orders, tanks...',
+    search: 'Search menus and tabs...',
     language: 'Language',
-    mobileShift: 'Shift A',
-    userMeta: '30 Oct 2026 · Shift A',
     toggleNav: 'Toggle navigation',
     collapse: 'Collapse sidebar',
     expand: 'Expand sidebar',
-    notifications: 'Notifications',
+    notifications: 'Alerts',
     markAllRead: 'Mark all read',
     noAlerts: 'No alerts right now',
     timezone: 'WIB',
@@ -20,193 +18,1101 @@ export const en = {
     settings: 'Settings',
     logout: 'Log out',
     role: 'Production planner',
-    plant: 'Plant A · Filling hall',
+    plant: 'Dairy plant · ESL & UHT',
     shift: 'Shift A',
     signIn: 'Sign in'
   },
   alerts: {
-    tankerDelay: {
-      title: 'TRK-045 delayed 35 min',
-      body: 'Afternoon raw-milk coverage is at risk'
-    },
-    quality: {
-      title: 'QI-2026-014 needs review',
-      body: 'Lab result may affect FG-1030-01'
-    },
     approval: {
-      title: 'Plan approval waiting',
-      body: 'AI recommendation needs a human decision'
-    },
-    labPending: {
-      title: 'Lab result pending',
-      body: 'TRK-042 cannot unload until QA records a result'
-    },
-    mismatch: {
-      title: 'Ledger mismatch on FG-1030-01',
-      body: 'Trace integrity needs a QA check'
+      title: 'Plan waiting for approval',
+      body: 'A generated plan revision needs a human decision before it becomes active'
     }
   },
   lang: {
     en: 'EN',
     id: 'ID'
   },
+  source: {
+    scenario: 'Demo scenario · {date} · snapshot {time}',
+    catalog: 'Official catalog · {count} CSV files',
+    scenarioNote: 'Synthetic demo data · IDs from the official catalog'
+  },
   nav: {
     group: {
+      monitor: 'Monitor',
       operations: 'Operations',
-      traceability: 'Traceability',
+      planning: 'Planning',
       system: 'System'
     },
     module: {
       dashboard: 'Dashboard',
-      'ai-intelligence': 'AI Intelligence',
-      'production-planning': 'Production Planning',
-      'incoming-tanker': 'Incoming Tanker',
-      'data-management': 'Data Management',
-      traceability: 'Traceability',
-      'quality-investigation': 'Quality Investigation',
-      'audit-trail': 'Audit Trail',
-      account: 'Account',
-      settings: 'Settings'
+      'operational-data': 'Operational Data',
+      'milk-traceability': 'Milk Traceability',
+      'ai-planning': 'AI Production Planning',
+      'production-schedule': 'Production Schedule',
+      'master-data': 'Master Data & Settings',
+      account: 'Account'
     },
-    page: {
-      dashboard: 'Dashboard',
-      profile: 'Profile',
-      settings: 'Settings',
-      'production-planning': 'Plan',
-      'ai-recommendation': 'AI recommendation',
-      'schedule-simulation': 'Simulation',
-      'planning-approval': 'Approval',
-      'planning-rejection': 'Rejection',
-      'ai-prediction-detail': 'Prediction detail',
-      'ai-production-risk': 'Production risk',
-      'prediction-insufficient': 'Insufficient data',
-      'tanker-overview': 'Overview',
-      'tanker-detail': 'Tanker detail',
-      'tanker-lab-status': 'Lab status',
-      'tanker-unloading': 'Unloading',
-      'tanker-lab-pending': 'Lab pending',
-      'tanker-delayed': 'Delayed',
-      'data-management-overview': 'Overview',
-      'data-management-upload': 'Upload',
-      'data-management-mapping': 'Column mapping',
-      'data-management-validation': 'Validation',
-      'data-management-preview': 'Preview',
-      'data-management-history': 'History',
-      'data-management-error': 'Import error',
-      'data-management-mapping-review': 'Mapping review',
-      'traceability-overview': 'Overview',
-      'traceability-graph': 'Relationship graph',
-      'traceability-forward': 'Forward trace',
-      'traceability-backward': 'Backward trace',
-      'traceability-batch': 'Batch detail',
-      'quality-investigation-overview': 'Overview',
-      'quality-investigation-detail': 'Investigation detail',
-      'affected-batch-analysis': 'Affected batches',
-      'affected-products': 'Affected products',
-      'audit-trail-overview': 'Overview',
-      'audit-event-detail': 'Event detail',
-      'audit-integrity-check': 'Integrity check'
+    moduleInfo: {
+      dashboard: {
+        title: 'Dashboard',
+        description: 'Today at a glance: milk received, plan, alerts, and traceability'
+      }
     },
-    meta: {
-      'ai-intelligence': 'Model refreshed',
-      'production-planning': 'Plan horizon',
-      'incoming-tanker': 'ETA feed',
-      traceability: 'Last ledger check',
-      'audit-trail': 'Last ledger check'
+    tab: {
+      'operational-data': {
+        delivery: {
+          label: 'Delivery',
+          title: 'Farm & milk delivery',
+          description: 'Tanker departure, ETA, arrival, delay, and unloading per truck'
+        },
+        'lab-release': {
+          label: 'Receiving & QC',
+          title: 'Sampling, lab test & release',
+          description: 'Unloading starts only after QA releases the tanker (RECEIVING_GATE)'
+        },
+        'unloading-bay': {
+          label: 'Unloading bay',
+          title: 'Unloading bays',
+          description: 'Bay availability, pump rate, unloading duration, and CIP between tankers'
+        },
+        'raw-milk-process': {
+          label: 'Raw milk & process',
+          title: 'Raw milk tanks & process machines',
+          description: 'Raw milk tanks, degassing, thermizers, separators, cream and mixing tanks'
+        },
+        'sfp-storage': {
+          label: 'Storage tank (SFP)',
+          title: 'SFP storage tanks',
+          description: '15 storage tanks with level, flows, holding time, and CIP status'
+        },
+        'aseptic-tank': {
+          label: 'Sterilizer & aseptic',
+          title: 'Sterilizers & aseptic tanks',
+          description: 'Aseptic tank levels against the dynamic minimum level for one or two fillers'
+        },
+        'production-order': {
+          label: 'Production order',
+          title: 'Production orders',
+          description: 'Orders with volume, milk requirement, priority, due time, and eligible lines'
+        },
+        'production-actual': {
+          label: 'Production actual',
+          title: 'Production actuals',
+          description: 'Recorded output per order and filling line status'
+        }
+      },
+      'milk-traceability': {
+        batches: {
+          label: 'Batches',
+          title: 'Batches',
+          description: 'Every batch from tanker to finished goods, with mass balance per batch'
+        },
+        transfers: {
+          label: 'Transfer history',
+          title: 'Transfer history',
+          description: 'Each transfer records source, destination, time, volume, and route'
+        },
+        graph: {
+          label: 'Relationship graph',
+          title: 'Relationship graph',
+          description: 'Genealogy from farm to finished goods, including splits and mixes'
+        },
+        backward: {
+          label: 'Backward trace',
+          title: 'Backward trace',
+          description: 'From a product batch back to the tankers and farms it came from'
+        },
+        forward: {
+          label: 'Forward trace',
+          title: 'Forward trace',
+          description: 'From a tanker or tank to every batch and finished good it reached'
+        },
+        'audit-log': {
+          label: 'Audit log',
+          title: 'Audit log',
+          description: 'Who did what and when, including plan generation and approval'
+        }
+      },
+      'ai-planning': {
+        forecasting: {
+          label: 'Forecasting',
+          title: 'Forecast & planning insights',
+          description: 'Predicted milk availability, arrival times, and milk demand of the plan'
+        },
+        configuration: {
+          label: 'Configuration',
+          title: 'Planning configuration',
+          description: 'Order quantities, line speed, changeover, and CIP durations used by the planner'
+        },
+        generate: {
+          label: 'Generate plan',
+          title: 'Generate plan',
+          description: 'Preview the plan from the current configuration, check it, and send it for approval'
+        },
+        scenarios: {
+          label: 'Scenarios',
+          title: 'Scenarios',
+          description: 'What-if alternatives evaluated against the same rules'
+        },
+        recommendations: {
+          label: 'Recommendations',
+          title: 'Recommendations',
+          description: 'Recommended schedule, risks, and alternatives for each alert'
+        }
+      },
+      'production-schedule': {
+        recommended: {
+          label: 'Recommended schedule',
+          title: 'Recommended production schedule',
+          description: 'Approved plan per filling line: production, changeover, and CIP'
+        },
+        calendar: {
+          label: 'Calendar',
+          title: 'Production calendar',
+          description: 'Lines, aseptic tank, and maintenance windows across the day'
+        },
+        'machine-allocation': {
+          label: 'Machine allocation',
+          title: 'Machine allocation',
+          description: 'Orders per filling line and the upstream machines that feed them'
+        },
+        'tank-allocation': {
+          label: 'Tank allocation',
+          title: 'Tank allocation',
+          description: 'Which tank and batch feeds each order, and the aseptic tank sequence'
+        },
+        approval: {
+          label: 'Approval',
+          title: 'Plan approval',
+          description: 'Review a generated revision and approve or reject it'
+        },
+        'planned-vs-actual': {
+          label: 'Planned vs actual',
+          title: 'Planned vs actual',
+          description: 'Planned windows and quantities compared with recorded production'
+        }
+      },
+      'master-data': {
+        products: {
+          label: 'Products & SKU',
+          title: 'Products & SKU',
+          description: 'Liquid SKUs, finished SKUs, pack sizes, and market variants'
+        },
+        assets: {
+          label: 'Assets',
+          title: 'Assets & parameters',
+          description: 'Every plant asset with its catalog parameters and units'
+        },
+        routes: {
+          label: 'Routes',
+          title: 'Routes & connections',
+          description: 'Allowed material routes between assets'
+        },
+        'line-eligibility': {
+          label: 'Line eligibility',
+          title: 'Filling line eligibility',
+          description: 'Which SKU and pack size can run on each filling line'
+        },
+        rules: {
+          label: 'Rules & assumptions',
+          title: 'Rules & assumptions',
+          description: 'Constraint catalog, changeover and CIP rules, and project assumptions'
+        }
+      },
+      account: {
+        profile: {
+          label: 'Profile',
+          title: 'Profile',
+          description: 'Operator identity used on audit events'
+        },
+        settings: {
+          label: 'Settings',
+          title: 'Settings',
+          description: 'Language, shift, and timezone'
+        }
+      }
     }
   },
+  units: {
+    min: 'min',
+    h: 'h',
+    hShort: 'h',
+    packs: 'packs',
+    packsPerHour: 'packs/h'
+  },
   status: {
-    recorded: 'Recorded',
-    verified: 'Verified',
-    'hash verified': 'Hash verified',
-    mismatch: 'Mismatch',
-    match: 'Match',
-    'integrity match': 'Integrity match',
-    'not recorded': 'Not recorded',
     ready: 'Ready',
     pending: 'Pending',
-    review: 'Review',
-    'in review': 'In review',
-    validated: 'Validated',
-    valid: 'Valid',
+    'pending approval': 'Pending approval',
     approved: 'Approved',
-    completed: 'Completed',
-    complete: 'Complete',
-    imported: 'Imported',
-    success: 'Success',
-    passed: 'Passed',
-    pass: 'Pass',
     rejected: 'Rejected',
-    failed: 'Failed',
-    error: 'Error',
+    superseded: 'Superseded',
+    completed: 'Completed',
+    running: 'Running',
+    valid: 'Valid',
     invalid: 'Invalid',
-    critical: 'Critical',
+    pass: 'Pass',
+    warning: 'Warning',
+    violation: 'Violation',
+    'not computable': 'Not computable',
     high: 'High',
     medium: 'Medium',
-    warning: 'Warning',
     low: 'Low',
-    open: 'Open',
-    investigating: 'Investigating',
-    'under investigation': 'Under investigation',
-    'potentially affected': 'Potentially affected',
-    'potential impact': 'Potential impact',
-    confirmed: 'Confirmed',
-    hold: 'Hold',
-    'on hold': 'On hold',
-    closed: 'Closed',
-    'in progress': 'In progress',
-    running: 'Running',
-    draft: 'Draft',
-    insufficient: 'Insufficient',
-    'needs review': 'Needs review',
-    active: 'Active',
+    late: 'Late',
+    'on time': 'On time',
     'on the way': 'On the way',
     arrived: 'Arrived',
-    sampling: 'Sampling',
-    'lab test': 'Lab test',
     'lab pending': 'Lab pending',
-    receiving: 'Receiving',
-    released: 'Released',
-    unloading: 'Unloading',
+    passed: 'Passed',
+    'within spec': 'Within spec',
+    'awaiting result': 'Awaiting result',
     stored: 'Stored',
-    delayed: 'Delayed',
-    'insufficient data': 'Insufficient data'
+    'pending qa': 'Pending QA',
+    released: 'Released',
+    idle: 'Idle',
+    available: 'Available',
+    occupied: 'Occupied',
+    inactive: 'Inactive',
+    cip: 'CIP',
+    'cip required': 'CIP required',
+    maintenance: 'Maintenance',
+    'holding risk': 'Holding risk',
+    empty: 'Empty',
+    eligible: 'Eligible',
+    'not eligible': 'Not eligible',
+    computed: 'Computed',
+    reference: 'Reference'
   },
   common: {
-    returnToWorkflow: 'Return to workflow',
-    export: 'Export',
-    downloadCsv: 'Download CSV',
-    syntheticReview: 'Synthetic Demo Data · human review required where indicated'
+    close: 'Close',
+    all: 'All',
+    today: 'Today',
+    open: 'Open',
+    details: 'Details'
+  },
+  table: {
+    count: '{count} rows',
+    countFiltered: '{shown} of {total} rows',
+    search: 'Search...',
+    empty: 'No rows match',
+    previous: 'Previous page',
+    next: 'Next page'
+  },
+  catalog: {
+    pending: 'Value pending',
+    pendingHint: 'Catalog marks this parameter X: it applies, the value is not provided yet',
+    naHint: 'Catalog marks this parameter N/A: it does not apply to this asset'
+  },
+  col: {
+    action: 'Action',
+    active: 'Active',
+    activeLines: 'Active lines',
+    activity: 'Activity',
+    actor: 'Actor',
+    actualDuration: 'Actual duration',
+    actualWindow: 'Actual',
+    alert: 'Alert',
+    allowedSkus: 'Allowed SKUs',
+    appliesTo: 'Applies to',
+    arrival: 'Arrival',
+    asepticTank: 'Aseptic tank',
+    asset: 'Asset',
+    availability: 'Availability',
+    batch: 'Batch',
+    batchVolume: 'Batch volume',
+    bay: 'Bay',
+    capacity: 'Capacity',
+    catalogDuration: 'Catalog duration',
+    category: 'Category',
+    changeoverTime: 'Changeover',
+    cipDuration: 'CIP',
+    cipTime: 'CIP',
+    condition: 'Condition',
+    connection: 'Connection',
+    currentTanker: 'Current tanker',
+    decided: 'Decided',
+    decidedBy: 'Decided by',
+    definition: 'Definition',
+    delay: 'Delay',
+    departure: 'Departure',
+    description: 'Description',
+    destination: 'Destination',
+    due: 'Due',
+    duration: 'Duration',
+    eligible: 'Eligible',
+    eligibleLines: 'Eligible lines',
+    end: 'End',
+    entity: 'Entity',
+    estimatedDuration: 'Estimated',
+    eta: 'ETA',
+    event: 'Event',
+    expectedByNow: 'Planned by {time}',
+    family: 'Family',
+    farm: 'Farm',
+    feeds: 'Feeds',
+    finish: 'Finish',
+    finishedSku: 'Finished SKU',
+    flavour: 'Flavour',
+    flowType: 'Flow type',
+    freeAt: 'Free at',
+    from: 'From',
+    fromBatch: 'From batch',
+    generated: 'Generated',
+    generatedBy: 'Generated by',
+    goodPacks: 'Good packs',
+    holding: 'Holding time',
+    impact: 'Impact',
+    implementation: 'In app',
+    inflow: 'Inflow',
+    keyIssue: 'Key issue',
+    labDuration: 'Lab duration',
+    labEnd: 'Lab end',
+    labStart: 'Lab start',
+    lastFinish: 'Last finish',
+    lateOrders: 'Late orders',
+    level: 'Level',
+    line: 'Line',
+    linesFed: 'Lines fed',
+    liquidDraw: 'Liquid draw',
+    liters: 'Liters',
+    litersFromSource: 'Liters from source',
+    litersInTarget: 'Liters in target',
+    maintenance: 'Maintenance',
+    market: 'Market',
+    markets: 'Markets',
+    massBalance: 'Mass balance',
+    material: 'Material',
+    maxFlow: 'Max flow',
+    metric: 'Metric',
+    milkBalance: 'Milk spare',
+    milkContent: 'Milk content',
+    milkNeed: 'Milk need',
+    minLevel: 'Min level',
+    name: 'Name',
+    note: 'Note',
+    order: 'Order',
+    orders: 'Orders',
+    outflow: 'Outflow',
+    packs: 'Packs',
+    packSize: 'Pack size',
+    packSizes: 'Pack sizes',
+    parameter: 'Parameter',
+    pipe: 'Pipe',
+    planned: 'Planned',
+    plannedLiters: 'Planned liters',
+    plannedPacks: 'Planned packs',
+    plannedWindow: 'Planned',
+    precedence: 'Precedence',
+    predicted: 'Predicted',
+    prediction: 'Prediction',
+    priority: 'Priority',
+    product: 'Product',
+    productGroup: 'Product group',
+    productionDate: 'Production date',
+    productionTime: 'Production',
+    progress: 'Progress',
+    pumpFlow: 'Pump rate',
+    qcResult: 'QC result',
+    qcStatus: 'QC status',
+    reason: 'Reason',
+    recommendation: 'Recommendation',
+    rejectPacks: 'Reject',
+    releasedBy: 'Released by',
+    releaseTime: 'Release time',
+    requirement: 'Requirement',
+    revision: 'Revision',
+    role: 'Role',
+    route: 'Route',
+    routeCheck: 'Route check',
+    rule: 'Rule',
+    ruleCheck: 'Rule check',
+    runTime: 'Run time',
+    sample: 'Sample',
+    sampling: 'Sampling',
+    scenario: 'Scenario',
+    scenarioDuration: 'Scenario value',
+    scope: 'Scope',
+    sentTo: 'Sent to',
+    shareFromSource: 'Share from source',
+    shareOfTarget: 'Share of target',
+    sizeMl: 'Size (ml)',
+    sku: 'Liquid SKU',
+    source: 'Source',
+    speed: 'Speed',
+    speedPackph: 'Speed (packs/h)',
+    stage: 'Stage',
+    start: 'Start',
+    startDeviation: 'Start deviation',
+    status: 'Status',
+    tank: 'Tank',
+    tankersPerBay: 'Tankers per bay',
+    time: 'Time',
+    to: 'To',
+    toBatch: 'To batch',
+    transfer: 'Transfer',
+    transferType: 'Type',
+    trigger: 'Trigger',
+    truck: 'Truck',
+    truckCapacity: 'Truck capacity',
+    type: 'Type',
+    unit: 'Unit',
+    unloadEnd: 'Unload end',
+    unloading: 'Unloading',
+    unloadStart: 'Unload start',
+    unloadsToday: 'Unloads today',
+    unloadVolume: 'Unloading volume',
+    usedIn: 'Used in',
+    utilization: 'Utilization',
+    variance: 'Variance',
+    via: 'Via',
+    volume: 'Volume',
+    volumeNow: 'Volume now',
+    volumeToProcess: 'Volume to process',
+    window: 'Window',
+    yield: 'Yield',
+    param: {
+      capacity_l: 'Capacity',
+      input_flow_lph: 'Input flow',
+      output_flow_lph: 'Output flow',
+      process_speed_lph: 'Process speed',
+      holding_time_limit_hours: 'Holding limit',
+      cip_duration_minutes: 'CIP',
+      speed_packph: 'Filling speed'
+    }
+  },
+  checks: {
+    allPass: 'All rules pass',
+    assumption: 'Project assumption',
+    RECEIVING_GATE: {
+      title: 'Receiving gate',
+      early: '{tanker} started unloading before lab release',
+      blocked: '{tanker} waits for lab release ({volumeL}); unloading stays blocked',
+      pass: 'All {count} unloaded tankers were released by QA first'
+    },
+    BAY_EXCLUSIVE: {
+      title: 'One tanker per bay',
+      overlap: '{bay} served {tankerA} and {tankerB} at the same time',
+      pass: '{count} unloads, no bay overlap'
+    },
+    CAPACITY: {
+      title: 'Tank capacity',
+      exceeded: '{asset} is below zero or above usable capacity',
+      pass: '{count} tanks within capacity',
+      incoming: 'Incoming {incomingL} exceeds empty raw milk tank capacity {emptyCapacityL}',
+      incomingOk: 'Empty raw milk tanks can take the incoming {incomingL}'
+    },
+    CIP_EMPTY: {
+      title: 'CIP before refill',
+      beforeReceiving: '{asset} is empty and needs CIP before it can take the incoming {incomingL}'
+    },
+    HOLDING: {
+      title: 'Holding time',
+      expired: '{asset} is past its holding time limit',
+      risk: '{asset} reaches its holding limit at {expiryTime} ({remainingMin} left)',
+      pass: '{count} tanks within holding time'
+    },
+    LINE_PRODUCT: {
+      title: 'Line eligibility',
+      ineligible: '{sku} is not eligible on {line}',
+      pass: 'All {count} production runs are on eligible lines'
+    },
+    AT_SAME_PRODUCT: {
+      title: 'Same product on shared aseptic tank',
+      conflict: '{at} would feed {lineA} and {lineB} at {startTime}',
+      pass: 'Lines sharing an aseptic tank run the same product at the same time'
+    },
+    AT_SHARED_FLOW: {
+      title: 'Aseptic tank output limit',
+      over: '{at} peak draw {peakLph} exceeds its output limit {limitLph}',
+      pass: '{at} peak draw {peakLph} within limit {limitLph}'
+    },
+    SIMULTANEOUS: {
+      title: 'Aseptic tank minimum level',
+      minLevel: '{at} is ready at {readyTime} after CIP and refill to {minPct}%; filling planned at {startTime} starts {lateMin} late',
+      pass: 'Aseptic tank reaches minimum level before every product switch'
+    },
+    CHANGEOVER_PRECEDENCE: {
+      title: 'Changeover precedence',
+      pass: 'Changeovers follow Variant > Size > Paper: {list}'
+    },
+    CIP_END_PRODUCTION: {
+      title: 'CIP at end of production',
+      pass: '{count} CIP blocks scheduled'
+    },
+    FILLING_SPEED_UNIT: {
+      title: 'Filling speed unit',
+      empty: 'No production to convert',
+      pass: '{line} draws {drawLph} (packs/h × pack ml ÷ 1000)'
+    },
+    PLAN: {
+      title: 'Due time',
+      late: '{order} finishes {lateMin} after its due time {dueTime}',
+      pass: 'All {count} orders finish before their due time'
+    },
+    MILK_BALANCE: {
+      title: 'Milk balance',
+      short: 'Plan needs {requiredL}; only {availableL} released ({shortL} short)',
+      pass: 'Plan needs {requiredL} of {availableL} released ({spareL} spare)'
+    },
+    HEADER_RESOURCE: {
+      title: 'Header resource',
+      missing: 'Parallel transfer count and shared header capacity are not in the catalog yet'
+    },
+    CATALOG_DURATIONS: {
+      title: 'Catalog durations',
+      scenario: 'Changeover and CIP durations are X in the catalog; the plan uses scenario values'
+    }
   },
   schedule: {
-    plain: 'Plain (Full Cream)',
-    flavoured: 'Flavoured',
-    changeover: 'Changeover',
-    cip: 'CIP'
+    kind: {
+      plain: 'Full Cream',
+      flavoured: 'Flavoured',
+      changeover: 'Changeover',
+      cip: 'CIP',
+      wait: 'Wait',
+      maintenance: 'Maintenance',
+      level: 'Refill to min level'
+    },
+    block: {
+      production: 'Production',
+      VARIANT: 'Variant changeover',
+      SIZE: 'Size change',
+      PAPER: 'Paper change',
+      CIP: 'CIP',
+      wait: 'Wait for aseptic tank',
+      maintenance: 'Maintenance',
+      CIP_EMPTY: 'CIP (empty tank)',
+      refill: 'Refill'
+    },
+    asepticLane: 'Aseptic tank',
+    lateBy: 'Late {time}',
+    ordersFooter: '{count} orders · milk need {milk} · last block ends {end}',
+    activeRevision: '{id} · approved {time}',
+    pendingTitle: '{id} is waiting for approval',
+    pendingBody: 'This page shows the approved plan until the new revision is approved.',
+    timeline: 'Schedule per filling line',
+    timelineHint: 'Approved plan · {start}–{end}',
+    table: 'Production schedule',
+    tableHint: 'Changeover, CIP, and maintenance are separate activities',
+    orders: 'Order outcome',
+    calendar: {
+      day: 'Calendar · {date}',
+      dayHint: 'Filling lines, aseptic tank sequence, and equipment maintenance',
+      next: 'Next production day',
+      nextHint: 'Orders already known for tomorrow'
+    },
+    machines: {
+      lines: 'Filling lines',
+      linesHint: 'Time per activity and utilization against the plan window',
+      utilHint: 'Production time ÷ plan window {window}',
+      upstream: 'Upstream machines',
+      upstreamHint: 'Run time needed at rated speed to supply today’s plan',
+      role: {
+        sterilize: 'Sterilize to aseptic tank',
+        thermize: 'Thermize raw milk',
+        separate: 'Separate and standardize'
+      }
+    },
+    tanks: {
+      aseptic: 'Aseptic tank sequence',
+      asepticHint: 'Product segments, CIP after emptying, and refill to minimum level',
+      table: 'Tank & batch allocation',
+      tableHint: 'Storage and aseptic batches feeding today’s orders'
+    },
+    approval: {
+      reviewTitle: 'Review {id}',
+      reviewHint: 'Generated by {by} at {time}',
+      activeCol: 'Active {id}',
+      pendingCol: 'Pending {id}',
+      compare: {
+        end: 'Last block ends',
+        late: 'Late orders',
+        milk: 'Milk need'
+      },
+      checks: 'Rule checks on this revision',
+      decision: 'Decision',
+      decisionHint: 'Approval makes this revision the active schedule. A rejection keeps the current one.',
+      note: 'Note',
+      notePlaceholder: 'Optional for approval, required for rejection',
+      reasonRequired: 'Add a reason before rejecting',
+      blocked: 'This revision has a rule violation; fix the configuration and generate again',
+      approve: 'Approve plan',
+      reject: 'Reject',
+      approvedTitle: '{id} approved',
+      approvedBody: 'The schedule, dashboard, and allocation pages now read this revision.',
+      rejectedTitle: '{id} rejected',
+      rejectedBody: '{active} stays the active schedule.',
+      openSchedule: 'Open schedule',
+      openAudit: 'Open audit log',
+      emptyTitle: 'Nothing waiting for approval',
+      emptyBody: '{id} is the active schedule. Generate a new plan to start a review.',
+      emptyAction: 'Generate plan',
+      history: 'Revision history'
+    },
+    pva: {
+      planned: 'Planned',
+      actual: 'Actual',
+      timeline: 'Planned vs actual per line',
+      timelineHint: 'Red outline marks a run with a recorded deviation',
+      table: 'Per production run',
+      tableHint: 'Expected packs scale with the elapsed share of the planned window'
+    }
+  },
+  audit: {
+    action: {
+      labRelease: 'Lab release',
+      transfer: 'Transfer',
+      split: 'Split transfer',
+      batchCreated: 'Batch created',
+      coProduct: 'Co-product recorded',
+      tankerArrived: 'Tanker arrived',
+      cipStarted: 'CIP started',
+      productionStarted: 'Production started',
+      planGenerated: 'Plan generated',
+      planApproved: 'Plan approved',
+      planRejected: 'Plan rejected'
+    }
+  },
+  dashboard: {
+    greeting: 'Today’s production',
+    kpi: {
+      received: 'Milk received',
+      receivedCaption: 'Released by QA and stored',
+      available: 'Available for plan',
+      availableCaption: '{spare} above plan milk need',
+      waiting: 'Waiting',
+      waitingCaption: '{pending} lab pending · {incoming} on the way',
+      plan: 'Active plan',
+      planApproved: 'Approved',
+      planPending: '{id} waiting for approval'
+    },
+    plan: 'Today’s plan',
+    planHint: '{id} · {start}–{end}',
+    openSchedule: 'Open schedule',
+    alerts: 'AI alerts',
+    alertsHint: '{count} items from rule checks and planning',
+    openRecommendations: 'Alternatives',
+    pva: 'Planned vs actual',
+    pvaGood: 'Good packs so far',
+    pvaExpected: 'Planned by {time}',
+    pvaCaption: '{pct}% of planned output for the elapsed time',
+    trace: 'Traceability status',
+    traceBatches: 'Batches recorded',
+    traceTransfers: 'Transfers on listed routes',
+    traceBalance: 'Batches in mass balance',
+    tracePendingQa: 'Finished goods pending QA',
+    openGraph: 'Open graph',
+    assets: 'Tank & machine status',
+    assetsHint: 'Snapshot at {time}',
+    openOperational: 'Operational data',
+    footer: 'AI output is labelled; rule checks come from the official constraint catalog. Synthetic demo data.'
+  },
+  master: {
+    milkContentHint: 'Project assumption: Full Cream 100% milk, flavoured 90% milk',
+    products: {
+      liquid: 'Liquid SKUs',
+      liquidHint: 'Product families and flavours, with allowed pack sizes and markets',
+      finished: 'Finished SKUs',
+      finishedHint: 'Liquid SKU × pack size × market variant',
+      packSizes: 'Pack sizes',
+      markets: 'Market variants',
+      marketsHint: 'Market variant is separate from flavour variant'
+    },
+    assets: {
+      total: 'Assets',
+      totalCaption: '{types} asset types',
+      physical: 'Physical assets',
+      physicalCaption: 'Machines, tanks, bays, pipes',
+      logical: 'Logical nodes',
+      logicalCaption: 'Headers and boundaries',
+      pendingParams: 'Parameters pending',
+      pendingCaption: 'Marked X in the catalog',
+      table: 'Asset configuration',
+      tableHint: '“Value pending” = parameter applies, value not provided · “—” = not applicable',
+      allTypes: 'All types ({count})',
+      units: 'Parameter units',
+      unitsHint: 'Unit and meaning of each asset parameter',
+      role: {
+        process_asset: 'Process asset',
+        physical_pipe: 'Dedicated pipe',
+        logical_junction: 'Logical header',
+        material_source: 'Farm boundary',
+        delivery_source: 'Tanker boundary',
+        finished_goods_sink: 'Finished goods boundary'
+      }
+    },
+    routes: {
+      table: 'Asset connections',
+      tableHint: 'Material may move only along listed edges (CONNECTION)',
+      allFlows: 'All flow types ({count})',
+      search: 'Search asset or connection...',
+      flow: {
+        main_milk: 'Main milk',
+        sterilized_product: 'Sterilized product',
+        aseptic_supply: 'Aseptic supply',
+        cream: 'Cream',
+        mixed_product: 'Mixed product',
+        premix: 'Premix',
+        to_sterilization: 'To sterilization',
+        finished_goods: 'Finished goods'
+      }
+    },
+    lines: {
+      dedication: 'Line dedication',
+      dedicationHint: 'Select a line to see its SKU eligibility below',
+      matrixFor: 'Eligibility for {line}',
+      matrixHint: 'From line_product_compatibility and line_finished_sku_compatibility',
+      onlyEligible: 'Eligible only',
+      allRows: 'All rows',
+      byProduct: 'Liquid SKU × pack size',
+      byFinished: 'Finished SKU'
+    },
+    rules: {
+      constraints: 'Constraint catalog',
+      constraintsHint: '“Computed” rules are checked live in the app',
+      changeover: 'Changeover rules',
+      changeoverHint: 'Catalog durations are X; the planner uses the scenario value',
+      cip: 'CIP rules',
+      cipHint: 'CIP is independent of changeover and can close several triggers in one cycle',
+      assumptions: 'Project assumptions',
+      assumptionsHint: 'Values agreed for this project; checks that use them are labelled',
+      assumption: {
+        density: { title: 'Density 1 kg/L', body: 'Liters and kilograms are interchangeable in all calculations.' },
+        fullCream: { title: 'Full Cream 100% milk', body: 'Full Cream liquid is made entirely from fresh milk.' },
+        flavoured: { title: 'Flavoured 90% milk', body: 'Chocolate and Strawberry use 90% milk; premix makes up the rest.' },
+        packaging: { title: 'Packaging & warehouse', body: 'Packaging material and warehouse space are not constraints.' },
+        maintenance: { title: 'Maintenance', body: 'Maintenance windows include trial runs and calibration.' },
+        breakdown: { title: 'Breakdown', body: 'Unplanned stops are covered by the utilization percentage.' },
+        batchPolicy: { title: '1 tank = 1 batch', body: 'Each tank holds one batch per production date.' },
+        hold: { title: 'Hold', body: 'Batch hold and release follow the QA procedure.' }
+      }
+    }
+  },
+  ops: {
+    scenarioNote: 'Synthetic demo data',
+    snapshotAt: 'Snapshot at {time}',
+    holdingHint: 'Age counted from batch start; refill does not reset it (HOLDING)',
+    holdingLimit: 'Limit {hours} h',
+    remaining: '{time} left',
+    delivery: {
+      trucks: 'Trucks today',
+      trucksCaption: 'From {farms} farms',
+      received: 'Received',
+      receivedCaption: '{count} tankers unloaded',
+      waiting: 'Not yet received',
+      waitingCaption: '{pending} lab pending · {incoming} on the way',
+      late: 'Late arrivals',
+      lateCaption: 'Arrived after ETA',
+      table: 'Deliveries',
+      tableHint: 'Select a row for the delivery timeline and destination tanks',
+      drawerEyebrow: 'Delivery',
+      progress: 'Progress',
+      details: 'Details',
+      destinations: 'Destination tanks',
+      noDestination: 'Not unloaded yet',
+      splitNote: 'Split delivery: one tanker into two raw milk tanks, recorded as two transfers.',
+      step: {
+        departure: 'Departed',
+        arrival: 'Arrived',
+        lab: 'Lab release',
+        unload: 'Unloaded',
+        stored: 'Stored'
+      }
+    },
+    lab: {
+      table: 'Sampling & lab records',
+      tableHint: 'QC status Pending, Passed, or Rejected'
+    },
+    bay: {
+      table: 'Bays',
+      tableHint: '{active} of {total} bays active · one tanker per bay at a time',
+      maintenanceUntil: 'Maintenance until {time}',
+      timeline: 'Bay timeline',
+      timelineHint: 'Unloading, CIP after each tanker, waiting, and maintenance',
+      unloadingBlock: 'Unloading',
+      waitingBlock: 'Waiting for lab release',
+      unloads: 'Unloading records',
+      estimateHint: 'Volume ÷ pump rate'
+    },
+    raw: {
+      tanks: 'Raw milk tanks',
+      machines: 'Degassing, thermizers & separators',
+      machinesHint: 'Rated speed, CIP duration, and maintenance window',
+      intermediate: 'Cream, premix & mixing tanks',
+      intermediateHint: 'Co-product cream and flavoured mixing'
+    },
+    sfp: {
+      tanks: 'SFP tanks',
+      tanksCaption: '{capacity} total capacity',
+      inUse: 'In use',
+      cip: 'CIP',
+      holdingRisk: 'Holding risk',
+      holdingCaption: 'Less than 3 h to limit',
+      table: 'SFP storage tanks'
+    },
+    aseptic: {
+      ruleTitle: 'Minimum level depends on how many fillers draw from the tank',
+      ruleBody: 'One filler needs at least 25%, two fillers at least 50%. After a product switch the tank is emptied, cleaned (CIP_EMPTY), and refilled to this level before filling starts.',
+      live: 'Running aseptic tanks',
+      liveHint: 'Current level against the minimum for one and two fillers',
+      level: 'Level',
+      activeLines: 'Active lines',
+      minNow: 'Minimum for {lines} line(s)',
+      minTwo: 'Minimum for 2 lines',
+      tanks: 'Aseptic tanks',
+      sterilizers: 'Sterilizers',
+      sterilizersHint: 'Sterilize SFP product into the aseptic tanks'
+    },
+    orders: {
+      table: 'Production orders',
+      tableHint: 'Liters = packs × pack size; milk need uses the product milk content',
+      milkHint: 'Full Cream 100% · flavoured 90% (project assumption)',
+      footer: '{count} orders today · {liters} product · {milk} milk'
+    },
+    actual: {
+      table: 'Production actuals',
+      runningSince: 'Running',
+      lines: 'Filling lines',
+      linesHint: 'Liquid draw = packs/h × pack ml ÷ 1000 (FILLING_SPEED_UNIT)',
+      note: {
+        atMinLevel: 'Waited for AT-01 minimum level'
+      }
+    }
+  },
+  trace: {
+    kind: {
+      farm: 'Farm',
+      tanker: 'Tanker',
+      raw: 'Raw milk tank',
+      process: 'Separation',
+      storage: 'SFP storage',
+      cream: 'Cream',
+      mix: 'Mixing',
+      aseptic: 'Aseptic tank',
+      finished: 'Finished goods'
+    },
+    transferType: {
+      receive: 'Receive',
+      split: 'Split',
+      mix: 'Mix',
+      separation: 'Separation',
+      'co-product': 'Co-product',
+      transform: 'Transform',
+      sterilize: 'Sterilize',
+      fill: 'Fill'
+    },
+    sideInput: {
+      premix: 'Premix (ingredient)'
+    },
+    allStages: 'All stages ({count})',
+    openBackward: 'Backward trace',
+    openForward: 'Forward trace',
+    massBalance: 'Mass balance',
+    balance: {
+      opening: 'Opening',
+      inflow: 'Inflow',
+      output: 'Output',
+      coProduct: 'Co-product',
+      closing: 'Closing',
+      variance: 'Variance',
+      formula: 'Opening + inflow = output + co-product + closing + variance (MASS_BALANCE)'
+    },
+    inputs: 'Inputs',
+    outputs: 'Outputs',
+    noInputs: 'No recorded inputs (source batch)',
+    noOutputs: 'No outputs yet',
+    batches: {
+      table: 'Batches',
+      tableHint: 'One tank = one batch per production date · select a row for mass balance'
+    },
+    transfers: {
+      table: 'Transfers',
+      tableHint: 'Each hop of the route is checked against the asset connection list'
+    },
+    graph: {
+      title: 'Genealogy',
+      subtitle: 'Columns follow the process: farm, tanker, raw milk, separation, storage, aseptic, finished goods',
+      hintTitle: 'Select a node to highlight its full lineage',
+      hintBody: 'Edges are transfers; hover an edge for its ID. Splits and mixes show as branches.',
+      selected: 'Lineage of {id}',
+      details: 'Batch details',
+      clear: 'Clear'
+    },
+    pickTarget: 'Trace back from',
+    pickSource: 'Trace forward from',
+    summary: {
+      farms: 'Farms',
+      tankers: 'Tankers',
+      batches: 'Linked batches',
+      transfers: '{count} transfers',
+      finished: 'Finished goods'
+    },
+    path: 'Trace path',
+    pathBackward: 'Stages between the selected batch and the farms',
+    pathForward: 'Stages reached from the selected batch',
+    shareHint: 'Shares follow volume through every split and mix',
+    backwardTable: 'Sources of {id}',
+    forwardTable: 'Reached from {id}',
+    lineageTransfers: 'Transfers in this lineage',
+    audit: {
+      table: 'Events',
+      tableHint: 'Scenario events plus planning actions from this session',
+      category: {
+        receiving: 'Receiving',
+        process: 'Process',
+        planning: 'Planning'
+      }
+    }
+  },
+  planning: {
+    aiLabel: {
+      forecast: 'AI forecast',
+      optimizer: 'Rule-based optimizer (AI placeholder)'
+    },
+    forecast: {
+      availableToday: 'Predicted milk today',
+      confidence: 'Confidence {pct}%',
+      released: 'Released & stored',
+      releasedCaption: 'Confirmed by QA',
+      waiting: 'Not yet released',
+      waitingCaption: 'Lab pending or on the way',
+      tomorrow: 'Tomorrow',
+      range: 'Range {min}–{max}',
+      intake: 'Milk intake',
+      intakeHint: 'Last 7 days and tomorrow · model refreshed {time}',
+      legendActual: 'Actual',
+      legendForecast: 'Forecast',
+      demand: 'Milk demand of the plan',
+      demandHint: 'From the current configuration',
+      demandFooter: 'Milk need {milk} · released {available}',
+      group: {
+        plain: 'Full Cream',
+        flavoured: 'Flavoured'
+      },
+      etas: 'Arrival & release predictions',
+      etasHint: 'Model output, updated with live delivery data',
+      eta: {
+        arrival: 'Arrival time',
+        labResult: 'Lab result'
+      }
+    },
+    config: {
+      changed: 'Changed from approved plan',
+      matches: 'Same as {id}',
+      reset: 'Reset to approved',
+      toGenerate: 'Preview plan',
+      orders: 'Orders',
+      ordersHint: 'Quantity and priority per order',
+      lines: 'Filling lines',
+      linesHint: 'Speed and utilization; breakdowns are covered by utilization',
+      speed: '{line} speed',
+      utilization: 'Utilization',
+      utilizationHint: 'Share of rated speed actually achieved',
+      start: 'Plan start',
+      changeover: 'Changeover',
+      changeoverHint: 'Flavour change takes 15, 40, or 60 min in the field; the example plan uses 30',
+      variantHint: 'Manual flavour change',
+      cip: 'CIP durations',
+      cipHint: 'Catalog marks these X; values below are scenario values',
+      cipRule: {
+        CIP_FLAVOUR: 'Chocolate or Strawberry to Full Cream',
+        CIP_CH_ST: 'Chocolate to Strawberry or reverse',
+        CIP_END_PRODUCTION: 'End of a production run'
+      }
+    },
+    generate: {
+      action: 'Generate plan',
+      pendingEyebrow: 'Waiting for approval',
+      pendingTitle: '{id} generated at {time}',
+      pendingBody: 'A planner or supervisor approves it before it reaches the floor.',
+      openApproval: 'Open approval',
+      readyTitle: 'Preview below; generate to create a revision for approval',
+      readyBody: 'The plan uses the current configuration and is checked against every catalog rule.',
+      blocked: 'The preview has a rule violation; adjust the configuration first',
+      preview: 'Plan preview',
+      previewHint: '{start}–{end}',
+      orders: 'Orders',
+      checks: 'Rule checks',
+      checksSummary: '{pass} pass · {warning} warning · {violation} violation · {na} not computable',
+      blocks: 'Schedule blocks'
+    },
+    scenarios: {
+      table: 'Scenarios',
+      tableHint: 'Select a row to see its schedule and rule issues',
+      detailHint: 'Schedule and rule issues for this scenario'
+    },
+    scenario: {
+      baseline: {
+        title: 'Recommended baseline',
+        body: 'FL-01 Full Cream then Chocolate; FL-02 Full Cream export'
+      },
+      'split-chocolate': {
+        title: 'Split chocolate across FL-01 and FL-02',
+        body: 'FL-02 waits until AT-01 switches to Chocolate'
+      },
+      'split-naive': {
+        title: 'Split chocolate without waiting',
+        body: 'FL-02 starts Chocolate while AT-01 still holds Full Cream'
+      },
+      'fl02-breakdown': {
+        title: 'FL-02 breakdown',
+        body: 'All orders on FL-01'
+      },
+      'variant-60': {
+        title: '60 min flavour change',
+        body: 'Variant changeover takes the long field duration'
+      },
+      'milk-short': {
+        title: 'TRK-B01 rejected',
+        body: '13,000 L less milk available'
+      }
+    },
+    recs: {
+      eyebrow: 'Recommended schedule',
+      title: 'Run Full Cream first on both lines, then Chocolate on FL-01',
+      openSchedule: 'Open schedule',
+      why: 'Why this schedule',
+      whyHint: 'Derived from the rule checks',
+      reason: {
+        onTime: '{count} of {total} orders finish before their due time',
+        milk: 'Milk need {required} fits within {available} released',
+        changeover: 'One variant changeover ({min} min) instead of extra CIP',
+        end: 'Last activity ends at {time}'
+      },
+      risks: 'Risks to watch',
+      risksHint: 'Warnings and rules that cannot be computed yet',
+      alternatives: 'Alerts & alternatives',
+      alternativesHint: 'Each alert with a recommended response and its rule check',
+      impact: 'Ends {end} ({delta}) · late orders {late}',
+      trigger: {
+        breakdown: 'Machine breakdown',
+        capacity: 'Tank capacity',
+        holding: 'Holding time risk',
+        sequence: 'Alternative sequence',
+        changeover: 'Long changeover',
+        milk: 'Milk shortage'
+      },
+      alt: {
+        fl02: { title: 'Move FL-02 orders to FL-01', body: 'Run the export order after local Full Cream with a paper change.' },
+        rmt: { title: 'Clean RMT-03 before TRK-A03 is released', body: 'Start CIP now so the tank is ready for incoming milk.' },
+        sfp: { title: 'Use or release SFP-05 first', body: 'Schedule SFP-05 UHT Full Cream before its holding limit or ask QA to decide.' },
+        split: { title: 'Split chocolate across both lines', body: 'FL-02 joins after AT-01 switches product to finish earlier.' },
+        variant: { title: 'Plan for a 60 min flavour change', body: 'Keep the sequence; chocolate finishes later but on time.' },
+        milk: { title: 'Reduce or move an order', body: 'If a tanker is rejected, lower the lowest-priority order or move it to tomorrow.' }
+      }
+    }
   },
   pages: {
-    dashboard: {
-      title: 'Dashboard',
-      description: 'Plant-wide summary across planning and traceability',
-      emptyTitle: 'Dashboard is coming soon',
-      emptyDescription: 'Use Production Planning or Traceability to explore the prototype flow.',
-      emptyAction: 'Open Production Planning'
-    },
     settings: {
-      title: 'Settings',
-      description: 'Workspace, shift and notification preferences',
       language: 'Language',
       languageHint: 'Applies to the whole workspace on this device',
       shift: 'Active shift',
       shiftValue: 'Shift A · 06:00–18:00',
-      alerts: 'Operational alerts',
-      alertsHint: 'Delay, lab hold, quality, and approval items appear in the header bell',
       timezone: 'Plant timezone',
       timezoneValue: 'Asia/Jakarta (WIB)'
     },
     profile: {
-      title: 'Profile',
-      description: 'Operator identity used on audit events',
       name: 'Name',
       role: 'Role',
       plant: 'Plant',
@@ -216,286 +1122,12 @@ export const en = {
     },
     signedOut: {
       title: 'Signed out',
-      description: 'This prototype does not persist a real session. Sign in to return to the plant workspace.'
+      description: 'This prototype does not keep a real session. Sign in to return to the plant workspace.'
     },
-    'production-planning': {
-      title: 'Production plan',
-      description: 'AI-assisted scheduling for raw milk, tanks, and filling lines',
-      uploadOrders: 'Upload orders',
-      aiRecommendation: 'AI recommendation',
-      shiftKpis: 'Shift KPIs',
-      shiftKpisSubtitle: 'Snapshot at 06:00 opening stock · Shift A',
-      availableRawMilk: 'Available raw milk',
-      vsYesterday: '+8.4% vs yesterday',
-      plannedOrders: 'Planned orders',
-      dueThisShift: '3 due this shift',
-      tankUtilization: 'Tank utilization',
-      withinRange: 'Within operating range',
-      activeLines: 'Active lines',
-      readyToRun: 'Ready to run',
-      scheduleAlerts: 'Schedule alerts',
-      needsReview: 'Needs review',
-      shiftOutlook: 'Shift outlook',
-      shiftOutlookSubtitle: 'AI forecast for the afternoon sequence',
-      analysisReady: 'Analysis ready',
-      predictedBottleneck: 'Predicted bottleneck',
-      flavourDelayTitle: 'Flavour changeover may add 45 min',
-      flavourDelayBody: 'to the afternoon sequence.',
-      recommendation: 'Recommendation: run Full Cream before Strawberry',
-      confidenceNote: 'Confidence is model output — validate constraints before approval.',
-      productionSchedule: 'Production schedule',
-      scheduleSubtitle: 'Today · 07:00–19:00',
-      openSimulation: 'Open simulation',
-      filling1: 'Filling Machine 1',
-      filling2: 'Filling Machine 2',
-      changeover: 'Changeover',
-      operationalStatus: 'Operational status',
-      rawMilkAvailability: 'Raw milk availability',
-      machineReadiness: 'Machine readiness',
-      machineReadyValue: 'Filling 1 + Filling 2',
-      reviewItems: '2 review items',
-      alertChangeoverTitle: 'Changeover window is 45 min',
-      alertChangeoverDetail: 'Strawberry → Full Cream on Filling Machine 1 needs CIP_FLAVOUR',
-      alertAtTitle: 'AT-02 threshold validated at 52.5%',
-      alertAtDetail: 'Two fillers allowed above the 50% minimum level',
-      syntheticNote: 'Synthetic data · Constraint rules shown separately from AI forecasts.'
-    },
-    'ai-recommendation': {
-      title: 'AI recommendation',
-      description: 'Review model output, validate constraints, then approve with confidence',
-      compareSchedule: 'Compare schedule',
-      reject: 'Reject',
-      approve: 'Approve recommendation',
-      eyebrow: 'Recommended sequence',
-      recTitle: 'Move Full Cream 1L before Strawberry 1L',
-      recDescription: 'Expected impact: recover 45 min · keep both filling lines active',
-      pipeline: 'Decision pipeline',
-      pipelineSubtitle: 'Each step must pass before the plan reaches the floor',
-      why: 'Why this recommendation?'
-    },
-    'schedule-simulation': {
-      title: 'Schedule simulation',
-      description:
-        'Corrected operational logic · the 45-minute changeover is preserved because product order is unchanged',
-      approve: 'Approve alternative',
-      scenario: 'Scenario result',
-      scenarioSubtitle: 'Baseline vs valid alternative on Filling Machine 1',
-      compare: 'Compare sequences',
-      compareSubtitle: '07:00–14:00 · Filling Machine 1',
-      optimization: 'Optimization result'
-    },
-    'planning-approval': {
-      title: 'Plan approved',
-      resultTitle: 'Alternative sequence approved; audit event EVT-1030-882 recorded',
-      viewEvent: 'View audit event'
-    },
-    'planning-rejection': {
-      title: 'Plan rejected',
-      resultTitle: 'Alternative rejected; baseline schedule remains active'
-    },
-    'ai-prediction-detail': {
-      title: 'Processing duration prediction',
-      description: 'Synthetic prediction for B-2026-1030-01 · generated after TRK-045 delay signal',
-      insufficient: 'View insufficient-data case',
-      modelOutput: 'Model output',
-      inputFactors: 'Input factors',
-      historical: 'Historical comparison',
-      historicalSubtitle: 'How the prediction compares with similar shifts'
-    },
-    'ai-production-risk': {
-      title: 'Production risk analysis',
-      description: 'Risks detected from the delayed tanker scenario'
-    },
-    'prediction-insufficient': {
-      title: 'Prediction unavailable',
-      resultTitle: 'Not enough data to generate a reliable prediction',
-      returnToPrediction: 'Return to prediction',
-      uploadData: 'Upload operational data'
-    },
-    'tanker-overview': {
-      title: 'Incoming tanker monitoring',
-      description: 'Monitor raw milk availability from farm through storage',
-      today: 'Today',
-      todaySubtitle: 'Raw milk intake · 06:00–06:00 period',
-      queue: 'Tanker queue',
-      queueSubtitle: 'Select a tanker to follow it through lab and unloading'
-    },
-    'tanker-detail': {
-      title: 'Tanker TRK-042',
-      description: 'Farm Cooperative A · Synthetic Demo Data',
-      openLab: 'Open lab status',
-      delivery: 'Delivery',
-      timeline: 'Process timeline',
-      timelineSubtitle: 'Farm to storage, 7 checkpoints'
-    },
-    'tanker-lab-status': {
-      title: 'Sampling & lab status',
-      description: 'Quality release remains human-controlled',
-      pendingCase: 'Open pending case',
-      recordResult: 'Record result',
-      sample: 'Sample S-042-01',
-      labInProgress: 'Lab test in progress',
-      release: 'Release decision'
-    },
-    'tanker-unloading': {
-      title: 'Unloading detail',
-      description: 'Track transfer into destination storage tank',
-      progress: 'Transfer progress',
-      progressBadge: '60% complete',
-      events: 'Unloading events',
-      eventsSubtitle: 'Each event is hashed into the audit ledger'
-    },
-    'tanker-lab-pending': {
-      title: 'Lab result pending',
-      resultTitle: 'Lab result pending · release decision unavailable'
-    },
-    'tanker-delayed': {
-      title: 'Tanker TRK-045',
-      resultTitle: 'TRK-045 delayed by 35 minutes · ETA 12:15',
-      openRisk: 'Open production risk'
-    },
-    'data-management-overview': {
-      title: 'Data Management',
-      description: 'Governed ingestion and validation for operational production data',
-      upload: 'Upload file',
-      tools: 'Ingestion tools',
-      importLog: 'Import log',
-      importLogSubtitle: 'Latest files ingested into the operational store'
-    },
-    'data-management-upload': {
-      title: 'Upload operational data',
-      description: 'AI analyzes structure before records are imported',
-      analyze: 'Analyze file',
-      file: 'File',
-      before: 'Before you import',
-      templates: 'Available templates',
-      templatesSubtitle: 'Download a template, fill it in Excel, then upload it above'
-    },
-    'data-management-mapping': {
-      title: 'Review AI column mapping',
-      description: 'Low-confidence mappings require human review',
-      continue: 'Continue to validation',
-      reviewKeterangan: 'Review Keterangan'
-    },
-    'data-management-validation': {
-      title: 'Validate records',
-      description: 'Validation separates structural errors from records needing review',
-      preview: 'Open import preview',
-      summary: 'Validation summary',
-      issues: 'Issues',
-      issuesSubtitle: 'Records flagged during schema and business-rule checks'
-    },
-    'data-management-preview': {
-      title: 'Import preview',
-      description: 'Confirm records and event ledger before import',
-      ready: 'Ready for confirmation',
-      confirm: 'Confirm import',
-      records: 'Records to import',
-      recordsSubtitle: 'First 4 of 1,248 records'
-    },
-    'data-management-history': {
-      title: 'Import history',
-      description: 'Track who imported data and how validation performed',
-      imports: 'Imports',
-      importsSubtitle: 'Every import is recorded as an audit event',
-      viewError: 'View failed import'
-    },
-    'data-management-error': {
-      title: 'Import failed',
-      resultTitle: 'Import failed: 20 records contain blocking schema errors'
-    },
-    'data-management-mapping-review': {
-      title: 'Mapping review',
-      resultTitle: 'Manual review required for Keterangan → unmapped',
-      returnToMapping: 'Return to mapping'
-    },
-    'traceability-overview': {
-      title: 'Traceability overview',
-      relationshipGraph: 'Relationship graph',
-      quickStats: 'Quick stats',
-      quickStatsSubtitle: 'Graph-based material relationships from farm to finished goods',
-      tools: 'Trace tools',
-      relationships: 'Relationships',
-      awaiting: 'awaiting confirmation',
-      needsQa: 'needs QA review',
-      matchesProof: 'matches blockchain proof'
-    },
-    'traceability-graph': {
-      title: 'Material relationship graph',
-      description: 'Directed relationships with event and quantity context',
-      selected: 'Selected node',
-      openBatch: 'Open batch detail'
-    },
-    'traceability-forward': {
-      title: 'Forward trace · TRK-042',
-      description: 'Source tanker → storage tank → production batch → finished goods',
-      impact: 'Impact summary',
-      impactSubtitle: 'Everything downstream of the selected tanker',
-      path: 'Trace path',
-      steps: 'Trace steps'
-    },
-    'traceability-backward': {
-      title: 'Backward trace · FG-1030-01',
-      description: 'Finished goods → production batch → tank → source tanker',
-      origin: 'Origin summary',
-      originSubtitle: 'Where the selected finished lot came from',
-      path: 'Trace path',
-      steps: 'Trace steps'
-    },
-    'traceability-batch': {
-      title: 'Batch B-2026-1030-01',
-      description: 'Production date 30 Oct · synthetic relationship record',
-      ledgerPending: 'Ledger pending',
-      openGraph: 'Open relationship graph',
-      facts: 'Batch facts',
-      relationships: 'Trace relationships',
-      openBackward: 'Open backward trace'
-    },
-    'quality-investigation-overview': {
-      title: 'Quality investigation',
-      description: 'Use traceability to separate confirmed and potential impact',
-      newInvestigation: 'New investigation',
-      summary: 'Summary',
-      investigations: 'Investigations'
-    },
-    'quality-investigation-detail': {
-      title: 'Investigation QI-2026-014',
-      description: 'Lab result review · Synthetic Demo Data',
-      openAnalysis: 'Affected batch analysis',
-      affectedProducts: 'Affected products',
-      tracePath: 'Trace path',
-      tracePathSubtitle: 'Backward and forward from the lab sample',
-      findings: 'Traceability findings'
-    },
-    'affected-batch-analysis': {
-      title: 'Affected batch analysis',
-      description: 'Forward and backward trace results for human review',
-      results: 'Trace results',
-      resultsSubtitle: 'QI-2026-014 · 4 linked entities'
-    },
-    'affected-products': {
-      title: 'Affected products',
-      resultTitle: 'Potentially affected: B-2026-1030-01 → FG-1030-01',
-      openForward: 'Open forward trace'
-    },
-    'audit-trail-overview': {
-      title: 'Audit trail',
-      description: 'Supporting integrity evidence for operational records',
-      integrity: 'Run integrity check',
-      health: 'Ledger health',
-      recent: 'Recent events'
-    },
-    'audit-event-detail': {
-      title: 'Event EVT-1030-882',
-      description: 'Schedule approval event · supporting integrity evidence',
-      verifiedCount: '8/8 verified',
-      integrity: 'Integrity check',
-      record: 'Event record'
-    },
-    'audit-integrity-check': {
-      title: 'Integrity check',
-      description: 'Compare operational references with integrity evidence',
-      compared: 'Compared references'
+    notFound: {
+      title: 'Page not found',
+      description: 'This address does not match any menu.',
+      action: 'Go to dashboard'
     }
   }
 } as const

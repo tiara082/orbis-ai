@@ -1,15 +1,19 @@
 import {
   CircleCheck,
   CircleDashed,
+  CircleHelp,
   CircleX,
   Clock,
   Database,
+  Droplets,
   FlaskConical,
+  Hourglass,
   Loader,
   ShieldAlert,
   ShieldCheck,
   Truck,
   TriangleAlert,
+  Wrench,
   type LucideIcon
 } from 'lucide-react'
 
@@ -20,73 +24,64 @@ export interface StatusStyle {
   icon?: LucideIcon
 }
 
+/** Keys are lowercase status strings; labels live under status.<key> in i18n */
 const STATUS_MAP: Record<string, StatusStyle> = {
-  // Ledger / blockchain integrity
-  recorded: { tone: 'neutral', icon: Database },
-  verified: { tone: 'success', icon: ShieldCheck },
-  'hash verified': { tone: 'success', icon: ShieldCheck },
-  mismatch: { tone: 'danger', icon: ShieldAlert },
-  match: { tone: 'success', icon: ShieldCheck },
-  'integrity match': { tone: 'success', icon: ShieldCheck },
-  'not recorded': { tone: 'neutral', icon: CircleDashed },
-
-  // Generic workflow
+  // Workflow and approval
   ready: { tone: 'success' },
   pending: { tone: 'warning', icon: Clock },
-  review: { tone: 'warning', icon: Clock },
-  'in review': { tone: 'warning', icon: Clock },
-  validated: { tone: 'success', icon: CircleCheck },
-  valid: { tone: 'success', icon: CircleCheck },
+  'pending approval': { tone: 'brand', icon: Clock },
   approved: { tone: 'success', icon: CircleCheck },
-  completed: { tone: 'success', icon: CircleCheck },
-  complete: { tone: 'success', icon: CircleCheck },
-  imported: { tone: 'success', icon: CircleCheck },
-  success: { tone: 'success', icon: CircleCheck },
-  passed: { tone: 'success', icon: CircleCheck },
-  pass: { tone: 'success', icon: CircleCheck },
   rejected: { tone: 'danger', icon: CircleX },
-  failed: { tone: 'danger', icon: CircleX },
-  error: { tone: 'danger', icon: CircleX },
-  invalid: { tone: 'danger', icon: CircleX },
-  critical: { tone: 'danger', icon: TriangleAlert },
-  high: { tone: 'danger', icon: TriangleAlert },
-  medium: { tone: 'warning', icon: TriangleAlert },
-  warning: { tone: 'warning', icon: TriangleAlert },
-  low: { tone: 'info' },
-  open: { tone: 'warning', icon: Clock },
-  investigating: { tone: 'brand', icon: Loader },
-  'under investigation': { tone: 'brand', icon: Loader },
-  'potentially affected': { tone: 'warning', icon: TriangleAlert },
-  'potential impact': { tone: 'warning', icon: TriangleAlert },
-  confirmed: { tone: 'info', icon: CircleCheck },
-  hold: { tone: 'danger', icon: ShieldAlert },
-  'on hold': { tone: 'danger', icon: ShieldAlert },
-  closed: { tone: 'neutral', icon: CircleCheck },
-  'in progress': { tone: 'brand', icon: Loader },
+  superseded: { tone: 'neutral', icon: CircleDashed },
+  completed: { tone: 'success', icon: CircleCheck },
   running: { tone: 'brand', icon: Loader },
-  draft: { tone: 'neutral' },
-  insufficient: { tone: 'warning', icon: TriangleAlert },
-  'needs review': { tone: 'warning', icon: Clock },
-  active: { tone: 'success', icon: CircleCheck },
+  valid: { tone: 'success', icon: CircleCheck },
+  invalid: { tone: 'danger', icon: CircleX },
 
-  // Incoming tanker stages
+  // Rule check results
+  pass: { tone: 'success', icon: CircleCheck },
+  warning: { tone: 'warning', icon: TriangleAlert },
+  violation: { tone: 'danger', icon: CircleX },
+  'not computable': { tone: 'neutral', icon: CircleHelp },
+
+  // Priority and timing
+  high: { tone: 'danger', icon: TriangleAlert },
+  medium: { tone: 'warning' },
+  low: { tone: 'info' },
+  late: { tone: 'danger', icon: TriangleAlert },
+  'on time': { tone: 'success', icon: CircleCheck },
+
+  // Receiving and QC
   'on the way': { tone: 'info', icon: Truck },
   arrived: { tone: 'info', icon: Truck },
-  sampling: { tone: 'brand', icon: FlaskConical },
-  'lab test': { tone: 'brand', icon: FlaskConical },
-  'lab pending': { tone: 'warning', icon: Clock },
-  receiving: { tone: 'success', icon: CircleCheck },
-  released: { tone: 'success', icon: CircleCheck },
-  unloading: { tone: 'info', icon: Loader },
+  'lab pending': { tone: 'warning', icon: FlaskConical },
+  passed: { tone: 'success', icon: CircleCheck },
+  'within spec': { tone: 'success', icon: CircleCheck },
+  'awaiting result': { tone: 'warning', icon: Clock },
   stored: { tone: 'success', icon: CircleCheck },
-  delayed: { tone: 'danger', icon: TriangleAlert }
+  'pending qa': { tone: 'warning', icon: ShieldAlert },
+  released: { tone: 'success', icon: ShieldCheck },
+
+  // Equipment and tanks
+  idle: { tone: 'neutral', icon: CircleDashed },
+  available: { tone: 'success', icon: CircleCheck },
+  occupied: { tone: 'info', icon: Loader },
+  inactive: { tone: 'neutral', icon: CircleDashed },
+  cip: { tone: 'info', icon: Droplets },
+  'cip required': { tone: 'warning', icon: Droplets },
+  maintenance: { tone: 'danger', icon: Wrench },
+  'holding risk': { tone: 'warning', icon: Hourglass },
+  empty: { tone: 'neutral', icon: CircleDashed },
+
+  // Catalog
+  eligible: { tone: 'success', icon: CircleCheck },
+  'not eligible': { tone: 'neutral', icon: CircleX },
+  computed: { tone: 'success', icon: CircleCheck },
+  reference: { tone: 'neutral', icon: Database }
 }
 
 export function getStatusStyle(status: string): StatusStyle {
-  const key = status.trim().toLowerCase()
-  if (STATUS_MAP[key]) return STATUS_MAP[key]
-  const prefix = Object.keys(STATUS_MAP).find((k) => key.startsWith(k))
-  return prefix ? STATUS_MAP[prefix] : { tone: 'neutral' }
+  return STATUS_MAP[status.trim().toLowerCase()] ?? { tone: 'neutral' }
 }
 
 export const toneText: Record<Tone, string> = {
