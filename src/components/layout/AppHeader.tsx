@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import { Bell, Globe, LogOut, Search, Settings, UserRound } from 'lucide-react'
-import { APP_ALERTS, CURRENT_USER } from '../../config/alerts'
-import { NAV_MODULES, type NavPage } from '../../config/navigation'
+import { CURRENT_USER } from '../../config/alerts'
+import { NAV_MODULES, type AppPath } from '../../config/navigation'
+import { useCheckText } from '../../lib/checkText'
 import { cn } from '../../lib/cn'
+import { useFormat } from '../../lib/format'
 import { useTranslation } from '../../lib/i18n'
 import { useClickOutside } from '../../lib/useClickOutside'
+import { usePlantAlerts } from '../../state/alerts'
 import { IconTile } from '../ui/IconTile'
 import { SearchInput } from '../ui/SearchInput'
 import { LanguageToggle } from './LanguageToggle'
-import { useNavigation } from './NavigationContext'
+import { useShell } from './ShellContext'
 
 type MenuId = 'alerts' | 'lang' | 'profile' | null
 
@@ -90,7 +94,11 @@ const MenuPanel: React.FC<{ children: React.ReactNode; className?: string; align
 
 export const AppHeader: React.FC = () => {
   const { t } = useTranslation()
-  const { navigate, logout } = useNavigation()
+  const fmt = useFormat()
+  const checkText = useCheckText()
+  const navigate = useNavigate()
+  const { logout } = useShell()
+  const alerts = usePlantAlerts()
   const [menu, setMenu] = useState<MenuId>(null)
   const [query, setQuery] = useState('')
   const [readIds, setReadIds] = useState<Set<string>>(new Set())
@@ -102,20 +110,30 @@ export const AppHeader: React.FC = () => {
   }, [])
   useClickOutside(rootRef, close, menu !== null || query.trim().length > 0)
 
-  const unread = APP_ALERTS.filter((alert) => !readIds.has(alert.id)).length
+  const unread = alerts.filter((alert) => !readIds.has(alert.id)).length
   const q = query.trim().toLowerCase()
+
+  /** Every module and tab is searchable by its translated label */
   const matches = useMemo(() => {
     if (!q) return []
-    return NAV_MODULES.filter((module) => {
-      const label = t(`nav.module.${module.id}`)
-      return label.toLowerCase().includes(q) || module.label.toLowerCase().includes(q)
-    }).slice(0, 6)
+    const entries = NAV_MODULES.flatMap((module) => {
+      const moduleLabel = t(`nav.module.${module.id}`)
+      const tabs = module.tabs.map((tab) => ({
+        key: `${module.id}.${tab.id}`,
+        icon: module.icon,
+        label: t(`nav.tab.${module.id}.${tab.id}.label`),
+        context: moduleLabel,
+        path: tab.path
+      }))
+      return [{ key: module.id, icon: module.icon, label: moduleLabel, context: '', path: module.path }, ...tabs]
+    })
+    return entries.filter((entry) => `${entry.label} ${entry.context}`.toLowerCase().includes(q)).slice(0, 8)
   }, [q, t])
 
   const open = (id: MenuId) => setMenu((current) => (current === id ? null : id))
 
-  const go = (page: NavPage) => {
-    navigate(page)
+  const go = (path: AppPath) => {
+    void navigate({ to: path })
     setMenu(null)
     setQuery('')
   }
@@ -132,17 +150,18 @@ export const AppHeader: React.FC = () => {
         />
         {matches.length > 0 && (
           <div className="absolute top-[calc(100%+8px)] left-0 right-0 z-50 rounded-xl border border-gray-200 bg-white shadow-sm p-1.5">
-            {matches.map((module) => {
-              const Icon = module.icon
+            {matches.map((entry) => {
+              const Icon = entry.icon
               return (
                 <button
-                  key={module.id}
+                  key={entry.key}
                   type="button"
-                  onClick={() => go(module.entry)}
+                  onClick={() => go(entry.path)}
                   className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-left text-ink-strong hover:bg-gray-50"
                 >
                   <Icon className="w-4 h-4 text-ink shrink-0" />
-                  <span className="truncate">{t(`nav.module.${module.id}`)}</span>
+                  <span className="truncate">{entry.label}</span>
+                  {entry.context && <span className="ml-auto text-[11px] text-ink truncate">{entry.context}</span>}
                 </button>
               )
             })}
@@ -176,37 +195,42 @@ export const AppHeader: React.FC = () => {
                   <button
                     type="button"
                     className="text-[11px] font-medium text-brand hover:text-brand-hover"
-                    onClick={() => setReadIds(new Set(APP_ALERTS.map((a) => a.id)))}
+                    onClick={() => setReadIds(new Set(alerts.map((a) => a.id)))}
                   >
                     {t('shell.markAllRead')}
                   </button>
                 )}
               </div>
-              {APP_ALERTS.length === 0 ? (
+              {alerts.length === 0 ? (
                 <p className="px-2.5 py-3 text-xs text-ink">{t('shell.noAlerts')}</p>
               ) : (
                 <div className="max-h-80 overflow-y-auto thin-scrollbar">
-                  {APP_ALERTS.map((alert) => (
-                    <button
-                      key={alert.id}
-                      type="button"
-                      onClick={() => {
-                        setReadIds((prev) => new Set(prev).add(alert.id))
-                        go(alert.page)
-                      }}
-                      className={cn(
-                        'w-full flex items-start gap-2.5 px-2.5 py-2 rounded-lg text-left hover:bg-gray-50',
-                        !readIds.has(alert.id) && 'bg-brand-muted/40'
-                      )}
-                    >
-                      <IconTile tone={alert.tone} size="sm" icon={Bell} />
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs font-semibold text-ink-strong truncate">{t(alert.titleKey)}</p>
-                        <p className="text-[11px] text-ink mt-0.5 line-clamp-2">{t(alert.bodyKey)}</p>
-                      </div>
-                      <span className="text-[10px] tabular-nums text-ink shrink-0">{alert.at}</span>
-                    </button>
-                  ))}
+                  {alerts.map((alert) => {
+                    const text = alert.check
+                      ? checkText(alert.check)
+                      : { title: t(`alerts.${alert.id}.title`), message: t(`alerts.${alert.id}.body`) }
+                    return (
+                      <button
+                        key={alert.id}
+                        type="button"
+                        onClick={() => {
+                          setReadIds((prev) => new Set(prev).add(alert.id))
+                          go(alert.path)
+                        }}
+                        className={cn(
+                          'w-full flex items-start gap-2.5 px-2.5 py-2 rounded-lg text-left hover:bg-gray-50',
+                          !readIds.has(alert.id) && 'bg-brand-muted/40'
+                        )}
+                      >
+                        <IconTile tone={alert.tone} size="sm" icon={Bell} />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-semibold text-ink-strong truncate">{text.title}</p>
+                          <p className="text-[11px] text-ink mt-0.5 line-clamp-2">{text.message}</p>
+                        </div>
+                        <span className="text-[10px] tabular-nums text-ink shrink-0">{fmt.time(alert.time)}</span>
+                      </button>
+                    )
+                  })}
                 </div>
               )}
             </MenuPanel>
@@ -253,7 +277,7 @@ export const AppHeader: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={() => go('profile')}
+                onClick={() => go('/account/profile')}
                 className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-ink-strong hover:bg-gray-50"
               >
                 <UserRound className="w-4 h-4 text-ink" />
@@ -261,7 +285,7 @@ export const AppHeader: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => go('settings')}
+                onClick={() => go('/account/settings')}
                 className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-ink-strong hover:bg-gray-50"
               >
                 <Settings className="w-4 h-4 text-ink" />

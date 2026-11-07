@@ -1,23 +1,25 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useRouterState } from '@tanstack/react-router'
 import { Menu, X } from 'lucide-react'
-import type { NavPage } from '../../config/navigation'
 import { useTranslation } from '../../lib/i18n'
 import { cn } from '../../lib/cn'
 import { AppHeader } from './AppHeader'
-import { NavigationContext } from './NavigationContext'
+import { ShellContext } from './ShellContext'
 import { Sidebar } from './Sidebar'
 
 const COLLAPSE_KEY = 'orbis-sidebar-collapsed'
 
 interface AppShellProps {
-  currentPage: NavPage
-  onNavigate: (page: NavPage) => void
   onLogout: () => void
   children: React.ReactNode
 }
 
-export const AppShell: React.FC<AppShellProps> = ({ currentPage, onNavigate, onLogout, children }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+export const AppShell: React.FC<AppShellProps> = ({ onLogout, children }) => {
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  // The mobile menu stays open only for the path it was opened on, so navigating closes it.
+  const [menuOpenOn, setMenuOpenOn] = useState<string | null>(null)
+  const mobileMenuOpen = menuOpenOn === pathname
+  const setMobileMenuOpen = (open: boolean) => setMenuOpenOn(open ? pathname : null)
   const [collapsed, setCollapsed] = useState(() => {
     if (typeof window === 'undefined') return false
     return window.localStorage.getItem(COLLAPSE_KEY) === '1'
@@ -27,26 +29,16 @@ export const AppShell: React.FC<AppShellProps> = ({ currentPage, onNavigate, onL
 
   useEffect(() => {
     contentRef.current?.scrollTo({ top: 0 })
-  }, [currentPage])
+  }, [pathname])
 
   useEffect(() => {
     window.localStorage.setItem(COLLAPSE_KEY, collapsed ? '1' : '0')
   }, [collapsed])
 
-  const navigation = useMemo(
-    () => ({
-      currentPage,
-      navigate: (page: NavPage) => {
-        onNavigate(page)
-        setMobileMenuOpen(false)
-      },
-      logout: onLogout
-    }),
-    [currentPage, onNavigate, onLogout]
-  )
+  const shell = useMemo(() => ({ logout: onLogout }), [onLogout])
 
   return (
-    <NavigationContext.Provider value={navigation}>
+    <ShellContext.Provider value={shell}>
       <div className="h-screen overflow-hidden flex bg-white">
         {mobileMenuOpen && (
           <div onClick={() => setMobileMenuOpen(false)} className="fixed inset-0 z-40 bg-black/40 md:hidden" />
@@ -59,12 +51,7 @@ export const AppShell: React.FC<AppShellProps> = ({ currentPage, onNavigate, onL
             mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
-          <Sidebar
-            currentPage={currentPage}
-            onNavigate={navigation.navigate}
-            collapsed={collapsed}
-            onToggleCollapsed={() => setCollapsed((value) => !value)}
-          />
+          <Sidebar collapsed={collapsed} onToggleCollapsed={() => setCollapsed((value) => !value)} />
         </div>
 
         <div className="flex-1 flex flex-col min-w-0 min-h-0">
@@ -87,6 +74,6 @@ export const AppShell: React.FC<AppShellProps> = ({ currentPage, onNavigate, onL
           </div>
         </div>
       </div>
-    </NavigationContext.Provider>
+    </ShellContext.Provider>
   )
 }

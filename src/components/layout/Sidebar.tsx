@@ -1,19 +1,19 @@
 import React from 'react'
+import { Link, useRouterState } from '@tanstack/react-router'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
-import { NAV_GROUPS, resolveNav, type NavPage } from '../../config/navigation'
+import { NAV_GROUPS, resolveNav } from '../../config/navigation'
 import { useTranslation } from '../../lib/i18n'
 import { cn } from '../../lib/cn'
 
 interface SidebarProps {
-  currentPage: NavPage
-  onNavigate: (page: NavPage) => void
   collapsed: boolean
   onToggleCollapsed: () => void
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onNavigate, collapsed, onToggleCollapsed }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapsed }) => {
   const { t } = useTranslation()
-  const activeModuleId = resolveNav(currentPage).module.id
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const activeModuleId = resolveNav(pathname).module.id
 
   return (
     <aside
@@ -52,11 +52,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onNavigate, colla
                   const active = module.id === activeModuleId
                   const label = t(`nav.module.${module.id}`)
                   return (
-                    <button
+                    <Link
                       key={module.id}
-                      type="button"
+                      to={module.path}
                       title={collapsed ? label : undefined}
-                      onClick={() => onNavigate(module.entry)}
                       className={cn(
                         'w-full flex items-center rounded-lg text-sm text-left transition-colors',
                         collapsed ? 'justify-center px-0 py-2.5' : 'gap-3 px-3 py-2',
@@ -67,7 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onNavigate, colla
                     >
                       <Icon className={cn('w-4 h-4 shrink-0', active && 'text-brand')} />
                       {!collapsed && <span className="truncate">{label}</span>}
-                    </button>
+                    </Link>
                   )
                 })}
               </div>
