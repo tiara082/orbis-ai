@@ -1,87 +1,64 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { FileSpreadsheet } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { SectionPanel } from '../components/common/SectionPanel'
+import { DataTable, type DataTableColumn } from '../components/common/DataTable'
+import { EntityCell } from '../components/common/EntityCell'
+import { Badge } from '../components/ui/Badge'
+import { Button } from '../components/ui/Button'
 
-export const ImportHistory: React.FC = () => {
-  const historyData = [
+interface ImportHistoryProps {
+  onOpenError?: () => void
+}
+
+interface HistoryRow {
+  importId: string
+  file: string
+  records: string
+  actor: string
+  status: string
+}
+
+const historyData: HistoryRow[] = [
+  { importId: 'IMP-1030-04', file: 'production_shift_A.xlsx', records: '1,248', actor: 'Ana Putri', status: 'Imported' },
+  { importId: 'IMP-1030-03', file: 'tanker_receipts_30oct.xlsx', records: '84', actor: 'Raka Wijaya', status: 'Review' },
+  { importId: 'IMP-1029-01', file: 'tank_snapshot_29oct.xlsx', records: '20', actor: 'Raka Wijaya', status: 'Failed' },
+  { importId: 'IMP-0929-02', file: 'batch_master_sep.xlsx', records: '3,920', actor: 'System', status: 'Imported' }
+]
+
+export const ImportHistory: React.FC<ImportHistoryProps> = ({ onOpenError }) => {
+  const columns: DataTableColumn<HistoryRow>[] = [
+    { key: 'importId', header: 'Import ID', render: (row) => <span className="font-mono text-xs font-semibold">{row.importId}</span> },
+    { key: 'file', header: 'File', render: (row) => <EntityCell icon={FileSpreadsheet} id={row.file} /> },
+    { key: 'records', header: 'Records', align: 'right', render: (row) => <span className="tabular-nums">{row.records}</span> },
+    { key: 'actor', header: 'Actor' },
+    { key: 'status', header: 'Status', render: (row) => <Badge status={row.status} /> },
     {
-      importId: 'IMP-1030-04',
-      file: 'production_shift_A.xlsx',
-      records: '1,248',
-      actor: 'Ana Putri',
-      status: 'Imported'
-    },
-    {
-      importId: 'IMP-1030-03',
-      file: 'tanker_receipts_30oct.xlsx',
-      records: '84',
-      actor: 'Raka Wijaya',
-      status: 'Review'
-    },
-    {
-      importId: 'IMP-0929-02',
-      file: 'batch_master_sep.xlsx',
-      records: '3,920',
-      actor: 'System',
-      status: 'Imported'
+      key: 'action',
+      header: '',
+      align: 'right',
+      render: (row) =>
+        row.status === 'Failed' && onOpenError ? (
+          <Button variant="link" size="sm" onClick={onOpenError}>
+            View errors
+          </Button>
+        ) : null
     }
   ]
 
   return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="Data Management"
-        breadcrumb="Data Management / Import History"
-      />
-
-      {/* Main Heading */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-          Import history
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Track who imported data and how validation performed
-        </p>
-      </div>
-
-      {/* Table Card */}
-      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-slate-100 text-[11px] font-semibold text-slate-400">
-                <th className="py-4 px-6 font-semibold">Import ID</th>
-                <th className="py-4 px-6 font-semibold">File</th>
-                <th className="py-4 px-6 font-semibold">Records</th>
-                <th className="py-4 px-6 font-semibold">Actor</th>
-                <th className="py-4 px-6 font-semibold">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-sm">
-              {historyData.map((row, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="py-4 px-6 font-bold text-slate-900 font-mono text-xs">
-                    {row.importId}
-                  </td>
-                  <td className="py-4 px-6 text-slate-700">
-                    {row.file}
-                  </td>
-                  <td className="py-4 px-6 text-slate-700">
-                    {row.records}
-                  </td>
-                  <td className="py-4 px-6 text-slate-700">
-                    {row.actor}
-                  </td>
-                  <td className="py-4 px-6">
-                    <span className="text-slate-700 font-normal">
-                      {row.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <>
+      <PageHeader title="Import history" description="Track who imported data and how validation performed" />
+      <SectionPanel title="Imports" subtitle="Every import is recorded as an audit event">
+        <DataTable
+          columns={columns}
+          rows={historyData}
+          rowKey={(row) => row.importId}
+          onRowClick={(row) => row.status === 'Failed' && onOpenError?.()}
+          footer={`Showing ${historyData.length} imports`}
+          note="Synthetic Demo Data"
+        />
+      </SectionPanel>
+    </>
   )
 }

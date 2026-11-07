@@ -1,86 +1,102 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { GitFork, Package, ShieldAlert } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { SectionPanel, Card } from '../components/common/SectionPanel'
+import { StepFlow } from '../components/common/StepFlow'
+import { Callout } from '../components/common/Callout'
+import { EntityCell } from '../components/common/EntityCell'
+import { Badge } from '../components/ui/Badge'
+import { Button } from '../components/ui/Button'
+import { ENTITY_META, type EntityKind } from '../lib/entities'
 
 interface QualityInvestigationDetailProps {
   onOpenAnalysis?: () => void
   onOpenAffectedProducts?: () => void
 }
 
+const material: { kind: EntityKind; id: string }[] = [
+  { kind: 'tanker', id: 'TRK-042' },
+  { kind: 'tank', id: 'ST-04' },
+  { kind: 'batch', id: 'B-2026-1030-01' },
+  { kind: 'finished', id: 'FG-1030-01' }
+]
+
 export const QualityInvestigationDetail: React.FC<QualityInvestigationDetailProps> = ({
   onOpenAnalysis,
   onOpenAffectedProducts
-}) => {
-  return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="Quality Investigation"
-        breadcrumb="Quality Investigation / QI-2026-014"
-      />
+}) => (
+  <>
+    <PageHeader
+      title="Investigation QI-2026-014"
+      description="Lab result review · Synthetic Demo Data"
+      titleAddon={<Badge status="Under Investigation" size="md" shape="pill" />}
+      actions={
+        <>
+          <Button variant="secondary" icon={GitFork} onClick={onOpenAnalysis}>
+            Batch analysis
+          </Button>
+          <Button icon={Package} onClick={onOpenAffectedProducts}>
+            Affected products
+          </Button>
+        </>
+      }
+    />
 
-      {/* Main Heading */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-          Investigation QI-2026-014
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Lab result review · Synthetic Demo Data
-        </p>
-      </div>
+    <div className="space-y-5">
+      <SectionPanel title="Trace path" subtitle="Backward and forward from the lab sample">
+        <Card className="p-5">
+          <StepFlow
+            steps={[
+              { label: 'TRK-042', detail: 'Tanker · lab review', tone: 'warning' },
+              { label: 'ST-04', detail: 'Storage tank', tone: 'neutral' },
+              { label: 'B-2026-1030-01', detail: 'Production batch', tone: 'warning' },
+              { label: 'FG-1030-01', detail: 'Finished lot', tone: 'warning' }
+            ]}
+          />
+        </Card>
+      </SectionPanel>
 
-      {/* 2 Column Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Card: Affected material */}
-        <div
-          onClick={onOpenAnalysis}
-          className="lg:col-span-6 bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs cursor-pointer hover:border-blue-300 transition-colors"
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <SectionPanel
+          title="Affected material"
+          actions={
+            onOpenAnalysis && (
+              <Button variant="link" size="sm" onClick={onOpenAnalysis}>
+                Open analysis
+              </Button>
+            )
+          }
         >
-          <h3 className="text-base font-bold text-slate-900 tracking-tight mb-5">
-            Affected material
-          </h3>
+          <Card className="p-4 space-y-3">
+            {material.map((item) => (
+              <EntityCell key={item.id} icon={ENTITY_META[item.kind].icon} id={item.id} type={ENTITY_META[item.kind].label} mono />
+            ))}
+          </Card>
+        </SectionPanel>
 
-          <div className="space-y-4 text-xs sm:text-sm">
-            <div className="flex justify-between py-1.5 border-b border-slate-100">
-              <span className="text-slate-500">Tanker</span>
-              <span className="font-mono text-xs font-semibold text-slate-900">TRK-042</span>
-            </div>
-
-            <div className="flex justify-between py-1.5 border-b border-slate-100">
-              <span className="text-slate-500">Storage tank</span>
-              <span className="font-mono text-xs font-semibold text-slate-900">ST-04</span>
-            </div>
-
-            <div className="flex justify-between py-1.5 border-b border-slate-100">
-              <span className="text-slate-500">Production batch</span>
-              <span className="font-mono text-xs font-semibold text-slate-900">B-2026-1030-01</span>
-            </div>
-
-            <div className="flex justify-between py-1.5">
-              <span className="text-slate-500">Finished lot</span>
-              <span className="font-mono text-xs font-semibold text-slate-900">FG-1030-01</span>
-            </div>
+        <SectionPanel title="Traceability findings" actions={<Badge status="Potential impact" shape="pill" />}>
+          <div className="space-y-3">
+            <Callout
+              tone="warning"
+              title="1 finished lot is potentially affected"
+              description="FG-1030-01 consumed milk from ST-04 after TRK-042 was unloaded."
+              actions={
+                onOpenAffectedProducts && (
+                  <Button variant="outline" size="sm" onClick={onOpenAffectedProducts}>
+                    Review
+                  </Button>
+                )
+              }
+            />
+            <Callout
+              tone="danger"
+              icon={ShieldAlert}
+              title="No contamination or physical condition is confirmed by ORBIS."
+              description="Impact classification remains subject to quality review."
+            />
           </div>
-        </div>
-
-        {/* Right Card: Traceability findings */}
-        <div
-          onClick={onOpenAffectedProducts}
-          className="lg:col-span-6 bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs cursor-pointer hover:border-amber-300 transition-colors"
-        >
-          <h3 className="text-base font-bold text-slate-900 tracking-tight mb-3">
-            Traceability findings
-          </h3>
-
-          <div className="mb-6">
-            <span className="inline-block bg-[#D97706] text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">
-              POTENTIAL IMPACT
-            </span>
-          </div>
-
-          <p className="text-xs sm:text-sm font-semibold text-[#DC2626] leading-relaxed">
-            No contamination or physical condition is confirmed by ORBIS.
-          </p>
-        </div>
+        </SectionPanel>
       </div>
     </div>
-  )
-}
+  </>
+)

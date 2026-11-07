@@ -1,0 +1,165 @@
+---
+description: Orbis AI design system — tokens, typography, layout shell, reusable components, composition rules
+globs: "src/**/*.{tsx,ts,css}"
+alwaysApply: false
+---
+
+# FE Design System (Orbis AI)
+
+Source of truth: `src/index.css` (`@theme` tokens) + `src/components/{ui,common,layout}`.
+Reference visual: halaman **Traceability Overview** (`src/pages/TraceabilityOverview.tsx`) — floating light sidebar, white rounded content panel, gray section panels berisi white cards, aksen ungu, underline tabs, status chip ber-icon.
+
+> **Priority order kalau ada konflik:** (1) instruksi eksplisit user di prompt → (2) reference image yang dikasih → (3) rules di file ini → (4) asumsi/default agent.
+> Token warna & tipografi di bawah ini **HARD CONSTRAINT**. Layout, spacing rhythm, dan komposisi adalah **CREATIVE ZONE** (boleh dan harus bervariasi sesuai konten halaman).
+
+Stack: React 19 + Vite + Tailwind v4 + `lucide-react` + `clsx` + `tailwind-merge`. **Tanpa** UI library tambahan. Gabung class selalu lewat `cn()` dari `src/lib/cn.ts`.
+
+---
+
+## 1. Reference Image Fidelity
+
+Kalau user kasih screenshot, prioritas utama adalah **match struktur visual**: grid & kolom, spacing rhythm, hierarchy font, radius/shadow, density. Jangan cuma comot token lalu declare selesai.
+
+Yang **tetap wajib** diganti ke token internal (khusus `bg-*` / `border-*` / `ring-*`):
+- Background & border → `brand` / `brand-muted` / `brand-subtle` / `gray-*` / semantic `*-muted` + `*-subtle`
+- Font tetap Inter (`font-sans`)
+- Radius & shadow pakai scale Tailwind (`rounded-lg`, `rounded-xl`, `rounded-2xl`, `shadow-xs`, `shadow-sm`)
+
+Kalau warna aksen di gambar ambigu, **tanya user** token mana yang dimaksud.
+
+---
+
+## 2. Colors — DO / DON'T
+
+Aturan ini **hanya untuk `bg-*`, `border-*`, `ring-*`**. Warna `text-*` bebas selama kontras & kontekstual.
+
+```tsx
+// Do
+bg-brand bg-brand-muted bg-brand-subtle bg-canvas bg-white bg-gray-50 bg-gray-100
+bg-success-muted border-success-subtle bg-danger-muted border-warning-subtle
+border-gray-200 focus:border-brand focus:ring-brand/20
+
+// Dont
+bg-slate-* border-slate-*            // gray-* only
+bg-blue-* bg-violet-* bg-indigo-*    // pakai brand / info token
+bg-[#2563EB] text-[#142B49]          // literal hex dilarang, termasuk warna lama
+bg-red-50 bg-green-600               // pakai danger-muted / success
+```
+
+| Token | Value | Pakai untuk |
+|-------|-------|-------------|
+| `brand` | `#7C5CFC` | primary CTA, active tab underline, active filter pill, focus |
+| `brand-hover` | `#6B4CF0` | hover primary |
+| `brand-muted` / `brand-subtle` | `#F1EDFF` / `#E4DCFF` | soft fill / border aksen |
+| `ink` | `#6B7280` | body, label, caption |
+| `ink-strong` | `#111827` | title, value, entity id |
+| `canvas` | `#F3F4F6` | background di belakang shell |
+| `success` `warning` `danger` `info` | + `-muted` (bg) + `-subtle` (border) | status semantik |
+| neutrals | `gray-*` | bg/border netral (bukan slate) |
+
+Status → tone **jangan hardcode** per halaman. Tambahkan key di `STATUS_MAP` (`src/lib/status.ts`) lalu pakai `<Badge status="..."/>`. Map tone → class lewat `toneText`, `toneSoft`, `toneSolid`.
+
+---
+
+## 3. Typography
+
+- Font: **Inter** (`font-sans`), mono untuk ID/hash: `font-mono text-xs`
+- Page title (di `PageHeader`): `text-2xl font-extrabold tracking-tight text-ink-strong`
+- Page description: `text-sm text-ink`
+- Section title (`SectionPanel`): `text-sm font-bold text-ink-strong`
+- Stat value: `text-2xl font-extrabold tabular-nums`
+- Table header: `text-xs font-medium text-ink` (bukan uppercase)
+- Eyebrow / kategori: `text-[11px] font-semibold uppercase tracking-wider`
+- Angka (volume, jam, persen) selalu `tabular-nums`
+
+---
+
+## 4. Layout Shell
+
+```
+AppShell (bg-canvas, md:p-3 gap-3)
+├── Sidebar         floating, bg-gray-50 rounded-2xl, grouped modules dari config
+└── content panel   bg-white rounded-2xl border shadow-sm → <main max-w-[1400px]>
+    └── Page
+        ├── PageHeader   breadcrumb + meta · title + actions · ModuleTabs
+        └── space-y-5 → SectionPanel / Callout / ResultState ...
+```
+
+- Navigasi **state-based** (tanpa router). Semua modul, tab, dan state page didefinisikan di `src/config/navigation.ts` (`NAV_GROUPS`). Tambah halaman = tambah `NavPage` + entry di config + `case` di `App.tsx`.
+- **Setiap page merender `<PageHeader>` sendiri** (title/actions spesifik halaman). Breadcrumb, meta, dan tabs otomatis dari config via `useNavigation()`.
+- Navigasi lintas modul dari dalam page: `const { navigate } = useNavigation()`. Callback props (`onApprove`, `onReturn`, ...) tetap dipakai untuk alur utama yang di-wire di `App.tsx`.
+- Jangan bungkus page dengan `div p-8 max-w-7xl` lagi — padding & max width sudah di shell.
+
+---
+
+## 5. Komponen Reusable — kapan pakai apa
+
+### `components/ui` (primitives)
+| Komponen | Pakai untuk |
+|----------|-------------|
+| `Button` | semua tombol. `primary` (1 per header), `secondary`, `outline`, `ghost`, `link`, `danger`; `icon` / `iconRight` |
+| `Badge` | status chip. `status` → tone + icon otomatis; `variant` soft/outline/solid; `shape` pill untuk header status |
+| `IconTile` | icon dalam kotak/lingkaran bertone (stat card, list item, entity) |
+| `SearchInput` | input search dengan icon, focus brand |
+| `SegmentedFilter` | filter pill di toolbar tabel (All / Verified / ...) dengan count |
+| `ProgressBar` | utilisasi tank, confidence, progress unloading; `marker` untuk threshold (mis. 50% AT) |
+
+### `components/common` (patterns)
+| Komponen | Pakai untuk |
+|----------|-------------|
+| `SectionPanel` | **wrapper section default**: panel abu `bg-gray-50 rounded-2xl p-3` berisi white cards; `variant="plain"` untuk card putih tunggal |
+| `Card` | white card di dalam SectionPanel |
+| `StatCard` | KPI tile (icon + label + value box + caption bertone); `children` untuk ProgressBar |
+| `ToolCard` | aksi/fitur yang bisa diklik (trace tools, templates, pipeline step) |
+| `DataTable` | semua tabel. `columns` + `render`, `toolbar` (filter/search), `footer`, `note`, `onRowClick` |
+| `EntityCell` | kolom entity (icon + id + tipe); icon dari `ENTITY_META` (`src/lib/entities.ts`) |
+| `KeyValueList` | detail fakta; `layout="rows"` (label kiri, value kanan) atau `grid` |
+| `Callout` | info/peringatan inline; `variant="strong"` untuk rekomendasi AI utama |
+| `StepFlow` | `chips` = urutan entity/sequence; `progress` = stepper bernomor |
+| `ResultState` | halaman state (approved, rejected, delayed, error, insufficient data) |
+| `EmptyState` | halaman/section belum ada data |
+
+### Domain
+- `components/planning/ScheduleTimeline` — Gantt filling line (plain / flavoured / changeover / CIP)
+- `components/traceability/TraceStepsTable` — tabel langkah forward/backward trace
+
+---
+
+## 6. Anti-Monotony
+
+Token tetap, **komposisi mengikuti konten**:
+- Tentukan 1 emphasis point per halaman (rekomendasi AI, KPI utama, tabel trace).
+- Variasi yang boleh: stat row + tabel, grid 12 kolom 5/7 atau 8/4, list kartu risiko, timeline, result state.
+- Halaman state (approval/rejection/error) → `ResultState`, bukan kartu kosong dengan teks breadcrumb.
+- Kalau mengerjakan >1 halaman, cek: apakah struktur section memang beda sesuai tujuannya?
+
+---
+
+## 7. Domain Copy Rules
+
+- AI output selalu dibedakan dari constraint rule (contoh: "Confidence is model output — validate constraints before approval").
+- ORBIS **tidak** meng-approve quality release atau produksi — tampilkan "human approval required" bila relevan.
+- Label data demo: "Synthetic Demo Data".
+- Scope produk: susu plain (Full Cream/Skim/WC) dan flavoured (Chocolate/Strawberry).
+
+---
+
+## 8. Component Reuse Discipline
+
+1. Reuse komponen existing apa adanya.
+2. Butuh variasi → tambah prop/variant di komponen existing (contoh: `StatCard` `valueClassName` + `children`), jangan duplikat file.
+3. Komponen baru hanya kalau benar-benar tidak ada yang cocok; taruh di `ui/` (primitive), `common/` (pattern lintas modul), atau `components/<domain>/` (spesifik modul).
+
+Pola `className` yang sama di 2+ tempat → jadikan komponen/util.
+
+---
+
+## 9. Self-Check Sebelum Selesai
+
+- [ ] Tidak ada `slate-*`, `blue-*`, `violet-*`, `indigo-*`, atau hex literal (`bg-[#...]`, `text-[#...]`) untuk bg/border/ring
+- [ ] Status chip pakai `Badge status=...` + `STATUS_MAP`, bukan class manual
+- [ ] Page pakai `PageHeader`; tidak ada wrapper padding/max-width sendiri
+- [ ] Halaman baru terdaftar di `config/navigation.ts` (tab atau statePages) dan `App.tsx`
+- [ ] Tabel pakai `DataTable`, section pakai `SectionPanel`
+- [ ] Kalau ada reference image → struktur, spacing, hierarchy sudah dicocokkan
+- [ ] `npx tsc -p tsconfig.app.json --noEmit` dan `npm run lint` bersih

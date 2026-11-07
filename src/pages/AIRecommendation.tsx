@@ -1,146 +1,112 @@
 import React from 'react'
-import { Header } from '../components/Header'
-import { Sparkles } from 'lucide-react'
+import { GitCompare, ShieldCheck, Shuffle, Sparkles, TrendingUp, UserCheck, X } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { SectionPanel, Card } from '../components/common/SectionPanel'
+import { Callout } from '../components/common/Callout'
+import { StepFlow } from '../components/common/StepFlow'
+import { ToolCard } from '../components/common/ToolCard'
+import { KeyValueList } from '../components/common/KeyValueList'
+import { Badge } from '../components/ui/Badge'
+import { Button } from '../components/ui/Button'
 
 interface AIRecommendationProps {
   onCompareSchedule: () => void
   onApprove: () => void
+  onReject?: () => void
 }
 
-export const AIRecommendation: React.FC<AIRecommendationProps> = ({
-  onCompareSchedule,
-  onApprove
-}) => {
-  return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="AI Recommendation"
-        subtitle="Review model output, validate constraints, then approve with confidence"
+export const AIRecommendation: React.FC<AIRecommendationProps> = ({ onCompareSchedule, onApprove, onReject }) => (
+  <>
+    <PageHeader
+      title="AI recommendation"
+      description="Review model output, validate constraints, then approve with confidence"
+      actions={
+        <>
+          <Button variant="outline" icon={GitCompare} onClick={onCompareSchedule}>
+            Compare schedule
+          </Button>
+          {onReject && (
+            <Button variant="secondary" icon={X} onClick={onReject}>
+              Reject
+            </Button>
+          )}
+          <Button icon={UserCheck} onClick={onApprove}>
+            Approve recommendation
+          </Button>
+        </>
+      }
+    />
+
+    <div className="space-y-5">
+      <Callout
+        variant="strong"
+        icon={Sparkles}
+        eyebrow="Recommended sequence"
+        title="Move Full Cream 1L before Strawberry 1L"
+        description="Expected impact: recover 45 min · keep both filling lines active"
       />
 
-      {/* Top Dark Banner Card */}
-      <div className="bg-[#142B49] text-white p-6 rounded-xl shadow-xs mb-6">
-        <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">
-          <Sparkles className="w-3.5 h-3.5 text-blue-300 fill-blue-300" />
-          <span>RECOMMENDED SEQUENCE</span>
+      <SectionPanel title="Decision pipeline" subtitle="Each step must pass before the plan reaches the floor">
+        <Card className="p-5 mb-3">
+          <StepFlow
+            variant="progress"
+            steps={[
+              { label: 'AI forecasting', detail: 'Done', state: 'done' },
+              { label: 'Constraint validation', detail: 'Pass', state: 'done' },
+              { label: 'Schedule optimization', detail: 'Done', state: 'done' },
+              { label: 'Human approval', detail: 'Waiting', state: 'current' }
+            ]}
+          />
+        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <ToolCard
+            icon={TrendingUp}
+            title="45 min delay predicted"
+            description="Based on changeover duration and order sequence."
+            badge={<Badge tone="brand">01 · AI forecasting</Badge>}
+          />
+          <ToolCard
+            icon={ShieldCheck}
+            iconTone="success"
+            title="Pass · AT-02 at 52.5%"
+            description="Two filling machines permitted above 50% capacity."
+            badge={<Badge status="Passed">02 · Constraint validation</Badge>}
+          />
+          <ToolCard
+            icon={Shuffle}
+            title="Alternative sequence found"
+            description="Full Cream → Strawberry reduces transition risk."
+            badge={<Badge tone="brand">03 · Schedule optimization</Badge>}
+          />
+          <ToolCard
+            icon={UserCheck}
+            iconTone="warning"
+            title="Planner decision required"
+            description="AI does not approve quality or production release."
+            badge={<Badge status="Pending">04 · Human approval</Badge>}
+          />
         </div>
+      </SectionPanel>
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <h2 className="text-xl font-bold tracking-tight text-white">
-            Move Full Cream 1L before Strawberry 1L
-          </h2>
-          <span className="text-xs text-slate-300 font-medium">
-            Expected impact: recover 45 min · keep both filling lines active
-          </span>
-        </div>
-      </div>
-
-      {/* 4 Process Cards (2x2 Grid) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
-        {/* Card 01 */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="bg-[#2563EB] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-              01
-            </span>
-            <span className="text-xs font-bold text-slate-600 tracking-wider uppercase">
-              AI FORECASTING
-            </span>
+      <SectionPanel title="Why this recommendation?">
+        <Card className="p-5 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="text-sm text-ink leading-relaxed space-y-2">
+            <p>The model prioritizes the sequence with the lowest predicted transition delay.</p>
+            <p>Operational checks remain explicit: milk ratio, tank capacity, and changeover window.</p>
+            <p className="text-[11px] pt-2">
+              Synthetic scenario · Prediction confidence is intentionally not presented as verified accuracy.
+            </p>
           </div>
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">
-            45 min delay predicted
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">
-            Based on changeover duration and order sequence.
-          </p>
-        </div>
-
-        {/* Card 02 */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="bg-[#16A34A] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-              02
-            </span>
-            <span className="text-xs font-bold text-slate-600 tracking-wider uppercase">
-              CONSTRAINT VALIDATION
-            </span>
-          </div>
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">
-            Pass · AT-02 at 52.5%
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">
-            Two filling machines permitted above 50% capacity.
-          </p>
-        </div>
-
-        {/* Card 03 */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="bg-[#2563EB] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-              03
-            </span>
-            <span className="text-xs font-bold text-slate-600 tracking-wider uppercase">
-              SCHEDULE OPTIMIZATION
-            </span>
-          </div>
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">
-            Alternative sequence found
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">
-            Full Cream → Strawberry reduces transition risk.
-          </p>
-        </div>
-
-        {/* Card 04 */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="bg-[#D97706] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-              04
-            </span>
-            <span className="text-xs font-bold text-slate-600 tracking-wider uppercase">
-              HUMAN APPROVAL
-            </span>
-          </div>
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">
-            Planner decision required
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">
-            AI does not approve quality or production release.
-          </p>
-        </div>
-      </div>
-
-      {/* Bottom Card: Why this recommendation? */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs mb-8">
-        <h3 className="text-base font-bold text-slate-900 tracking-tight mb-3">
-          Why this recommendation?
-        </h3>
-        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-          The model prioritizes the sequence with the lowest predicted transition delay.
-        </p>
-        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1">
-          Operational checks remain explicit: milk ratio, tank capacity, and changeover window.
-        </p>
-        <p className="text-[11px] text-slate-400 mt-6">
-          Synthetic scenario · Prediction confidence is intentionally not presented as verified accuracy.
-        </p>
-      </div>
-
-      {/* Bottom Action Buttons */}
-      <div className="flex items-center justify-end gap-3">
-        <button
-          onClick={onCompareSchedule}
-          className="bg-white hover:bg-slate-50 border border-slate-200 text-[#2563EB] text-sm font-medium px-6 py-2.5 rounded-lg transition-colors shadow-2xs"
-        >
-          Compare schedule
-        </button>
-        <button
-          onClick={onApprove}
-          className="bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors shadow-2xs"
-        >
-          Approve recommendation
-        </button>
-      </div>
+          <KeyValueList
+            items={[
+              { label: 'Trigger', value: 'TRK-045 delayed +35 min' },
+              { label: 'Milk ratio', value: 'Full Cream 100% · Strawberry 90%' },
+              { label: 'Tank capacity', value: 'AT-02 6,300 / 12,000 L' },
+              { label: 'Changeover window', value: '45 min (CIP_FLAVOUR)' }
+            ]}
+          />
+        </Card>
+      </SectionPanel>
     </div>
-  )
-}
+  </>
+)

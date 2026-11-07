@@ -1,102 +1,57 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { ArrowRight, Cylinder, Truck } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { SectionPanel, Card } from '../components/common/SectionPanel'
+import { DataTable, type DataTableColumn } from '../components/common/DataTable'
+import { Badge } from '../components/ui/Badge'
+import { IconTile } from '../components/ui/IconTile'
+import { ProgressBar } from '../components/ui/ProgressBar'
 
-export const TankerUnloading: React.FC = () => {
-  const events = [
-    {
-      event: 'Unloading started',
-      timestamp: '10:02',
-      actor: 'Receiving operator',
-      status: 'Recorded'
-    },
-    {
-      event: 'Transfer checkpoint',
-      timestamp: '10:18',
-      actor: 'System',
-      status: 'Recorded'
-    },
-    {
-      event: 'Storage confirmation',
-      timestamp: 'Pending',
-      actor: '—',
-      status: 'Open'
-    }
-  ]
-
-  return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="Incoming Tanker"
-        breadcrumb="Incoming Tanker / TRK-042 / Unloading"
-      />
-
-      {/* Main Heading */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-          Unloading detail
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Track transfer into destination storage tank
-        </p>
-      </div>
-
-      {/* Progress Card */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs mb-6">
-        <h3 className="text-lg font-bold text-slate-900 tracking-tight">
-          TRK-042 → ST-04
-        </h3>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1 mb-5">
-          8,200 L planned · 4,920 L transferred
-        </p>
-
-        <div className="flex items-center gap-4">
-          <div className="flex-1 bg-slate-100 rounded-full h-3 overflow-hidden">
-            <div
-              className="bg-[#2563EB] h-full rounded-full transition-all duration-500"
-              style={{ width: '60%' }}
-            ></div>
-          </div>
-          <span className="inline-block bg-[#2563EB] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shrink-0">
-            60% COMPLETE
-          </span>
-        </div>
-      </div>
-
-      {/* Events Table Card */}
-      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-slate-100 text-[11px] font-semibold text-slate-400">
-                <th className="py-4 px-6 font-semibold">Event</th>
-                <th className="py-4 px-6 font-semibold">Timestamp</th>
-                <th className="py-4 px-6 font-semibold">Actor</th>
-                <th className="py-4 px-6 font-semibold">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-sm">
-              {events.map((e, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="py-4 px-6 font-bold text-slate-900">
-                    {e.event}
-                  </td>
-                  <td className="py-4 px-6 text-slate-600">
-                    {e.timestamp}
-                  </td>
-                  <td className="py-4 px-6 text-slate-700">
-                    {e.actor}
-                  </td>
-                  <td className="py-4 px-6">
-                    <span className="text-slate-700 font-normal">
-                      {e.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  )
+interface UnloadEvent {
+  event: string
+  timestamp: string
+  actor: string
+  status: string
 }
+
+const events: UnloadEvent[] = [
+  { event: 'Unloading started', timestamp: '10:02', actor: 'Receiving operator', status: 'Recorded' },
+  { event: 'Transfer checkpoint', timestamp: '10:18', actor: 'System', status: 'Recorded' },
+  { event: 'Storage confirmation', timestamp: 'Pending', actor: '—', status: 'Open' }
+]
+
+const columns: DataTableColumn<UnloadEvent>[] = [
+  { key: 'event', header: 'Event', render: (row) => <span className="font-semibold">{row.event}</span> },
+  { key: 'timestamp', header: 'Timestamp', render: (row) => <span className="tabular-nums text-ink">{row.timestamp}</span> },
+  { key: 'actor', header: 'Actor' },
+  { key: 'status', header: 'Status', render: (row) => <Badge status={row.status} variant="outline" /> }
+]
+
+export const TankerUnloading: React.FC = () => (
+  <>
+    <PageHeader title="Unloading detail" description="Track transfer into destination storage tank" />
+
+    <div className="space-y-5">
+      <SectionPanel title="Transfer progress" actions={<Badge status="Unloading">60% complete</Badge>}>
+        <Card className="p-5">
+          <div className="flex items-center gap-3">
+            <IconTile icon={Truck} />
+            <span className="font-mono text-sm font-semibold text-ink-strong">TRK-042</span>
+            <ArrowRight className="w-4 h-4 text-gray-300" />
+            <IconTile icon={Cylinder} tone="brand" />
+            <span className="font-mono text-sm font-semibold text-ink-strong">ST-04</span>
+          </div>
+          <ProgressBar value={60} tone="info" className="mt-5 h-2.5" />
+          <div className="mt-2 flex justify-between text-xs text-ink tabular-nums">
+            <span>4,920 L transferred</span>
+            <span>8,200 L planned</span>
+          </div>
+        </Card>
+      </SectionPanel>
+
+      <SectionPanel title="Unloading events" subtitle="Each event is hashed into the audit ledger">
+        <DataTable columns={columns} rows={events} rowKey={(row) => row.event} />
+      </SectionPanel>
+    </div>
+  </>
+)

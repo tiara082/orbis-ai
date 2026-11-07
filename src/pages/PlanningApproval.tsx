@@ -1,51 +1,39 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { History } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { useNavigation } from '../components/layout/NavigationContext'
+import { ResultState } from '../components/common/ResultState'
+import { Badge } from '../components/ui/Badge'
+import { Button } from '../components/ui/Button'
 
 interface PlanningApprovalProps {
   onReturn: () => void
 }
 
 export const PlanningApproval: React.FC<PlanningApprovalProps> = ({ onReturn }) => {
+  const { navigate } = useNavigation()
+
   return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="Production Planning"
-        breadcrumb="Production Planning / Approval"
+    <>
+      <PageHeader title="Plan approved" description="Synthetic Demo Data · human review required where indicated" />
+      <ResultState
+        status="Approved"
+        title="Alternative sequence approved; audit event EVT-1030-882 recorded"
+        description="The approved sequence replaces the baseline for Filling Machine 1. The decision is hashed into the audit ledger."
+        details={[
+          { label: 'Audit event', value: 'EVT-1030-882', mono: true },
+          { label: 'Approved by', value: 'Ana Putri · Planner' },
+          { label: 'Ledger status', value: <Badge status="Recorded" variant="outline" /> }
+        ]}
+        actions={
+          <>
+            <Button onClick={onReturn}>Return to workflow</Button>
+            <Button variant="outline" icon={History} onClick={() => navigate('audit-event-detail')}>
+              View audit event
+            </Button>
+          </>
+        }
       />
-
-      {/* Main Heading */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-          Alternative sequence approved; audit event EVT-1030-882 recorded
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Synthetic Demo Data · human review required where indicated
-        </p>
-      </div>
-
-      {/* Card */}
-      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs p-8">
-        <div className="mb-6">
-          <span className="inline-block bg-[#16A34A] text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">
-            APPROVED
-          </span>
-        </div>
-
-        <h3 className="text-base font-bold text-slate-900 tracking-tight mb-2">
-          Alternative sequence approved; audit event EVT-1030-882 recorded
-        </h3>
-
-        <p className="text-xs text-slate-500 mb-8">
-          Production Planning / Approval
-        </p>
-
-        <button
-          onClick={onReturn}
-          className="bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors shadow-2xs"
-        >
-          Return to workflow
-        </button>
-      </div>
-    </div>
+    </>
   )
 }

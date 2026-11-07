@@ -1,292 +1,180 @@
 import React from 'react'
-import { Header } from '../components/Header'
-import { Sparkles } from 'lucide-react'
+import {
+  ClipboardList,
+  Cylinder,
+  Factory,
+  Milk,
+  Sparkles,
+  TriangleAlert,
+  Upload
+} from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { useNavigation } from '../components/layout/NavigationContext'
+import { SectionPanel, Card } from '../components/common/SectionPanel'
+import { StatCard } from '../components/common/StatCard'
+import { ScheduleTimeline, type ScheduleLane } from '../components/planning/ScheduleTimeline'
+import { Badge } from '../components/ui/Badge'
+import { Button } from '../components/ui/Button'
+import { IconTile } from '../components/ui/IconTile'
+import { ProgressBar } from '../components/ui/ProgressBar'
+import type { Tone } from '../lib/status'
 
 interface ProductionPlanningProps {
   onOpenRecommendation?: () => void
 }
 
+const lanes: ScheduleLane[] = [
+  {
+    label: 'Filling Machine 1',
+    sublabel: 'via AT-02',
+    blocks: [
+      { label: 'Full Cream 1L', start: 7, end: 11.5, kind: 'plain' },
+      { label: 'Changeover', start: 11.5, end: 12.25, kind: 'changeover' },
+      { label: 'Strawberry 1L', start: 12.25, end: 15.75, kind: 'flavoured' },
+      { label: 'Full Cream 250ml', start: 15.75, end: 19, kind: 'plain' }
+    ]
+  },
+  {
+    label: 'Filling Machine 2',
+    sublabel: 'via AT-02',
+    blocks: [
+      { label: 'CIP', start: 7, end: 8.5, kind: 'cip' },
+      { label: 'Strawberry 250ml', start: 8.5, end: 12.75, kind: 'flavoured' },
+      { label: 'Changeover', start: 12.75, end: 13.5, kind: 'changeover' },
+      { label: 'Full Cream 1L', start: 14.25, end: 19, kind: 'plain' }
+    ]
+  }
+]
+
+interface StatusRow {
+  label: string
+  value: string
+  percent: number
+  badge: string
+  tone: Tone
+  marker?: number
+}
+
+const statusRows: StatusRow[] = [
+  { label: 'Raw milk availability', value: '18,420 L / 24,000 L', percent: 77, badge: '77%', tone: 'success' },
+  { label: 'Storage Tank ST-04', value: '8,200 L / 12,000 L', percent: 68, badge: '68%', tone: 'success' },
+  { label: 'Aseptic Tank AT-02', value: '6,300 L / 12,000 L', percent: 52.5, badge: '52.5% · 2 fillers', tone: 'success', marker: 50 },
+  { label: 'Machine readiness', value: 'Filling 1 + Filling 2', percent: 100, badge: 'Ready', tone: 'success' }
+]
+
 export const ProductionPlanning: React.FC<ProductionPlanningProps> = ({ onOpenRecommendation }) => {
+  const { navigate } = useNavigation()
+
   return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="Production Planning"
-        subtitle="AI-assisted scheduling for raw milk, tanks, and filling lines"
+    <>
+      <PageHeader
+        title="Production plan"
+        description="AI-assisted scheduling for raw milk, tanks, and filling lines"
+        actions={
+          <>
+            <Button variant="secondary" icon={Upload} onClick={() => navigate('data-management-upload')}>
+              Upload orders
+            </Button>
+            <Button icon={Sparkles} onClick={onOpenRecommendation}>
+              AI recommendation
+            </Button>
+          </>
+        }
       />
 
-      {/* 5 KPI Metric Cards Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-        {/* Card 1 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
-          <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">
-            AVAILABLE RAW MILK
-          </p>
-          <p className="text-2xl font-bold text-slate-900 mt-2 tracking-tight">
-            18,420 L
-          </p>
-          <p className="text-xs font-semibold text-[#16A34A] mt-1">
-            +8.4% vs yesterday
-          </p>
-        </div>
+      <div className="space-y-5">
+        <SectionPanel title="Shift KPIs" subtitle="Snapshot at 06:00 opening stock · Shift A">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
+            <StatCard icon={Milk} label="Available raw milk" value="18,420 L" caption="+8.4% vs yesterday" captionTone="success" />
+            <StatCard icon={ClipboardList} label="Planned orders" value="12" caption="3 due this shift" captionTone="info" />
+            <StatCard icon={Cylinder} label="Tank utilization" value="72%" caption="Within operating range" captionStatus="Valid" />
+            <StatCard icon={Factory} label="Active lines" value="2 / 2" caption="Ready to run" captionStatus="Completed" />
+            <StatCard icon={TriangleAlert} label="Schedule alerts" value="2" caption="Needs review" captionStatus="Review" />
+          </div>
+        </SectionPanel>
 
-        {/* Card 2 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
-          <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">
-            PLANNED ORDERS
-          </p>
-          <p className="text-2xl font-bold text-slate-900 mt-2 tracking-tight">
-            12
-          </p>
-          <p className="text-xs font-semibold text-[#2563EB] mt-1">
-            3 due this shift
-          </p>
-        </div>
-
-        {/* Card 3 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
-          <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">
-            TANK UTILIZATION
-          </p>
-          <p className="text-2xl font-bold text-slate-900 mt-2 tracking-tight">
-            72%
-          </p>
-          <p className="text-xs font-semibold text-[#16A34A] mt-1">
-            Within operating range
-          </p>
-        </div>
-
-        {/* Card 4 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
-          <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">
-            ACTIVE LINES
-          </p>
-          <p className="text-2xl font-bold text-slate-900 mt-2 tracking-tight">
-            2 / 2
-          </p>
-          <p className="text-xs font-semibold text-[#16A34A] mt-1">
-            Ready to run
-          </p>
-        </div>
-
-        {/* Card 5 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
-          <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">
-            SCHEDULE ALERTS
-          </p>
-          <p className="text-2xl font-bold text-slate-900 mt-2 tracking-tight">
-            2
-          </p>
-          <p className="text-xs font-semibold text-[#D97706] mt-1">
-            Needs review
-          </p>
-        </div>
-      </div>
-
-      {/* Middle Section: Shift outlook & Production schedule */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
-        {/* Left: Shift Outlook */}
-        <div
-          onClick={onOpenRecommendation}
-          className={`lg:col-span-5 bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between ${
-            onOpenRecommendation ? 'cursor-pointer hover:border-blue-300 transition-colors' : ''
-          }`}
-        >
-          <div>
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#2563EB] mb-2 tracking-wide uppercase">
-              <Sparkles className="w-3.5 h-3.5 text-[#2563EB] fill-[#2563EB]" />
-              <span>AI INTELLIGENCE</span>
-            </div>
-
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                Shift outlook
-              </h2>
-            </div>
-
-            <div className="mb-4">
-              <span className="inline-block bg-[#16A34A] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                ANALYSIS READY
-              </span>
-            </div>
-
-            <div className="mt-5">
-              <p className="text-xs text-slate-500 font-medium">Predicted bottleneck</p>
-              <p className="text-base font-bold text-slate-900 mt-0.5">
-                Flavour changeover may add 45 min
-              </p>
-              <p className="text-sm text-slate-600">
-                to the afternoon sequence.
-              </p>
-            </div>
-
-            <div className="mt-5 pt-3 border-t border-slate-100">
-              <p className="text-sm font-medium text-slate-700">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <SectionPanel
+            title="Shift outlook"
+            subtitle="AI forecast for the afternoon sequence"
+            className="lg:col-span-5"
+            actions={<Badge status="Ready" shape="pill">Analysis ready</Badge>}
+          >
+            <Card className="p-5 flex flex-col gap-4 h-full" onClick={onOpenRecommendation}>
+              <div className="flex items-start gap-3">
+                <IconTile icon={Sparkles} tone="brand" />
+                <div>
+                  <p className="text-xs text-ink">Predicted bottleneck</p>
+                  <p className="text-base font-bold text-ink-strong mt-0.5">Flavour changeover may add 45 min</p>
+                  <p className="text-sm text-ink">to the afternoon sequence.</p>
+                </div>
+              </div>
+              <div className="rounded-lg bg-brand-muted border border-brand-subtle px-3 py-2.5 text-sm font-medium text-ink-strong">
                 Recommendation: run Full Cream before Strawberry
+              </div>
+              <p className="text-[11px] text-ink">Confidence is model output — validate constraints before approval.</p>
+            </Card>
+          </SectionPanel>
+
+          <SectionPanel
+            title="Production schedule"
+            subtitle="Today · 07:00–19:00"
+            className="lg:col-span-7"
+            actions={
+              <Button variant="link" size="sm" onClick={() => navigate('schedule-simulation')}>
+                Open simulation
+              </Button>
+            }
+          >
+            <Card className="p-4">
+              <ScheduleTimeline lanes={lanes} startHour={7} endHour={19} tickEvery={2} />
+            </Card>
+          </SectionPanel>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <SectionPanel title="Operational status" className="lg:col-span-7">
+            <Card className="px-5 py-2 divide-y divide-gray-100">
+              {statusRows.map((row) => (
+                <div key={row.label} className="py-3 grid grid-cols-1 sm:grid-cols-12 items-center gap-2 sm:gap-4">
+                  <span className="sm:col-span-4 text-sm text-ink">{row.label}</span>
+                  <div className="sm:col-span-5">
+                    <p className="text-sm font-semibold text-ink-strong tabular-nums">{row.value}</p>
+                    <ProgressBar value={row.percent} tone={row.tone} marker={row.marker} className="mt-1.5" />
+                  </div>
+                  <div className="sm:col-span-3 sm:text-right">
+                    <Badge tone={row.tone}>{row.badge}</Badge>
+                  </div>
+                </div>
+              ))}
+            </Card>
+          </SectionPanel>
+
+          <SectionPanel
+            title="Schedule alerts"
+            className="lg:col-span-5"
+            actions={<Badge status="Review" shape="pill">2 review items</Badge>}
+          >
+            <Card className="p-4 space-y-3">
+              {[
+                { title: 'Changeover window is 45 min', detail: 'Strawberry → Full Cream on Filling Machine 1 needs CIP_FLAVOUR' },
+                { title: 'AT-02 threshold validated at 52.5%', detail: 'Two fillers allowed above the 50% minimum level' }
+              ].map((alert) => (
+                <div key={alert.title} className="flex items-start gap-3">
+                  <IconTile icon={TriangleAlert} tone="warning" size="sm" />
+                  <div>
+                    <p className="text-sm font-semibold text-ink-strong">{alert.title}</p>
+                    <p className="text-xs text-ink mt-0.5">{alert.detail}</p>
+                  </div>
+                </div>
+              ))}
+              <p className="text-[11px] text-ink pt-2 border-t border-gray-100">
+                Synthetic data · Constraint rules shown separately from AI forecasts.
               </p>
-            </div>
-          </div>
-
-          <p className="text-[11px] text-slate-400 mt-6">
-            Confidence is model output — validate constraints before approval.
-          </p>
-        </div>
-
-        {/* Right: Production schedule */}
-        <div className="lg:col-span-7 bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-                Production schedule
-              </h2>
-              <span className="text-xs font-medium text-slate-500">
-                Today · 07:00–19:00
-              </span>
-            </div>
-
-            {/* Timeline Rows */}
-            <div className="space-y-6 pt-2">
-              {/* Row 1: Filling Machine 1 */}
-              <div className="flex items-center gap-4">
-                <span className="text-xs font-semibold text-slate-700 w-32 shrink-0">
-                  Filling Machine 1
-                </span>
-                <div className="flex-1 flex items-center gap-2 relative">
-                  <div className="w-[38%] bg-[#2563EB] text-white text-[11px] font-semibold py-2 px-3 rounded-lg text-center truncate shadow-2xs">
-                    Full Cream 1L
-                  </div>
-                  <div className="w-[30%] bg-[#7C3AED] text-white text-[11px] font-semibold py-2 px-3 rounded-lg text-center truncate shadow-2xs">
-                    Strawberry 1L
-                  </div>
-                  <div className="w-[28%] bg-[#2563EB] text-white text-[11px] font-semibold py-2 px-3 rounded-lg text-center truncate shadow-2xs">
-                    Full Cream 250ml
-                  </div>
-                </div>
-              </div>
-
-              {/* Row 2: Filling Machine 2 */}
-              <div className="flex items-center gap-4">
-                <span className="text-xs font-semibold text-slate-700 w-32 shrink-0">
-                  Filling Machine 2
-                </span>
-                <div className="flex-1 flex items-center gap-2">
-                  <div className="w-[12%]"></div>
-                  <div className="w-[35%] bg-[#7C3AED] text-white text-[11px] font-semibold py-2 px-3 rounded-lg text-center truncate shadow-2xs">
-                    Strawberry 250ml
-                  </div>
-                  <div className="w-[12%]"></div>
-                  <div className="w-[38%] bg-[#2563EB] text-white text-[11px] font-semibold py-2 px-3 rounded-lg text-center truncate shadow-2xs">
-                    Full Cream 1L
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Time axis markers */}
-          <div className="pt-6 border-t border-slate-100 mt-6">
-            <div className="flex justify-between text-xs font-medium text-slate-400 pl-36 pr-4">
-              <span>07:00</span>
-              <span>11:00</span>
-              <span>15:00</span>
-              <span>19:00</span>
-            </div>
-          </div>
+            </Card>
+          </SectionPanel>
         </div>
       </div>
-
-      {/* Bottom Section: Operational status & Schedule alerts */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Operational status */}
-        <div className="lg:col-span-7 bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs">
-          <h2 className="text-lg font-bold text-slate-900 tracking-tight mb-5">
-            Operational status
-          </h2>
-
-          <div className="space-y-4">
-            {/* Item 1 */}
-            <div className="flex items-center justify-between py-1 border-b border-slate-100/80">
-              <span className="text-sm text-slate-600">Raw milk availability</span>
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-semibold text-slate-900">
-                  18,420 L / 24,000 L
-                </span>
-                <span className="bg-[#16A34A] text-white text-[11px] font-bold px-3 py-1 rounded-full">
-                  77%
-                </span>
-              </div>
-            </div>
-
-            {/* Item 2 */}
-            <div className="flex items-center justify-between py-1 border-b border-slate-100/80">
-              <span className="text-sm text-slate-600">Storage Tank ST-04</span>
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-semibold text-slate-900">
-                  8,200 L / 12,000 L
-                </span>
-                <span className="bg-[#16A34A] text-white text-[11px] font-bold px-3 py-1 rounded-full">
-                  68%
-                </span>
-              </div>
-            </div>
-
-            {/* Item 3 */}
-            <div className="flex items-center justify-between py-1 border-b border-slate-100/80">
-              <span className="text-sm text-slate-600">Aseptic Tank AT-02</span>
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-semibold text-slate-900">
-                  6,300 L / 12,000 L
-                </span>
-                <span className="bg-[#16A34A] text-white text-[11px] font-bold px-3 py-1 rounded-full">
-                  52.5% · 2 fillers enabled
-                </span>
-              </div>
-            </div>
-
-            {/* Item 4 */}
-            <div className="flex items-center justify-between py-1">
-              <span className="text-sm text-slate-600">Machine readiness</span>
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-semibold text-slate-900">
-                  Filling 1 + Filling 2
-                </span>
-                <span className="bg-[#16A34A] text-white text-[11px] font-bold px-3 py-1 rounded-full">
-                  Ready
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Schedule alerts */}
-        <div className="lg:col-span-5 bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
-          <div>
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight mb-2">
-              Schedule alerts
-            </h2>
-
-            <div className="mb-4">
-              <span className="inline-block bg-[#D97706] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                2 REVIEW ITEMS
-              </span>
-            </div>
-
-            <ul className="space-y-3 mt-4 text-sm text-slate-800">
-              <li className="flex items-start gap-2">
-                <span className="text-slate-900 font-bold">•</span>
-                <span>Changeover window is 45 min</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-slate-900 font-bold">•</span>
-                <span>AT-02 threshold validated at 52.5%</span>
-              </li>
-            </ul>
-          </div>
-
-          <p className="text-[11px] text-slate-400 mt-8">
-            Synthetic data · Constraint rules shown separately from AI forecasts.
-          </p>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }

@@ -1,87 +1,68 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { CalendarClock, Cylinder, Milk, Truck, type LucideIcon } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { SectionPanel } from '../components/common/SectionPanel'
+import { Callout } from '../components/common/Callout'
+import { Badge } from '../components/ui/Badge'
+import { IconTile } from '../components/ui/IconTile'
+import type { Tone } from '../lib/status'
 
-export const AIProductionRisk: React.FC = () => {
-  const risks = [
-    {
-      badge: 'DELAYED TANKER',
-      badgeColor: 'bg-[#DC2626]',
-      title: 'TRK-045 · +35 min',
-      description: 'Potential raw milk availability gap'
-    },
-    {
-      badge: 'RAW MILK AVAILABILITY',
-      badgeColor: 'bg-[#D97706]',
-      title: '18,420 L → 13,620 L available',
-      description: 'Demand coverage requires review'
-    },
-    {
-      badge: 'TANK CAPACITY',
-      badgeColor: 'bg-[#16A34A]',
-      title: 'AT-02 · 6,300 / 12,000 L',
-      description: 'Two-filler threshold passes at 52.5%'
-    },
-    {
-      badge: 'SCHEDULE CONFLICT',
-      badgeColor: 'bg-[#D97706]',
-      title: 'Strawberry order after Full Cream',
-      description: '45 min changeover remains required'
-    }
-  ]
-
-  return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="AI Intelligence"
-        breadcrumb="AI Intelligence / Production Risk"
-      />
-
-      {/* Main Heading */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-          Production risk analysis
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Risks detected from the delayed tanker scenario
-        </p>
-      </div>
-
-      {/* 4 Risk Cards Stack */}
-      <div className="space-y-4 mb-6">
-        {risks.map((risk, idx) => (
-          <div
-            key={idx}
-            className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col sm:flex-row sm:items-center gap-4"
-          >
-            <div className="shrink-0 w-52">
-              <span
-                className={`inline-block ${risk.badgeColor} text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider`}
-              >
-                {risk.badge}
-              </span>
-            </div>
-
-            <div>
-              <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                {risk.title}
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {risk.description}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Bottom Card: Downstream impact */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs">
-        <h3 className="text-base font-bold text-slate-900 tracking-tight mb-2">
-          Downstream impact
-        </h3>
-        <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-          Delay today may affect tomorrow's planned sequence; warehouse and packaging are not used as scheduling constraints.
-        </p>
-      </div>
-    </div>
-  )
+interface Risk {
+  category: string
+  icon: LucideIcon
+  tone: Tone
+  severity: string
+  title: string
+  description: string
 }
+
+const risks: Risk[] = [
+  { category: 'Delayed tanker', icon: Truck, tone: 'danger', severity: 'High', title: 'TRK-045 · +35 min', description: 'Potential raw milk availability gap' },
+  { category: 'Raw milk availability', icon: Milk, tone: 'warning', severity: 'Medium', title: '18,420 L → 13,620 L available', description: 'Demand coverage requires review' },
+  { category: 'Tank capacity', icon: Cylinder, tone: 'success', severity: 'Passed', title: 'AT-02 · 6,300 / 12,000 L', description: 'Two-filler threshold passes at 52.5%' },
+  { category: 'Schedule conflict', icon: CalendarClock, tone: 'warning', severity: 'Medium', title: 'Strawberry order after Full Cream', description: '45 min changeover remains required' }
+]
+
+export const AIProductionRisk: React.FC = () => (
+  <>
+    <PageHeader title="Production risk analysis" description="Risks detected from the delayed tanker scenario" />
+
+    <div className="space-y-5">
+      <SectionPanel
+        title="Detected risks"
+        subtitle={`${risks.length} signals · sorted by severity`}
+        actions={
+          <div className="flex gap-1.5">
+            <Badge tone="danger">1 high</Badge>
+            <Badge tone="warning">2 medium</Badge>
+          </div>
+        }
+      >
+        <div className="space-y-2.5">
+          {risks.map((risk) => (
+            <div
+              key={risk.category}
+              className="bg-white rounded-xl border border-gray-200 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center gap-4"
+            >
+              <div className="flex items-center gap-3 sm:w-56 shrink-0">
+                <IconTile icon={risk.icon} tone={risk.tone} />
+                <span className="text-xs font-semibold uppercase tracking-wider text-ink">{risk.category}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-bold text-ink-strong">{risk.title}</h3>
+                <p className="text-xs text-ink mt-0.5">{risk.description}</p>
+              </div>
+              <Badge status={risk.severity} tone={risk.tone} />
+            </div>
+          ))}
+        </div>
+      </SectionPanel>
+
+      <Callout
+        tone="info"
+        title="Downstream impact"
+        description="Delay today may affect tomorrow's planned sequence; warehouse and packaging are not used as scheduling constraints."
+      />
+    </div>
+  </>
+)

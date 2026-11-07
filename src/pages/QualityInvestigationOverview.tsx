@@ -1,107 +1,99 @@
-import React from 'react'
-import { Header } from '../components/Header'
+import React, { useMemo, useState } from 'react'
+import { ChevronRight, CircleCheck, Plus, SearchCheck, TriangleAlert } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { SectionPanel } from '../components/common/SectionPanel'
+import { StatCard } from '../components/common/StatCard'
+import { DataTable, type DataTableColumn } from '../components/common/DataTable'
+import { EntityCell } from '../components/common/EntityCell'
+import { Badge } from '../components/ui/Badge'
+import { Button } from '../components/ui/Button'
+import { SegmentedFilter } from '../components/ui/SegmentedFilter'
 
 interface QualityInvestigationOverviewProps {
   onSelectInvestigation: (id: string) => void
 }
 
-export const QualityInvestigationOverview: React.FC<QualityInvestigationOverviewProps> = ({
-  onSelectInvestigation
-}) => {
-  const investigations = [
+interface InvestigationRow {
+  id: string
+  category: string
+  entity: string
+  opened: string
+  status: string
+}
+
+const investigations: InvestigationRow[] = [
+  { id: 'QI-2026-014', category: 'Lab result review', entity: 'TRK-042 / ST-04', opened: '30 Oct 2026', status: 'Under Investigation' },
+  { id: 'QI-2026-013', category: 'Process deviation', entity: 'B-2026-1029-06', opened: '29 Oct 2026', status: 'Closed' },
+  { id: 'QI-2026-012', category: 'Packaging observation', entity: 'FG-1029-04', opened: '29 Oct 2026', status: 'Potentially Affected' }
+]
+
+type Filter = 'all' | 'open' | 'closed'
+
+export const QualityInvestigationOverview: React.FC<QualityInvestigationOverviewProps> = ({ onSelectInvestigation }) => {
+  const [filter, setFilter] = useState<Filter>('all')
+
+  const rows = useMemo(
+    () =>
+      investigations.filter((row) =>
+        filter === 'all' ? true : filter === 'closed' ? row.status === 'Closed' : row.status !== 'Closed'
+      ),
+    [filter]
+  )
+
+  const columns: DataTableColumn<InvestigationRow>[] = [
     {
-      id: 'QI-2026-014',
-      category: 'Lab result review',
-      entity: 'TRK-042 / ST-04',
-      status: 'Under Investigation'
+      key: 'id',
+      header: 'Investigation',
+      render: (row) => <EntityCell icon={SearchCheck} id={row.id} type={row.category} mono />
     },
-    {
-      id: 'QI-2026-013',
-      category: 'Process deviation',
-      entity: 'B-2026-1029-06',
-      status: 'Closed'
-    },
-    {
-      id: 'QI-2026-012',
-      category: 'Packaging observation',
-      entity: 'FG-1029-04',
-      status: 'Potentially Affected'
-    }
+    { key: 'entity', header: 'Affected entity', render: (row) => <span className="font-mono text-xs">{row.entity}</span> },
+    { key: 'opened', header: 'Opened', render: (row) => <span className="text-ink">{row.opened}</span> },
+    { key: 'status', header: 'Status', render: (row) => <Badge status={row.status} /> },
+    { key: 'action', header: '', align: 'right', render: () => <ChevronRight className="w-4 h-4 text-gray-300 inline" /> }
   ]
 
   return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="Quality Investigation"
-        breadcrumb="Quality Investigation / Overview"
+    <>
+      <PageHeader
+        title="Quality investigation"
+        description="Use traceability to separate confirmed and potential impact"
+        actions={
+          <Button icon={Plus} onClick={() => onSelectInvestigation('QI-2026-014')}>
+            Create investigation
+          </Button>
+        }
       />
 
-      {/* Main Heading */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-          Quality investigation
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Use traceability to separate confirmed and potential impact
-        </p>
-      </div>
+      <div className="space-y-5">
+        <SectionPanel title="Summary">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+            <StatCard icon={SearchCheck} label="Open investigations" value="2" caption="Start from material, batch or lot" captionTone="brand" />
+            <StatCard icon={TriangleAlert} label="Potentially affected lots" value="1" caption="Hold review required" captionStatus="Warning" />
+            <StatCard icon={CircleCheck} label="Closed this week" value="1" caption="QI-2026-013" captionStatus="Closed" />
+          </div>
+        </SectionPanel>
 
-      {/* Top Action Card */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">
-            New investigation
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">
-            Start from a material, batch, or finished goods lot
-          </p>
-        </div>
-
-        <button
-          onClick={() => onSelectInvestigation('QI-2026-014')}
-          className="bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors shadow-2xs self-start sm:self-auto"
-        >
-          Create investigation
-        </button>
+        <SectionPanel title="Investigations">
+          <DataTable
+            columns={columns}
+            rows={rows}
+            rowKey={(row) => row.id}
+            onRowClick={(row) => onSelectInvestigation(row.id)}
+            toolbar={
+              <SegmentedFilter
+                value={filter}
+                onChange={setFilter}
+                options={[
+                  { value: 'all', label: 'All', count: investigations.length },
+                  { value: 'open', label: 'Open', count: investigations.filter((r) => r.status !== 'Closed').length },
+                  { value: 'closed', label: 'Closed', count: investigations.filter((r) => r.status === 'Closed').length }
+                ]}
+              />
+            }
+            footer={`Showing ${rows.length} of ${investigations.length} investigations`}
+          />
+        </SectionPanel>
       </div>
-
-      {/* Table Card */}
-      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-slate-100 text-[11px] font-semibold text-slate-400">
-                <th className="py-4 px-6 font-semibold">Investigation ID</th>
-                <th className="py-4 px-6 font-semibold">Issue category</th>
-                <th className="py-4 px-6 font-semibold">Affected entity</th>
-                <th className="py-4 px-6 font-semibold">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-sm">
-              {investigations.map((row) => (
-                <tr
-                  key={row.id}
-                  onClick={() => onSelectInvestigation(row.id)}
-                  className="hover:bg-slate-50/70 transition-colors cursor-pointer"
-                >
-                  <td className="py-4 px-6 font-bold text-slate-900 font-mono text-xs">
-                    {row.id}
-                  </td>
-                  <td className="py-4 px-6 text-slate-700">
-                    {row.category}
-                  </td>
-                  <td className="py-4 px-6 text-slate-700 font-mono text-xs">
-                    {row.entity}
-                  </td>
-                  <td className="py-4 px-6 text-slate-700">
-                    {row.status}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }

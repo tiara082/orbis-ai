@@ -1,51 +1,38 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { GitFork } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { useNavigation } from '../components/layout/NavigationContext'
+import { ResultState } from '../components/common/ResultState'
+import { Button } from '../components/ui/Button'
 
 interface AffectedProductsProps {
   onReturn: () => void
 }
 
 export const AffectedProducts: React.FC<AffectedProductsProps> = ({ onReturn }) => {
+  const { navigate } = useNavigation()
+
   return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="Quality Investigation"
-        breadcrumb="Quality Investigation / Affected Products"
+    <>
+      <PageHeader title="Affected products" description="Synthetic Demo Data · human review required where indicated" />
+      <ResultState
+        status="Potential impact"
+        title="Potentially affected: B-2026-1030-01 → FG-1030-01"
+        description="The finished lot is placed on hold review. Release or recall is decided by the quality team, not by ORBIS."
+        details={[
+          { label: 'Batch', value: 'B-2026-1030-01', mono: true },
+          { label: 'Finished lot', value: 'FG-1030-01', mono: true },
+          { label: 'Product', value: 'Full Cream 1L' }
+        ]}
+        actions={
+          <>
+            <Button onClick={onReturn}>Return to workflow</Button>
+            <Button variant="outline" icon={GitFork} onClick={() => navigate('traceability-forward')}>
+              Open forward trace
+            </Button>
+          </>
+        }
       />
-
-      {/* Main Heading */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-          Potentially affected: B-2026-1030-01 → FG-1030-01
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Synthetic Demo Data · human review required where indicated
-        </p>
-      </div>
-
-      {/* Card */}
-      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs p-8">
-        <div className="mb-6">
-          <span className="inline-block bg-[#D97706] text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">
-            POTENTIAL IMPACT
-          </span>
-        </div>
-
-        <h3 className="text-base font-bold text-slate-900 tracking-tight mb-2">
-          Potentially affected: B-2026-1030-01 → FG-1030-01
-        </h3>
-
-        <p className="text-xs text-slate-500 mb-8">
-          Quality Investigation / Affected Products
-        </p>
-
-        <button
-          onClick={onReturn}
-          className="bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors shadow-2xs"
-        >
-          Return to workflow
-        </button>
-      </div>
-    </div>
+    </>
   )
 }

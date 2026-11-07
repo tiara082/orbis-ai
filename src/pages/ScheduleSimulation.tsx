@@ -1,98 +1,83 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { CircleCheck, Clock, Gauge, ShieldCheck, Timer } from 'lucide-react'
+import { PageHeader } from '../components/layout/PageHeader'
+import { SectionPanel, Card } from '../components/common/SectionPanel'
+import { StatCard } from '../components/common/StatCard'
+import { Callout } from '../components/common/Callout'
+import { ScheduleTimeline } from '../components/planning/ScheduleTimeline'
+import { Button } from '../components/ui/Button'
 
 interface ScheduleSimulationProps {
   onApprove: () => void
 }
 
-export const ScheduleSimulation: React.FC<ScheduleSimulationProps> = ({ onApprove }) => {
-  return (
-    <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-      <Header
-        title="Production Planning"
-        breadcrumb="Production Planning / Schedule Simulation"
-      />
-
-      {/* Main Heading */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-          Schedule simulation · corrected operational logic
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          The 45-minute changeover is preserved because product order is unchanged.
-        </p>
-      </div>
-
-      {/* Card 1: Baseline schedule */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs mb-5">
-        <h3 className="text-base font-bold text-slate-900 tracking-tight mb-3">
-          Baseline schedule
-        </h3>
-
-        <div className="text-xs sm:text-sm text-slate-800 font-medium flex flex-wrap items-center gap-2 mb-4">
-          <span>Full Cream 1L 07:00–10:00</span>
-          <span className="text-slate-400">→</span>
-          <span>Changeover 10:00–10:45</span>
-          <span className="text-slate-400">→</span>
-          <span>Strawberry 1L 10:45–13:45</span>
-        </div>
-
-        <div>
-          <span className="inline-block bg-[#2563EB] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-            13:45 COMPLETE
-          </span>
-        </div>
-      </div>
-
-      {/* Card 2: Valid alternative sequence */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs mb-5">
-        <h3 className="text-base font-bold text-slate-900 tracking-tight mb-3">
-          Valid alternative sequence
-        </h3>
-
-        <div className="text-xs sm:text-sm text-slate-800 font-medium flex flex-wrap items-center gap-2 mb-4">
-          <span>Strawberry 1L 07:00–10:00</span>
-          <span className="text-slate-400">→</span>
-          <span>Changeover 10:00–10:45</span>
-          <span className="text-slate-400">→</span>
-          <span>Full Cream 1L 10:45–13:45</span>
-        </div>
-
-        <div>
-          <span className="inline-block bg-[#7C3AED] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-            13:45 COMPLETE
-          </span>
-        </div>
-      </div>
-
-      {/* Card 3: Optimization result */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs mb-8">
-        <h3 className="text-base font-bold text-slate-900 tracking-tight mb-3">
-          Optimization result
-        </h3>
-
-        <p className="text-xs sm:text-sm font-bold text-[#DC2626] mb-2">
-          No time saved: both sequences contain one product transition and the same 45-minute changeover.
-        </p>
-
-        <p className="text-xs sm:text-sm text-slate-500 mb-4">
-          The alternative may change downstream priority, but it does not eliminate the changeover.
-        </p>
-
-        <p className="text-xs sm:text-sm font-semibold text-[#16A34A]">
-          Constraint validation: AT-02 = 6,300 / 12,000 L = 52.5%; two filling machines permitted.
-        </p>
-      </div>
-
-      {/* Bottom Action Button */}
-      <div className="flex justify-end">
-        <button
-          onClick={onApprove}
-          className="bg-[#16A34A] hover:bg-green-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors shadow-2xs"
-        >
+export const ScheduleSimulation: React.FC<ScheduleSimulationProps> = ({ onApprove }) => (
+  <>
+    <PageHeader
+      title="Schedule simulation"
+      description="Corrected operational logic · the 45-minute changeover is preserved because product order is unchanged"
+      actions={
+        <Button icon={CircleCheck} onClick={onApprove}>
           Approve sequence
-        </button>
-      </div>
+        </Button>
+      }
+    />
+
+    <div className="space-y-5">
+      <SectionPanel title="Scenario result" subtitle="Baseline vs valid alternative on Filling Machine 1">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <StatCard icon={Clock} label="Completion" value="13:45" caption="both sequences" />
+          <StatCard icon={Timer} label="Changeover" value="45 min" caption="one flavour transition" captionTone="warning" />
+          <StatCard icon={Gauge} label="Time saved" value="0 min" caption="no reduction found" captionStatus="Failed" />
+          <StatCard icon={ShieldCheck} label="Constraints" value="Pass" caption="AT-02 at 52.5%" captionStatus="Passed" />
+        </div>
+      </SectionPanel>
+
+      <SectionPanel title="Compare sequences" subtitle="07:00–14:00 · Filling Machine 1">
+        <Card className="p-4">
+          <ScheduleTimeline
+            startHour={7}
+            endHour={14}
+            tickEvery={1}
+            lanes={[
+              {
+                label: 'Baseline schedule',
+                sublabel: '13:45 complete',
+                blocks: [
+                  { label: 'Full Cream 1L', start: 7, end: 10, kind: 'plain' },
+                  { label: 'Changeover', start: 10, end: 10.75, kind: 'changeover' },
+                  { label: 'Strawberry 1L', start: 10.75, end: 13.75, kind: 'flavoured' }
+                ]
+              },
+              {
+                label: 'Valid alternative',
+                sublabel: '13:45 complete',
+                blocks: [
+                  { label: 'Strawberry 1L', start: 7, end: 10, kind: 'flavoured' },
+                  { label: 'Changeover + CIP', start: 10, end: 10.75, kind: 'changeover' },
+                  { label: 'Full Cream 1L', start: 10.75, end: 13.75, kind: 'plain' }
+                ]
+              }
+            ]}
+          />
+        </Card>
+      </SectionPanel>
+
+      <SectionPanel title="Optimization result">
+        <div className="space-y-3">
+          <Callout
+            tone="danger"
+            title="No time saved: both sequences contain one product transition and the same 45-minute changeover."
+            description="The alternative may change downstream priority, but it does not eliminate the changeover."
+          />
+          <Callout
+            tone="success"
+            icon={ShieldCheck}
+            title="Constraint validation: AT-02 = 6,300 / 12,000 L = 52.5%"
+            description="Two filling machines permitted above the 50% minimum aseptic level."
+          />
+        </div>
+      </SectionPanel>
     </div>
-  )
-}
+  </>
+)

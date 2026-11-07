@@ -1,5 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Sidebar, type NavPage } from './components/Sidebar'
+import React, { useState } from 'react'
+import { LayoutGrid, Settings } from 'lucide-react'
+import type { NavPage } from './config/navigation'
+import { AppShell } from './components/layout/AppShell'
+import { PageHeader } from './components/layout/PageHeader'
+import { EmptyState } from './components/common/EmptyState'
 
 // Production Planning
 import { ProductionPlanning } from './pages/ProductionPlanning'
@@ -49,108 +53,59 @@ import { AuditTrailOverview } from './pages/AuditTrailOverview'
 import { AuditEventDetail } from './pages/AuditEventDetail'
 import { AuditIntegrityCheck } from './pages/AuditIntegrityCheck'
 
-import { Menu, X } from 'lucide-react'
-
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<NavPage>('production-planning')
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const contentRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    contentRef.current?.scrollTo({ top: 0 })
-  }, [currentPage])
-
-  const handleNavigate = (page: NavPage) => {
-    setCurrentPage(page)
-    setMobileMenuOpen(false)
-  }
 
   const renderContent = () => {
     switch (currentPage) {
-      // Production Planning & AI Optimization
+      // Production Planning
       case 'production-planning':
-        return (
-          <ProductionPlanning
-            onOpenRecommendation={() => setCurrentPage('ai-recommendation')}
-          />
-        )
+        return <ProductionPlanning onOpenRecommendation={() => setCurrentPage('ai-recommendation')} />
       case 'ai-recommendation':
         return (
           <AIRecommendation
             onCompareSchedule={() => setCurrentPage('schedule-simulation')}
             onApprove={() => setCurrentPage('planning-approval')}
+            onReject={() => setCurrentPage('planning-rejection')}
           />
         )
       case 'schedule-simulation':
-        return (
-          <ScheduleSimulation
-            onApprove={() => setCurrentPage('planning-approval')}
-          />
-        )
+        return <ScheduleSimulation onApprove={() => setCurrentPage('planning-approval')} />
       case 'planning-approval':
-        return (
-          <PlanningApproval
-            onReturn={() => setCurrentPage('production-planning')}
-          />
-        )
+        return <PlanningApproval onReturn={() => setCurrentPage('production-planning')} />
       case 'planning-rejection':
-        return (
-          <PlanningRejection
-            onReturn={() => setCurrentPage('production-planning')}
-          />
-        )
+        return <PlanningRejection onReturn={() => setCurrentPage('production-planning')} />
 
       // AI Intelligence
       case 'ai-prediction-detail':
-        return <AIPredictionDetail />
+        return <AIPredictionDetail onOpenInsufficient={() => setCurrentPage('prediction-insufficient')} />
       case 'ai-production-risk':
         return <AIProductionRisk />
       case 'prediction-insufficient':
-        return (
-          <PredictionInsufficient
-            onReturn={() => setCurrentPage('ai-prediction-detail')}
-          />
-        )
+        return <PredictionInsufficient onReturn={() => setCurrentPage('ai-prediction-detail')} />
 
       // Incoming Tanker
       case 'tanker-overview':
         return (
           <TankerOverview
-            onSelectTanker={(id) => {
-              if (id === 'TRK-045') {
-                setCurrentPage('tanker-delayed')
-              } else {
-                setCurrentPage('tanker-detail')
-              }
-            }}
+            onSelectTanker={(id) => setCurrentPage(id === 'TRK-045' ? 'tanker-delayed' : 'tanker-detail')}
           />
         )
       case 'tanker-detail':
-        return (
-          <TankerDetail
-            onOpenLabStatus={() => setCurrentPage('tanker-lab-status')}
-          />
-        )
+        return <TankerDetail onOpenLabStatus={() => setCurrentPage('tanker-lab-status')} />
       case 'tanker-lab-status':
         return (
           <TankerLabStatus
             onRecordResult={() => setCurrentPage('tanker-unloading')}
+            onOpenPending={() => setCurrentPage('tanker-lab-pending')}
           />
         )
       case 'tanker-lab-pending':
-        return (
-          <TankerLabPending
-            onReturn={() => setCurrentPage('tanker-overview')}
-          />
-        )
+        return <TankerLabPending onReturn={() => setCurrentPage('tanker-overview')} />
       case 'tanker-unloading':
         return <TankerUnloading />
       case 'tanker-delayed':
-        return (
-          <TankerDelayed
-            onReturn={() => setCurrentPage('tanker-overview')}
-          />
-        )
+        return <TankerDelayed onReturn={() => setCurrentPage('tanker-overview')} />
 
       // Data Management
       case 'data-management-overview':
@@ -161,11 +116,7 @@ export const App: React.FC = () => {
           />
         )
       case 'data-management-upload':
-        return (
-          <ExcelUpload
-            onAnalyze={() => setCurrentPage('data-management-mapping')}
-          />
-        )
+        return <ExcelUpload onAnalyze={() => setCurrentPage('data-management-mapping')} />
       case 'data-management-mapping':
         return (
           <ColumnMapping
@@ -174,31 +125,15 @@ export const App: React.FC = () => {
           />
         )
       case 'data-management-validation':
-        return (
-          <ValidationRecords
-            onOpenPreview={() => setCurrentPage('data-management-preview')}
-          />
-        )
+        return <ValidationRecords onOpenPreview={() => setCurrentPage('data-management-preview')} />
       case 'data-management-preview':
-        return (
-          <ImportPreview
-            onConfirm={() => setCurrentPage('data-management-history')}
-          />
-        )
+        return <ImportPreview onConfirm={() => setCurrentPage('data-management-history')} />
       case 'data-management-history':
-        return <ImportHistory />
+        return <ImportHistory onOpenError={() => setCurrentPage('data-management-error')} />
       case 'data-management-error':
-        return (
-          <ImportError
-            onReturn={() => setCurrentPage('data-management-overview')}
-          />
-        )
+        return <ImportError onReturn={() => setCurrentPage('data-management-overview')} />
       case 'data-management-mapping-review':
-        return (
-          <ColumnMappingReview
-            onReturn={() => setCurrentPage('data-management-mapping')}
-          />
-        )
+        return <ColumnMappingReview onReturn={() => setCurrentPage('data-management-mapping')} />
 
       // Traceability
       case 'traceability-overview':
@@ -207,14 +142,11 @@ export const App: React.FC = () => {
             onOpenGraph={() => setCurrentPage('traceability-graph')}
             onOpenForward={() => setCurrentPage('traceability-forward')}
             onOpenBackward={() => setCurrentPage('traceability-backward')}
+            onOpenBatch={() => setCurrentPage('traceability-batch')}
           />
         )
       case 'traceability-graph':
-        return (
-          <MaterialGraph
-            onOpenBatchDetail={() => setCurrentPage('traceability-batch')}
-          />
-        )
+        return <MaterialGraph onOpenBatchDetail={() => setCurrentPage('traceability-batch')} />
       case 'traceability-forward':
         return <ForwardTrace />
       case 'traceability-backward':
@@ -237,17 +169,9 @@ export const App: React.FC = () => {
           />
         )
       case 'affected-batch-analysis':
-        return (
-          <AffectedBatchAnalysis
-            onOpenAffectedProducts={() => setCurrentPage('affected-products')}
-          />
-        )
+        return <AffectedBatchAnalysis onOpenAffectedProducts={() => setCurrentPage('affected-products')} />
       case 'affected-products':
-        return (
-          <AffectedProducts
-            onReturn={() => setCurrentPage('quality-investigation-overview')}
-          />
-        )
+        return <AffectedProducts onReturn={() => setCurrentPage('quality-investigation-overview')} />
 
       // Audit Trail
       case 'audit-trail-overview':
@@ -262,48 +186,37 @@ export const App: React.FC = () => {
       case 'audit-integrity-check':
         return <AuditIntegrityCheck />
 
-      default:
-        return <ProductionPlanning />
+      // System
+      case 'dashboard':
+        return (
+          <>
+            <PageHeader title="Dashboard" description="Plant-wide summary across planning and traceability" />
+            <EmptyState
+              icon={LayoutGrid}
+              title="Dashboard is coming soon"
+              description="Use Production Planning or Traceability to explore the prototype flow."
+              action={{ label: 'Open Production Planning', onClick: () => setCurrentPage('production-planning') }}
+            />
+          </>
+        )
+      case 'settings':
+        return (
+          <>
+            <PageHeader title="Settings" description="Workspace, shift and integration preferences" />
+            <EmptyState
+              icon={Settings}
+              title="Settings are coming soon"
+              description="This prototype runs on synthetic operational data only."
+            />
+          </>
+        )
     }
   }
 
   return (
-    <div className="h-screen overflow-hidden flex bg-[#F8FAFC]">
-      {/* Mobile Menu Backdrop */}
-      {mobileMenuOpen && (
-        <div
-          onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-        />
-      )}
-
-      {/* Sidebar for Desktop & Mobile Drawer */}
-      <div
-        className={`fixed inset-y-0 left-0 z-50 transform md:relative md:h-full md:shrink-0 md:translate-x-0 transition-transform duration-200 ease-in-out ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        <Sidebar currentPage={currentPage} onNavigate={handleNavigate} />
-      </div>
-
-      {/* Main Content Area */}
-      <div ref={contentRef} className="flex-1 flex flex-col min-w-0 min-h-0 overflow-y-auto">
-        {/* Mobile Header Bar */}
-        <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[#142B49] text-white">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1 rounded hover:bg-slate-700 focus:outline-hidden"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-          <div className="font-bold tracking-wider">ORBIS</div>
-          <div className="text-xs text-slate-300">SHIFT A</div>
-        </div>
-
-        {/* Page Content */}
-        <main className="flex-1 flex flex-col">{renderContent()}</main>
-      </div>
-    </div>
+    <AppShell currentPage={currentPage} onNavigate={setCurrentPage}>
+      {renderContent()}
+    </AppShell>
   )
 }
 
