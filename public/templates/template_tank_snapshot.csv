@@ -1,0 +1,3 @@
+asset_id,current_volume_l,sku_id,material_state,batch_id,material_entry_time,last_cip_completed,status,recorded_at
+RMT-01,32000,,raw,B-20261107-RMT01-01,2026-11-07 02:10,2026-11-06 23:30,in_use,2026-11-07 06:00
+SFP-04,0,,,,,2026-11-07 04:15,available,2026-11-07 06:00

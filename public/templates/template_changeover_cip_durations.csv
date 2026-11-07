@@ -1,0 +1,5 @@
+category,rule_id,asset_or_line_id,duration_min,notes
+changeover,VARIANT,FL-05,45,Flavour change Chocolate to Full Cream; observed 15-60 min
+changeover,SIZE,,20,Same flavour different pack size; applies to all lines
+cip,CIP_FLAVOUR,AT-03,60,Chocolate or Strawberry to Full Cream
+cip,CIP_EMPTY,SFP-04,90,Tank empty before refill

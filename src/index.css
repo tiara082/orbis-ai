@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-brand: #7C5CFC;
+  --color-brand-hover: #6B4CF0;
+  --color-brand-muted: #F1EDFF;
+  --color-brand-subtle: #E4DCFF;
+
+  --color-ink: #6B7280;
+  --color-ink-strong: #111827;
+  --color-canvas: #F3F4F6;
+
+  --color-success: #16A34A;
+  --color-success-muted: #ECFDF3;
+  --color-success-subtle: #BBF7D0;
+  --color-warning: #D97706;
+  --color-warning-muted: #FFF7E6;
+  --color-warning-subtle: #FDE68A;
+  --color-danger: #DC2626;
+  --color-danger-muted: #FEF2F2;
+  --color-danger-subtle: #FECACA;
+  --color-info: #2563EB;
+  --color-info-muted: #EFF6FF;
+  --color-info-subtle: #BFDBFE;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-200) transparent;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #ffffff;
+  color: var(--color-ink-strong);
+  font-family: var(--font-sans);
+}
