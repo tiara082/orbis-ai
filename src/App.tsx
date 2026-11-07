@@ -6,52 +6,52 @@ import { PageHeader } from './components/layout/PageHeader'
 import { EmptyState } from './components/common/EmptyState'
 
 // Production Planning
-import { ProductionPlanning } from './pages/ProductionPlanning'
-import { AIRecommendation } from './pages/AIRecommendation'
-import { ScheduleSimulation } from './pages/ScheduleSimulation'
-import { PlanningApproval } from './pages/PlanningApproval'
-import { PlanningRejection } from './pages/PlanningRejection'
+import { ProductionPlanning } from './pages/production-planning/ProductionPlanning'
+import { AIRecommendation } from './pages/production-planning/AIRecommendation'
+import { ScheduleSimulation } from './pages/production-planning/ScheduleSimulation'
+import { PlanningApproval } from './pages/production-planning/PlanningApproval'
+import { PlanningRejection } from './pages/production-planning/PlanningRejection'
 
 // AI Intelligence
-import { AIPredictionDetail } from './pages/AIPredictionDetail'
-import { AIProductionRisk } from './pages/AIProductionRisk'
-import { PredictionInsufficient } from './pages/PredictionInsufficient'
+import { AIPredictionDetail } from './pages/ai-intelligence/AIPredictionDetail'
+import { AIProductionRisk } from './pages/ai-intelligence/AIProductionRisk'
+import { PredictionInsufficient } from './pages/ai-intelligence/PredictionInsufficient'
 
 // Incoming Tanker
-import { TankerOverview } from './pages/TankerOverview'
-import { TankerDetail } from './pages/TankerDetail'
-import { TankerLabStatus } from './pages/TankerLabStatus'
-import { TankerLabPending } from './pages/TankerLabPending'
-import { TankerUnloading } from './pages/TankerUnloading'
-import { TankerDelayed } from './pages/TankerDelayed'
+import { TankerOverview } from './pages/tanker/TankerOverview'
+import { TankerDetail } from './pages/tanker/TankerDetail'
+import { TankerLabStatus } from './pages/tanker/TankerLabStatus'
+import { TankerLabPending } from './pages/tanker/TankerLabPending'
+import { TankerUnloading } from './pages/tanker/TankerUnloading'
+import { TankerDelayed } from './pages/tanker/TankerDelayed'
 
 // Data Management
-import { DataManagementOverview } from './pages/DataManagementOverview'
-import { ExcelUpload } from './pages/ExcelUpload'
-import { ColumnMapping } from './pages/ColumnMapping'
-import { ValidationRecords } from './pages/ValidationRecords'
-import { ImportPreview } from './pages/ImportPreview'
-import { ImportHistory } from './pages/ImportHistory'
-import { ImportError } from './pages/ImportError'
-import { ColumnMappingReview } from './pages/ColumnMappingReview'
+import { DataManagementOverview } from './pages/data-management/DataManagementOverview'
+import { ExcelUpload } from './pages/data-management/ExcelUpload'
+import { ColumnMapping } from './pages/data-management/ColumnMapping'
+import { ValidationRecords } from './pages/data-management/ValidationRecords'
+import { ImportPreview } from './pages/data-management/ImportPreview'
+import { ImportHistory } from './pages/data-management/ImportHistory'
+import { ImportError } from './pages/data-management/ImportError'
+import { ColumnMappingReview } from './pages/data-management/ColumnMappingReview'
 
 // Traceability
-import { TraceabilityOverview } from './pages/TraceabilityOverview'
-import { MaterialGraph } from './pages/MaterialGraph'
-import { ForwardTrace } from './pages/ForwardTrace'
-import { BackwardTrace } from './pages/BackwardTrace'
-import { BatchDetail } from './pages/BatchDetail'
+import { TraceabilityOverview } from './pages/traceability/TraceabilityOverview'
+import { MaterialGraph } from './pages/traceability/MaterialGraph'
+import { ForwardTrace } from './pages/traceability/ForwardTrace'
+import { BackwardTrace } from './pages/traceability/BackwardTrace'
+import { BatchDetail } from './pages/traceability/BatchDetail'
 
 // Quality Investigation
-import { QualityInvestigationOverview } from './pages/QualityInvestigationOverview'
-import { QualityInvestigationDetail } from './pages/QualityInvestigationDetail'
-import { AffectedBatchAnalysis } from './pages/AffectedBatchAnalysis'
-import { AffectedProducts } from './pages/AffectedProducts'
+import { QualityInvestigationOverview } from './pages/quality-investigation/QualityInvestigationOverview'
+import { QualityInvestigationDetail } from './pages/quality-investigation/QualityInvestigationDetail'
+import { AffectedBatchAnalysis } from './pages/quality-investigation/AffectedBatchAnalysis'
+import { AffectedProducts } from './pages/quality-investigation/AffectedProducts'
 
 // Audit Trail
-import { AuditTrailOverview } from './pages/AuditTrailOverview'
-import { AuditEventDetail } from './pages/AuditEventDetail'
-import { AuditIntegrityCheck } from './pages/AuditIntegrityCheck'
+import { AuditTrailOverview } from './pages/audit-trail/AuditTrailOverview'
+import { AuditEventDetail } from './pages/audit-trail/AuditEventDetail'
+import { AuditIntegrityCheck } from './pages/audit-trail/AuditIntegrityCheck'
 
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<NavPage>('production-planning')
