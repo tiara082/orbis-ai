@@ -77,13 +77,15 @@ Status → tone **jangan hardcode** per halaman. Tambahkan key di `STATUS_MAP` (
 ## 4. Layout Shell
 
 ```
-AppShell (bg-canvas, md:p-3 gap-3)
-├── Sidebar         floating, bg-gray-50 rounded-2xl, grouped modules dari config
-└── content panel   bg-white rounded-2xl border shadow-sm → <main max-w-[1400px]>
+AppShell (bg-white, no outer padding/gap — sidebar dan content menyatu)
+├── Sidebar         flush left, bg-gray-50, tanpa border; LanguageToggle EN/ID di footer
+└── content panel   bg-white, tanpa border/radius → <main max-w-[1400px]>
     └── Page
         ├── PageHeader   breadcrumb + meta · title + actions · ModuleTabs
         └── space-y-5 → SectionPanel / Callout / ResultState ...
 ```
+
+Copy UI lewat `useTranslation()` (`src/lib/i18n`). Tambah string baru di `en.ts` **dan** `id.ts`. Jangan hardcode label navigasi.
 
 - Navigasi **state-based** (tanpa router). Semua modul, tab, dan state page didefinisikan di `src/config/navigation.ts` (`NAV_GROUPS`). Tambah halaman = tambah `NavPage` + entry di config + `case` di `App.tsx`.
 - **Setiap page merender `<PageHeader>` sendiri** (title/actions spesifik halaman). Breadcrumb, meta, dan tabs otomatis dari config via `useNavigation()`.
