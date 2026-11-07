@@ -1,10 +1,48 @@
 import React, { useState } from 'react'
 import { Header } from '../components/Header'
-import { Check } from 'lucide-react'
+import { Check, Download } from 'lucide-react'
 
 interface ExcelUploadProps {
   onAnalyze: () => void
 }
+
+const templates = [
+  {
+    file: 'template_asset_parameters.csv',
+    label: 'Asset parameters',
+    description: 'Tank capacity, flow rates, filling speed, holding time, CIP duration'
+  },
+  {
+    file: 'template_changeover_cip_durations.csv',
+    label: 'Changeover & CIP durations',
+    description: 'Actual minutes per Variant / Size / Paper change and CIP trigger'
+  },
+  {
+    file: 'template_production_orders.csv',
+    label: 'Production orders',
+    description: 'Daily orders per finished SKU, volume target, deadline, priority'
+  },
+  {
+    file: 'template_tanker_deliveries.csv',
+    label: 'Tanker deliveries',
+    description: 'Incoming road tankers from farm delivery notes, volume and ETA'
+  },
+  {
+    file: 'template_tank_snapshot.csv',
+    label: 'Tank snapshot (06:00)',
+    description: 'Opening volume, batch, holding start and CIP status per tank'
+  },
+  {
+    file: 'template_asset_availability.csv',
+    label: 'Asset availability',
+    description: 'Planned maintenance, trial, calibration and CIP windows'
+  },
+  {
+    file: 'template_farms.csv',
+    label: 'Farms',
+    description: 'Master data of supplying farms for origin traceability'
+  }
+]
 
 export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onAnalyze }) => {
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null)
@@ -96,6 +134,36 @@ export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onAnalyze }) => {
               <span>Synthetic Demo Data only</span>
             </li>
           </ul>
+        </div>
+      </div>
+
+      {/* Available Templates */}
+      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs p-6 mb-8">
+        <div className="mb-5">
+          <h3 className="text-base font-bold text-slate-900 tracking-tight">
+            Available templates
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Download a template, fill it in Excel, then upload it above
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {templates.map((template) => (
+            <a
+              key={template.file}
+              href={`/templates/${template.file}`}
+              download
+              className="group flex items-start gap-3 p-4 rounded-lg border border-slate-200 hover:border-[#2563EB] hover:bg-blue-50/40 transition-colors"
+            >
+              <Download className="w-4 h-4 text-[#2563EB] shrink-0 mt-0.5" strokeWidth={2.5} />
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-slate-900">{template.label}</p>
+                <p className="text-xs text-slate-500 mt-0.5">{template.description}</p>
+                <p className="text-[11px] font-mono text-slate-400 mt-1.5 truncate">{template.file}</p>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
 
