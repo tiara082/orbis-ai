@@ -4,6 +4,7 @@ import type { NavPage } from './config/navigation'
 import { AppShell } from './components/layout/AppShell'
 import { PageHeader } from './components/layout/PageHeader'
 import { EmptyState } from './components/common/EmptyState'
+import { useTranslation } from './lib/i18n'
 
 // Production Planning
 import { ProductionPlanning } from './pages/production-planning/ProductionPlanning'
@@ -55,6 +56,7 @@ import { AuditIntegrityCheck } from './pages/audit-trail/AuditIntegrityCheck'
 
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<NavPage>('production-planning')
+  const { t } = useTranslation()
 
   const renderContent = () => {
     switch (currentPage) {
@@ -190,23 +192,23 @@ export const App: React.FC = () => {
       case 'dashboard':
         return (
           <>
-            <PageHeader title="Dashboard" description="Plant-wide summary across planning and traceability" />
+            <PageHeader title={t('pages.dashboard.title')} description={t('pages.dashboard.description')} />
             <EmptyState
               icon={LayoutGrid}
-              title="Dashboard is coming soon"
-              description="Use Production Planning or Traceability to explore the prototype flow."
-              action={{ label: 'Open Production Planning', onClick: () => setCurrentPage('production-planning') }}
+              title={t('pages.dashboard.emptyTitle')}
+              description={t('pages.dashboard.emptyDescription')}
+              action={{ label: t('pages.dashboard.emptyAction'), onClick: () => setCurrentPage('production-planning') }}
             />
           </>
         )
       case 'settings':
         return (
           <>
-            <PageHeader title="Settings" description="Workspace, shift and integration preferences" />
+            <PageHeader title={t('pages.settings.title')} description={t('pages.settings.description')} />
             <EmptyState
               icon={Settings}
-              title="Settings are coming soon"
-              description="This prototype runs on synthetic operational data only."
+              title={t('pages.settings.emptyTitle')}
+              description={t('pages.settings.emptyDescription')}
             />
           </>
         )

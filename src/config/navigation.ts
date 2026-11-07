@@ -89,12 +89,14 @@ export interface NavModule {
 }
 
 export interface NavGroup {
+  id: 'operations' | 'traceability' | 'system'
   label: string
   modules: NavModule[]
 }
 
 export const NAV_GROUPS: NavGroup[] = [
   {
+    id: 'operations',
     label: 'Operations',
     modules: [
       {
@@ -172,6 +174,7 @@ export const NAV_GROUPS: NavGroup[] = [
     ]
   },
   {
+    id: 'traceability',
     label: 'Traceability',
     modules: [
       {
@@ -215,6 +218,7 @@ export const NAV_GROUPS: NavGroup[] = [
     ]
   },
   {
+    id: 'system',
     label: 'System',
     modules: [
       {
