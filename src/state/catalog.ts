@@ -26,6 +26,13 @@ import {
   type MarketVariant,
   type PackSize
 } from '../data/reference'
+import {
+  fetchRemoteCatalog,
+  syncCollectionToSupabase,
+  seedAllMasterDataToSupabase,
+  checkSupabaseHealth,
+  type SupabaseHealth
+} from '../services/supabaseService'
 
 export interface CatalogData {
   liquidSkus: LiquidSku[]
@@ -43,6 +50,15 @@ export interface CatalogData {
 }
 
 export type CatalogCollection = keyof CatalogData
+
+export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error'
+
+export interface Snapshot {
+  data: CatalogData
+  customized: boolean
+  syncStatus: SyncStatus
+  syncMessage?: string
+}
 
 const STORAGE_KEY = 'orbis-master-data'
 
@@ -67,11 +83,6 @@ function cloneOfficial(): CatalogData {
   return structuredClone(official())
 }
 
-interface Snapshot {
-  data: CatalogData
-  customized: boolean
-}
-
 function publish(snapshot: Snapshot) {
   const { data } = snapshot
   setCatalogOverlay(
@@ -93,16 +104,16 @@ function publish(snapshot: Snapshot) {
 function load(): Snapshot {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY)
-    if (!raw) return { data: cloneOfficial(), customized: false }
-    const parsed = JSON.parse(raw) as Snapshot
+    if (!raw) return { data: cloneOfficial(), customized: false, syncStatus: 'idle' }
+    const parsed = JSON.parse(raw) as Partial<Snapshot>
     const base = cloneOfficial()
     const data = { ...base }
     for (const key of Object.keys(base) as CatalogCollection[]) {
       if (Array.isArray(parsed.data?.[key])) data[key] = parsed.data[key] as never
     }
-    return { data, customized: parsed.customized === true }
+    return { data, customized: parsed.customized === true, syncStatus: 'idle' }
   } catch {
-    return { data: cloneOfficial(), customized: false }
+    return { data: cloneOfficial(), customized: false, syncStatus: 'idle' }
   }
 }
 
@@ -140,12 +151,79 @@ export function upsertCatalog<K extends CatalogCollection>(
     byId.set(id, row)
   }
   const merged = [...current.map((row) => byId.get(rowKey(row)) as CatalogData[K][number]), ...fresh]
-  commit({ data: { ...snapshot.data, [key]: merged }, customized: true })
+  
+  commit({
+    ...snapshot,
+    data: { ...snapshot.data, [key]: merged },
+    customized: true,
+    syncStatus: 'syncing',
+    syncMessage: 'Menyimpan ke Supabase...'
+  })
+
+  // Asynchronous Supabase write
+  syncCollectionToSupabase(key, merged)
+    .then((res) => {
+      if (res.success) {
+        commit({
+          ...snapshot,
+          syncStatus: 'synced',
+          syncMessage: 'Perubahan berhasil disimpan ke Supabase'
+        })
+      } else {
+        commit({
+          ...snapshot,
+          syncStatus: 'error',
+          syncMessage: 'Tersimpan lokal; Supabase belum disinkronkan'
+        })
+      }
+    })
+    .catch(() => {
+      commit({
+        ...snapshot,
+        syncStatus: 'error',
+        syncMessage: 'Gagal mengirim ke Supabase'
+      })
+    })
+
   return { added, updated }
 }
 
 export function resetCatalog() {
-  commit({ data: cloneOfficial(), customized: false })
+  commit({ data: cloneOfficial(), customized: false, syncStatus: 'idle' })
+}
+
+export async function pushAllToSupabase() {
+  commit({ ...snapshot, syncStatus: 'syncing', syncMessage: 'Mengunggah semua Master Data ke Supabase...' })
+  try {
+    await seedAllMasterDataToSupabase()
+    commit({ ...snapshot, syncStatus: 'synced', syncMessage: 'Semua 13 Master Data tersinkron ke Supabase' })
+    return { success: true }
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    commit({ ...snapshot, syncStatus: 'error', syncMessage: `Gagal upload ke Supabase: ${msg}` })
+    return { success: false, error: msg }
+  }
+}
+
+/** Check health and attempt to load latest catalog from Supabase on start */
+export async function initSupabaseCatalog(): Promise<SupabaseHealth> {
+  const health = await checkSupabaseHealth()
+  if (health.connected && health.tablesExist) {
+    try {
+      const remote = await fetchRemoteCatalog()
+      if (remote && remote.liquidSkus && remote.liquidSkus.length > 0) {
+        commit({
+          data: remote,
+          customized: true,
+          syncStatus: 'synced',
+          syncMessage: 'Memuat data dari Supabase'
+        })
+      }
+    } catch (e) {
+      console.warn('Could not fetch remote catalog:', e)
+    }
+  }
+  return health
 }
 
 function subscribe(listener: () => void) {
