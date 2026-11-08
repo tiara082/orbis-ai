@@ -108,6 +108,11 @@ export const en = {
           title: 'Batches',
           description: 'Every batch from tanker to finished goods, with mass balance per batch'
         },
+        'batch-detail': {
+          label: 'Batch detail',
+          title: 'Batch detail & blockchain verification',
+          description: 'Batch facts, genealogy relationships, material allocation, and ledger integrity verification'
+        },
         transfers: {
           label: 'Transfer history',
           title: 'Transfer history',
@@ -789,8 +794,8 @@ export const en = {
     rules: {
       constraints: 'Constraint catalog',
       constraintsHint: '“Computed” rules are checked live in the app',
-      changeover: 'Changeover rules',
-      changeoverHint: 'Catalog durations are X; the planner uses the scenario value',
+      changeover: 'Changeover Rules & Machine Downtime',
+      changeoverHint: 'The system automatically calculates downtime when switching products after completing production',
       cip: 'CIP rules',
       cipHint: 'CIP is independent of changeover and can close several triggers in one cycle',
       assumptions: 'Project assumptions',
@@ -1029,8 +1034,10 @@ export const en = {
       utilizationHint: 'Share of rated speed actually achieved',
       start: 'Plan start',
       changeover: 'Changeover',
-      changeoverHint: 'Flavour change takes 15, 40, or 60 min in the field; the example plan uses 30',
-      variantHint: 'Manual flavour change',
+      changeoverHint: 'Automatic downtime: Variant Change (60 min), Size Change (40 min), Paper Roll Change (15 min)',
+      variantHint: '60 min pause. Hot CIP wash of pipes and machines to prevent flavour cross-contamination.',
+      sizeHint: '40 min pause. Mechanical adjustment of cutter and carton folder.',
+      paperHint: '15 min pause. Roll change only without machine disassembly.',
       cip: 'CIP durations',
       cipHint: 'Catalog marks these X; values below are scenario values',
       cipRule: {

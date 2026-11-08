@@ -49,6 +49,38 @@ const SCENARIO_DURATION: Record<string, number | undefined> = {
   CIP_EMPTY: 20
 }
 
+const CHANGEOVER_GUIDE_CARDS = [
+  {
+    ruleId: 'VARIANT',
+    title: 'Ganti Rasa',
+    example: 'Contoh: Cokelat ke Full Cream',
+    duration: 'Jeda 60 Menit',
+    tone: 'warning' as const,
+    reason: 'Pipa dan mesin wajib dicuci total dengan sistem CIP panas agar rasa sebelumnya tidak mencemari rasa berikutnya.',
+    precedence: 'Prioritas 1 (Override Size & Paper Change)'
+  },
+  {
+    ruleId: 'SIZE',
+    title: 'Ganti Ukuran',
+    example: 'Contoh: 1 Liter ke 250 ml',
+    duration: 'Jeda 40 Menit',
+    tone: 'info' as const,
+    reason: 'Mesin perlu penyesuaian mekanis pemotong dan pelipat karton.',
+    precedence: 'Prioritas 2 (Override Paper Change)'
+  },
+  {
+    ruleId: 'PAPER',
+    title: 'Ganti Gulungan Kertas',
+    example: 'Rasa & Ukuran Sama',
+    duration: 'Jeda 15 Menit',
+    tone: 'success' as const,
+    reason: 'Hanya mengganti gulungan kertas kemasan baru tanpa membongkar mesin.',
+    precedence: 'Prioritas 3'
+  }
+]
+
+
+
 function RulesPage() {
   const { t } = useTranslation()
   const fmt = useFormat()
@@ -131,7 +163,34 @@ function RulesPage() {
           dense
           note={<CatalogNote files={['constraint_catalog.csv']} />}
         />
-        <DataTable
+        <div className="space-y-3">
+          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-xs">
+            <div className="mb-3">
+              <h3 className="text-sm font-semibold text-ink-strong">Panduan Waktu Jeda Changeover Otomatis</h3>
+              <p className="text-xs text-ink mt-0.5">
+                Ketika mesin selesai memproduksi satu produk dan hendak beralih ke produk lain, sistem menghitung waktu henti ini secara otomatis berdasarkan aturan SOP berikut:
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {CHANGEOVER_GUIDE_CARDS.map((card) => (
+                <div key={card.ruleId} className="p-3.5 rounded-lg border border-gray-150 bg-surface flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-ink-strong">{card.title}</span>
+                      <Badge tone={card.tone}>{card.duration}</Badge>
+                    </div>
+                    <p className="text-[11px] font-medium text-brand mt-1">{card.example}</p>
+                    <p className="text-xs text-ink mt-2 leading-relaxed">{card.reason}</p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-ink-muted">
+                    <span className="font-mono">{card.ruleId}</span>
+                    <span>{card.precedence}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <DataTable
           title={t('master.rules.changeover')}
           subtitle={t('master.rules.changeoverHint')}
           toolbar={
@@ -149,6 +208,7 @@ function RulesPage() {
           dense
           note={<CatalogNote files={['changeover_rules.csv']} />}
         />
+        </div>
         <DataTable
           title={t('master.rules.cip')}
           subtitle={t('master.rules.cipHint')}
@@ -185,3 +245,5 @@ function RulesPage() {
     </>
   )
 }
+
+

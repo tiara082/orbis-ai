@@ -110,6 +110,11 @@ export const id: Messages = {
           title: 'Batch',
           description: 'Semua batch dari tanker sampai barang jadi, lengkap dengan mass balance'
         },
+        'batch-detail': {
+          label: 'Detail batch',
+          title: 'Detail batch & verifikasi blockchain',
+          description: 'Fakta batch, relasi genealogi, alokasi material, dan verifikasi integritas ledger'
+        },
         transfers: {
           label: 'Riwayat transfer',
           title: 'Riwayat transfer',
@@ -570,7 +575,7 @@ export const id: Messages = {
     kind: {
       plain: 'Full Cream',
       flavoured: 'Berperisa',
-      changeover: 'Changeover',
+      changeover: 'Jeda Changeover',
       cip: 'CIP',
       wait: 'Menunggu',
       maintenance: 'Maintenance',
@@ -578,9 +583,9 @@ export const id: Messages = {
     },
     block: {
       production: 'Produksi',
-      VARIANT: 'Variant changeover',
-      SIZE: 'Size change',
-      PAPER: 'Paper change',
+      VARIANT: 'Ganti Rasa (Variant)',
+      SIZE: 'Ganti Ukuran (Size)',
+      PAPER: 'Ganti Gulungan Kertas (Paper)',
       CIP: 'CIP',
       wait: 'Menunggu tangki aseptik',
       maintenance: 'Maintenance',
@@ -791,8 +796,8 @@ export const id: Messages = {
     rules: {
       constraints: 'Katalog constraint',
       constraintsHint: 'Aturan “Dihitung” dicek langsung di aplikasi',
-      changeover: 'Aturan changeover',
-      changeoverHint: 'Durasi katalog bernilai X; planner memakai nilai skenario',
+      changeover: 'Aturan Changeover & Waktu Henti Mesin',
+      changeoverHint: 'Sistem menghitung jeda waktu henti secara otomatis saat mesin selesai memproduksi satu produk dan beralih ke produk lain',
       cip: 'Aturan CIP',
       cipHint: 'CIP independen dari changeover dan satu siklus bisa menutup beberapa pemicu',
       assumptions: 'Asumsi proyek',
@@ -1030,9 +1035,11 @@ export const id: Messages = {
       utilization: 'Utilisasi',
       utilizationHint: 'Porsi kecepatan nominal yang benar-benar tercapai',
       start: 'Mulai rencana',
-      changeover: 'Changeover',
-      changeoverHint: 'Ganti rasa di lapangan 15, 40, atau 60 mnt; contoh rencana memakai 30',
-      variantHint: 'Ganti rasa manual',
+      changeover: 'Jeda Changeover',
+      changeoverHint: 'Waktu henti otomatis: Ganti Rasa (60 mnt), Ganti Ukuran (40 mnt), Ganti Gulungan Kertas (15 mnt)',
+      variantHint: 'Jeda 60 mnt. Pipa dan mesin wajib dicuci total dengan sistem CIP panas agar rasa sebelumnya tidak mencemari rasa berikutnya.',
+      sizeHint: 'Jeda 40 mnt. Mesin perlu penyesuaian mekanis pemotong dan pelipat karton.',
+      paperHint: 'Jeda 15 mnt. Hanya mengganti gulungan kertas kemasan baru tanpa membongkar mesin.',
       cip: 'Durasi CIP',
       cipHint: 'Katalog menandai ini X; nilai di bawah adalah nilai skenario',
       cipRule: {
@@ -1081,7 +1088,7 @@ export const id: Messages = {
       },
       'variant-60': {
         title: 'Ganti rasa 60 mnt',
-        body: 'Variant changeover memakai durasi lapangan terpanjang'
+        body: 'Variant changeover memakai jeda SOP standar 60 menit dengan pencucian CIP panas'
       },
       'milk-short': {
         title: 'TRK-B01 ditolak',
@@ -1118,7 +1125,7 @@ export const id: Messages = {
         rmt: { title: 'CIP RMT-03 sebelum TRK-A03 di-release', body: 'Mulai CIP sekarang agar tangki siap menerima susu masuk.' },
         sfp: { title: 'Pakai atau putuskan SFP-05 lebih dulu', body: 'Jadwalkan UHT Full Cream di SFP-05 sebelum batas holding atau minta keputusan QA.' },
         split: { title: 'Bagi chocolate ke dua line', body: 'FL-02 ikut setelah AT-01 ganti produk agar selesai lebih cepat.' },
-        variant: { title: 'Siapkan ganti rasa 60 mnt', body: 'Urutan tetap; chocolate selesai lebih lambat tetapi tepat waktu.' },
+        variant: { title: 'Ganti rasa 60 mnt (CIP Panas)', body: 'Pipa & mesin dicuci total CIP panas; chocolate selesai tepat waktu sesuai standar SOP.' },
         milk: { title: 'Kurangi atau pindahkan order', body: 'Jika tanker ditolak, kurangi order prioritas terendah atau pindahkan ke besok.' }
       }
     }

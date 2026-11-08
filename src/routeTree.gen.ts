@@ -29,6 +29,7 @@ import { Route as MasterDataRulesRouteImport } from './routes/master-data/rules'
 import { Route as MilkTraceabilityIndexRouteImport } from './routes/milk-traceability/index'
 import { Route as MilkTraceabilityAuditLogRouteImport } from './routes/milk-traceability/audit-log'
 import { Route as MilkTraceabilityBackwardRouteImport } from './routes/milk-traceability/backward'
+import { Route as MilkTraceabilityBatchDetailRouteImport } from './routes/milk-traceability/batch-detail'
 import { Route as MilkTraceabilityBatchesRouteImport } from './routes/milk-traceability/batches'
 import { Route as MilkTraceabilityForwardRouteImport } from './routes/milk-traceability/forward'
 import { Route as MilkTraceabilityGraphRouteImport } from './routes/milk-traceability/graph'
@@ -152,6 +153,12 @@ const MilkTraceabilityBackwardRoute =
   MilkTraceabilityBackwardRouteImport.update({
     id: '/milk-traceability/backward',
     path: '/milk-traceability/backward',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MilkTraceabilityBatchDetailRoute =
+  MilkTraceabilityBatchDetailRouteImport.update({
+    id: '/milk-traceability/batch-detail',
+    path: '/milk-traceability/batch-detail',
     getParentRoute: () => rootRouteImport,
   } as any)
 const MilkTraceabilityBatchesRoute = MilkTraceabilityBatchesRouteImport.update({
@@ -285,6 +292,7 @@ export interface FileRoutesByFullPath {
   '/master-data/rules': typeof MasterDataRulesRoute
   '/milk-traceability/audit-log': typeof MilkTraceabilityAuditLogRoute
   '/milk-traceability/backward': typeof MilkTraceabilityBackwardRoute
+  '/milk-traceability/batch-detail': typeof MilkTraceabilityBatchDetailRoute
   '/milk-traceability/batches': typeof MilkTraceabilityBatchesRoute
   '/milk-traceability/forward': typeof MilkTraceabilityForwardRoute
   '/milk-traceability/graph': typeof MilkTraceabilityGraphRoute
@@ -327,6 +335,7 @@ export interface FileRoutesByTo {
   '/master-data/rules': typeof MasterDataRulesRoute
   '/milk-traceability/audit-log': typeof MilkTraceabilityAuditLogRoute
   '/milk-traceability/backward': typeof MilkTraceabilityBackwardRoute
+  '/milk-traceability/batch-detail': typeof MilkTraceabilityBatchDetailRoute
   '/milk-traceability/batches': typeof MilkTraceabilityBatchesRoute
   '/milk-traceability/forward': typeof MilkTraceabilityForwardRoute
   '/milk-traceability/graph': typeof MilkTraceabilityGraphRoute
@@ -370,6 +379,7 @@ export interface FileRoutesById {
   '/master-data/rules': typeof MasterDataRulesRoute
   '/milk-traceability/audit-log': typeof MilkTraceabilityAuditLogRoute
   '/milk-traceability/backward': typeof MilkTraceabilityBackwardRoute
+  '/milk-traceability/batch-detail': typeof MilkTraceabilityBatchDetailRoute
   '/milk-traceability/batches': typeof MilkTraceabilityBatchesRoute
   '/milk-traceability/forward': typeof MilkTraceabilityForwardRoute
   '/milk-traceability/graph': typeof MilkTraceabilityGraphRoute
@@ -414,6 +424,7 @@ export interface FileRouteTypes {
     | '/master-data/rules'
     | '/milk-traceability/audit-log'
     | '/milk-traceability/backward'
+    | '/milk-traceability/batch-detail'
     | '/milk-traceability/batches'
     | '/milk-traceability/forward'
     | '/milk-traceability/graph'
@@ -456,6 +467,7 @@ export interface FileRouteTypes {
     | '/master-data/rules'
     | '/milk-traceability/audit-log'
     | '/milk-traceability/backward'
+    | '/milk-traceability/batch-detail'
     | '/milk-traceability/batches'
     | '/milk-traceability/forward'
     | '/milk-traceability/graph'
@@ -498,6 +510,7 @@ export interface FileRouteTypes {
     | '/master-data/rules'
     | '/milk-traceability/audit-log'
     | '/milk-traceability/backward'
+    | '/milk-traceability/batch-detail'
     | '/milk-traceability/batches'
     | '/milk-traceability/forward'
     | '/milk-traceability/graph'
@@ -541,6 +554,7 @@ export interface RootRouteChildren {
   MasterDataRulesRoute: typeof MasterDataRulesRoute
   MilkTraceabilityAuditLogRoute: typeof MilkTraceabilityAuditLogRoute
   MilkTraceabilityBackwardRoute: typeof MilkTraceabilityBackwardRoute
+  MilkTraceabilityBatchDetailRoute: typeof MilkTraceabilityBatchDetailRoute
   MilkTraceabilityBatchesRoute: typeof MilkTraceabilityBatchesRoute
   MilkTraceabilityForwardRoute: typeof MilkTraceabilityForwardRoute
   MilkTraceabilityGraphRoute: typeof MilkTraceabilityGraphRoute
@@ -710,6 +724,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MilkTraceabilityBackwardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/milk-traceability/batch-detail': {
+      id: '/milk-traceability/batch-detail'
+      path: '/milk-traceability/batch-detail'
+      fullPath: '/milk-traceability/batch-detail'
+      preLoaderRoute: typeof MilkTraceabilityBatchDetailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/milk-traceability/batches': {
       id: '/milk-traceability/batches'
       path: '/milk-traceability/batches'
@@ -869,6 +890,7 @@ const rootRouteChildren: RootRouteChildren = {
   MasterDataRulesRoute: MasterDataRulesRoute,
   MilkTraceabilityAuditLogRoute: MilkTraceabilityAuditLogRoute,
   MilkTraceabilityBackwardRoute: MilkTraceabilityBackwardRoute,
+  MilkTraceabilityBatchDetailRoute: MilkTraceabilityBatchDetailRoute,
   MilkTraceabilityBatchesRoute: MilkTraceabilityBatchesRoute,
   MilkTraceabilityForwardRoute: MilkTraceabilityForwardRoute,
   MilkTraceabilityGraphRoute: MilkTraceabilityGraphRoute,

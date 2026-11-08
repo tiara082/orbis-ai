@@ -184,7 +184,16 @@ export async function fetchRemoteCatalog() {
     precedence: row.precedence === 1 ? 'FIRST' : row.precedence === 2 ? 'SECOND' : row.precedence === 3 ? 'THIRD' : 'LAST',
     condition: row.condition,
     activity: row.activity,
-    duration: 'pending',
+    duration:
+      row.duration_minutes != null
+        ? Number(row.duration_minutes)
+        : row.rule_id === 'VARIANT'
+          ? 60
+          : row.rule_id === 'SIZE'
+            ? 40
+            : row.rule_id === 'PAPER'
+              ? 15
+              : 0,
     note: row.additional_note || ''
   }))
 
@@ -332,11 +341,22 @@ export async function syncCollectionToSupabase(key: string, rows: unknown[]) {
       case 'changeovers': {
         const payload = (rows as ChangeoverRule[]).map((r) => {
           const prec = r.precedence === 'FIRST' ? 1 : r.precedence === 'SECOND' ? 2 : r.precedence === 'THIRD' ? 3 : 4
+          const durationVal =
+            typeof r.duration === 'number'
+              ? r.duration
+              : r.ruleId === 'VARIANT'
+                ? 60
+                : r.ruleId === 'SIZE'
+                  ? 40
+                  : r.ruleId === 'PAPER'
+                    ? 15
+                    : 0
           return {
             rule_id: r.ruleId,
             precedence: prec,
             condition: r.condition,
             activity: r.activity,
+            duration_minutes: durationVal,
             additional_note: r.note
           }
         })

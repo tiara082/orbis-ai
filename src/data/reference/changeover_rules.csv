@@ -1,5 +1,5 @@
-﻿rule_id,precedence,condition,activity,duration_minutes,additional_note
-VARIANT,FIRST,Flavour_variant_changes,Variant Changeover,X,Override Size Change dan Paper Change; CIP tetap independen
-SIZE,SECOND,Same_flavour_different_size_any_market,Size Change,X,Berlaku walau market berubah; override Paper Change; CIP tetap independen
-PAPER,THIRD,Different_market_variant_same_size_same_flavour,Paper Change,X,Tetap tambahkan CIP bila trigger terpenuhi
-NONE,LAST,Same_market_variant_same_size_same_flavour,None,,Tetap cek End Production; End Storage Volume dan SOP transisi lain
+rule_id,precedence,condition,activity,duration_minutes,additional_note
+VARIANT,FIRST,Flavour_variant_changes,Variant Changeover,60,"Jeda 60 Menit. Pipa dan mesin wajib dicuci total dengan sistem CIP panas agar rasa sebelumnya tidak mencemari rasa berikutnya. (Contoh: Cokelat ke Full Cream. Override Size Change dan Paper Change)"
+SIZE,SECOND,Same_flavour_different_size_any_market,Size Change,40,"Jeda 40 Menit. Mesin perlu penyesuaian mekanis pemotong dan pelipat karton. (Contoh: 1 Liter ke 250 ml. Override Paper Change)"
+PAPER,THIRD,Different_market_variant_same_size_same_flavour,Paper Change,15,"Jeda 15 Menit. Hanya mengganti gulungan kertas kemasan baru tanpa membongkar mesin. (Rasa & Ukuran Sama)"
+NONE,LAST,Same_market_variant_same_size_same_flavour,None,0,"Tidak ada jeda waktu henti changeover jika rasa, ukuran, dan market sama"

@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { ArrowLeftToLine, ArrowRightToLine } from 'lucide-react'
+import { ArrowLeftToLine, ArrowRightToLine, ExternalLink } from 'lucide-react'
 import { DetailDrawer, DrawerSection } from '../../../components/common/DetailDrawer'
 import { KeyValueList } from '../../../components/common/KeyValueList'
 import { Badge } from '../../../components/ui/Badge'
@@ -30,6 +30,12 @@ export function BatchDrawer({ batch, onClose }: { batch: Batch; onClose: () => v
       description={`${batch.assetId} · ${batch.material} · ${fmt.liters(batch.volumeL)}`}
     >
       <div className="flex flex-wrap gap-2">
+        <Link
+          to="/milk-traceability/batch-detail"
+          className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-brand text-white text-xs font-semibold hover:bg-brand-hover"
+        >
+          <ExternalLink className="w-3.5 h-3.5" /> Buka Detail Batch Lengkap
+        </Link>
         <Link
           to="/milk-traceability/backward"
           search={{ batch: batch.id }}

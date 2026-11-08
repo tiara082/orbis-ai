@@ -489,11 +489,11 @@ on conflict (line_id, finished_sku_id) do update set eligible = excluded.eligibl
 
 -- 11. Changeover Rules
 insert into changeover_rules (rule_id, precedence, condition, activity, duration_minutes, additional_note) values
-  ('VARIANT', 1, 'Flavour_variant_changes', 'Variant Changeover', NULL, 'Override Size Change dan Paper Change; CIP tetap independen'),
-  ('SIZE', 2, 'Same_flavour_different_size_any_market', 'Size Change', NULL, 'Berlaku walau market berubah; override Paper Change; CIP tetap independen'),
-  ('PAPER', 3, 'Different_market_variant_same_size_same_flavour', 'Paper Change', NULL, 'Tetap tambahkan CIP bila trigger terpenuhi'),
-  ('NONE', 4, 'Same_market_variant_same_size_same_flavour', 'None', NULL, 'Tetap cek End Production; End Storage Volume dan SOP transisi lain')
-on conflict (rule_id) do update set precedence = excluded.precedence, condition = excluded.condition, activity = excluded.activity, additional_note = excluded.additional_note;
+  ('VARIANT', 1, 'Flavour_variant_changes', 'Variant Changeover', 60, 'Jeda 60 Menit. Pipa dan mesin wajib dicuci total dengan sistem CIP panas agar rasa sebelumnya tidak mencemari rasa berikutnya. (Contoh: Cokelat ke Full Cream. Override Size Change dan Paper Change)'),
+  ('SIZE', 2, 'Same_flavour_different_size_any_market', 'Size Change', 40, 'Jeda 40 Menit. Mesin perlu penyesuaian mekanis pemotong dan pelipat karton. (Contoh: 1 Liter ke 250 ml. Override Paper Change)'),
+  ('PAPER', 3, 'Different_market_variant_same_size_same_flavour', 'Paper Change', 15, 'Jeda 15 Menit. Hanya mengganti gulungan kertas kemasan baru tanpa membongkar mesin. (Rasa & Ukuran Sama)'),
+  ('NONE', 4, 'Same_market_variant_same_size_same_flavour', 'None', 0, 'Tidak ada jeda waktu henti changeover jika rasa, ukuran, dan market sama')
+on conflict (rule_id) do update set precedence = excluded.precedence, condition = excluded.condition, activity = excluded.activity, duration_minutes = excluded.duration_minutes, additional_note = excluded.additional_note;
 
 -- 12. CIP Rules
 insert into cip_rules (rule_id, trigger, asset_scope, requirement, duration_minutes) values

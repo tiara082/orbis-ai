@@ -116,7 +116,31 @@ function ConfigurationPage() {
           </SectionPanel>
 
           <SectionPanel title={t('planning.config.changeover')} subtitle={t('planning.config.changeoverHint')}>
-            <Card className="p-4 grid gap-4 sm:grid-cols-3">
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                <div className="p-3 rounded-lg border border-warning/30 bg-warning-muted/40">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-ink-strong">{t('schedule.block.VARIANT')}</span>
+                    <Badge tone="warning">60 {t('units.min')}</Badge>
+                  </div>
+                  <p className="text-[11px] text-ink mt-1.5 leading-relaxed">{t('planning.config.variantHint')}</p>
+                </div>
+                <div className="p-3 rounded-lg border border-blue-200 bg-blue-50/40">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-ink-strong">{t('schedule.block.SIZE')}</span>
+                    <Badge tone="info">40 {t('units.min')}</Badge>
+                  </div>
+                  <p className="text-[11px] text-ink mt-1.5 leading-relaxed">{t('planning.config.sizeHint')}</p>
+                </div>
+                <div className="p-3 rounded-lg border border-emerald-200 bg-emerald-50/40">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-ink-strong">{t('schedule.block.PAPER')}</span>
+                    <Badge tone="success">15 {t('units.min')}</Badge>
+                  </div>
+                  <p className="text-[11px] text-ink mt-1.5 leading-relaxed">{t('planning.config.paperHint')}</p>
+                </div>
+              </div>
+              <Card className="p-4 grid gap-4 sm:grid-cols-3">
               <Field label={t('schedule.block.VARIANT')} hint={t('planning.config.variantHint')}>
                 <Select
                   size="md"
@@ -125,13 +149,14 @@ function ConfigurationPage() {
                   options={VARIANT_DURATION_OPTIONS.map((min) => ({ value: String(min), label: `${min} ${t('units.min')}` }))}
                 />
               </Field>
-              <Field label={t('schedule.block.SIZE')}>
+              <Field label={t('schedule.block.SIZE')} hint={t('planning.config.sizeHint')}>
                 <NumberInput value={config.changeoverMin.SIZE} step={5} suffix={t('units.min')} onChange={(value) => set('changeoverMin', { ...config.changeoverMin, SIZE: value })} />
               </Field>
-              <Field label={t('schedule.block.PAPER')}>
+              <Field label={t('schedule.block.PAPER')} hint={t('planning.config.paperHint')}>
                 <NumberInput value={config.changeoverMin.PAPER} step={5} suffix={t('units.min')} onChange={(value) => set('changeoverMin', { ...config.changeoverMin, PAPER: value })} />
               </Field>
             </Card>
+            </div>
           </SectionPanel>
         </div>
 
@@ -148,3 +173,5 @@ function ConfigurationPage() {
     </>
   )
 }
+
+

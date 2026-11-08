@@ -76,7 +76,7 @@ export const DEFAULT_CONFIG: PlanConfig = {
   lineSpeed: { 'FL-01': getAssetState('FL-01')?.speedPackph ?? 0, 'FL-02': getAssetState('FL-02')?.speedPackph ?? 0 },
   utilizationPct: 100,
   start: at('08:00'),
-  changeoverMin: { VARIANT: 30, SIZE: 20, PAPER: 10 },
+  changeoverMin: { VARIANT: 60, SIZE: 40, PAPER: 15 },
   cipMin: { CIP_FLAVOUR: 45, CIP_CH_ST: 45, CIP_END_PRODUCTION: 60 }
 }
 

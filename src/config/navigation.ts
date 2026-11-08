@@ -74,6 +74,7 @@ export const NAV_GROUPS: NavGroup[] = [
         source: 'scenario',
         tabs: [
           { id: 'batches', path: '/milk-traceability/batches' },
+          { id: 'batch-detail', path: '/milk-traceability/batch-detail' },
           { id: 'transfers', path: '/milk-traceability/transfers' },
           { id: 'graph', path: '/milk-traceability/graph' },
           { id: 'backward', path: '/milk-traceability/backward' },
