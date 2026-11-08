@@ -157,7 +157,7 @@ export function upsertCatalog<K extends CatalogCollection>(
     data: { ...snapshot.data, [key]: merged },
     customized: true,
     syncStatus: 'syncing',
-    syncMessage: 'Menyimpan ke Supabase...'
+    syncMessage: 'Menyimpan data...'
   })
 
   // Asynchronous Supabase write
@@ -167,13 +167,13 @@ export function upsertCatalog<K extends CatalogCollection>(
         commit({
           ...snapshot,
           syncStatus: 'synced',
-          syncMessage: 'Perubahan berhasil disimpan ke Supabase'
+          syncMessage: 'Perubahan berhasil disimpan ke database'
         })
       } else {
         commit({
           ...snapshot,
           syncStatus: 'error',
-          syncMessage: 'Tersimpan lokal; Supabase belum disinkronkan'
+          syncMessage: 'Tersimpan lokal; server belum disinkronkan'
         })
       }
     })
@@ -181,7 +181,7 @@ export function upsertCatalog<K extends CatalogCollection>(
       commit({
         ...snapshot,
         syncStatus: 'error',
-        syncMessage: 'Gagal mengirim ke Supabase'
+        syncMessage: 'Gagal mengirim data ke server'
       })
     })
 
@@ -193,14 +193,14 @@ export function resetCatalog() {
 }
 
 export async function pushAllToSupabase() {
-  commit({ ...snapshot, syncStatus: 'syncing', syncMessage: 'Mengunggah semua Master Data ke Supabase...' })
+  commit({ ...snapshot, syncStatus: 'syncing', syncMessage: 'Menyinkronkan semua Master Data...' })
   try {
     await seedAllMasterDataToSupabase()
-    commit({ ...snapshot, syncStatus: 'synced', syncMessage: 'Semua 13 Master Data tersinkron ke Supabase' })
+    commit({ ...snapshot, syncStatus: 'synced', syncMessage: 'Semua 13 Master Data berhasil tersinkron' })
     return { success: true }
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)
-    commit({ ...snapshot, syncStatus: 'error', syncMessage: `Gagal upload ke Supabase: ${msg}` })
+    commit({ ...snapshot, syncStatus: 'error', syncMessage: `Gagal sinkronisasi data: ${msg}` })
     return { success: false, error: msg }
   }
 }

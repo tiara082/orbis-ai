@@ -32,7 +32,7 @@ export function CatalogBanner() {
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-ink-strong">
-              Supabase Cloud Database
+              Pusat Database Master
             </span>
             <span
               className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${
@@ -55,7 +55,7 @@ export function CatalogBanner() {
             </span>
           </div>
           <p className="text-[11px] text-ink-muted">
-            {syncMessage || (customized ? t('master.edit.session') : 'Semua perubahan otomatis tersimpan di Supabase')}
+            {syncMessage || (customized ? t('master.edit.session') : 'Semua perubahan otomatis tersimpan di database')}
           </p>
         </div>
       </div>
@@ -67,7 +67,7 @@ export function CatalogBanner() {
           ) : (
             <Cloud className="mr-1.5 h-3.5 w-3.5 text-brand" />
           )}
-          Simpan Semua ke Supabase
+          Sinkronkan Semua Data
         </Button>
         {customized && (
           <Button size="sm" variant="outline" onClick={() => resetCatalog()}>

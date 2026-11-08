@@ -83,7 +83,7 @@ const MenuPanel: React.FC<{ children: React.ReactNode; className?: string; align
 }) => (
   <div
     className={cn(
-      'absolute top-[calc(100%+8px)] z-50 w-72 rounded-xl border border-gray-200 bg-white shadow-sm p-1.5',
+      'absolute top-[calc(100%+8px)] z-50 rounded-xl border border-gray-200 bg-white shadow-lg p-1.5',
       align === 'right' ? 'right-0' : 'left-0',
       className
     )}
@@ -132,15 +132,15 @@ export const AppHeader: React.FC = () => {
 
   const open = (id: MenuId) => setMenu((current) => (current === id ? null : id))
 
-  const go = (path: AppPath) => {
-    void navigate({ to: path })
+  const go = (path: AppPath | string) => {
+    void navigate({ to: path as AppPath })
     setMenu(null)
     setQuery('')
   }
 
   return (
-    <header ref={rootRef} className="h-14 shrink-0 flex items-center gap-3 px-3 md:px-5 bg-white">
-      <div className="relative flex-1 min-w-0 max-w-md">
+    <header ref={rootRef} className="h-14 shrink-0 flex items-center gap-2 sm:gap-3 px-3 md:px-5 bg-white border-b border-gray-100">
+      <div className="relative flex-1 min-w-0 max-w-xs sm:max-w-sm md:max-w-md">
         <SearchInput
           size="sm"
           placeholder={t('shell.search')}
@@ -149,7 +149,7 @@ export const AppHeader: React.FC = () => {
           onFocus={() => setMenu(null)}
         />
         {matches.length > 0 && (
-          <div className="absolute top-[calc(100%+8px)] left-0 right-0 z-50 rounded-xl border border-gray-200 bg-white shadow-sm p-1.5">
+          <div className="absolute top-[calc(100%+8px)] left-0 right-0 z-50 rounded-xl border border-gray-200 bg-white shadow-lg p-1.5">
             {matches.map((entry) => {
               const Icon = entry.icon
               return (
@@ -168,16 +168,17 @@ export const AppHeader: React.FC = () => {
           </div>
         )}
         {q && matches.length === 0 && (
-          <div className="absolute top-[calc(100%+8px)] left-0 right-0 z-50 rounded-xl border border-gray-200 bg-white shadow-sm px-3 py-2.5 text-xs text-ink flex items-center gap-2">
+          <div className="absolute top-[calc(100%+8px)] left-0 right-0 z-50 rounded-xl border border-gray-200 bg-white shadow-lg px-3 py-2.5 text-xs text-ink flex items-center gap-2">
             <Search className="w-3.5 h-3.5" />
             {t('shell.search')}
           </div>
         )}
       </div>
 
-      <div className="flex items-center gap-1 sm:gap-2 ml-auto">
+      <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
         <PlantClock />
 
+        {/* NOTIFICATIONS */}
         <div className="relative">
           <HeaderIconButton
             label={t('shell.notifications')}
@@ -237,6 +238,7 @@ export const AppHeader: React.FC = () => {
           )}
         </div>
 
+        {/* LANGUAGE */}
         <div className="relative">
           <HeaderIconButton label={t('shell.language')} active={menu === 'lang'} onClick={() => open('lang')}>
             <Globe className="w-4 h-4" />
@@ -249,6 +251,7 @@ export const AppHeader: React.FC = () => {
           )}
         </div>
 
+        {/* PROFILE */}
         <div className="relative">
           <button
             type="button"
@@ -263,7 +266,7 @@ export const AppHeader: React.FC = () => {
             {CURRENT_USER.initials}
           </button>
           {menu === 'profile' && (
-            <MenuPanel>
+            <MenuPanel className="w-72">
               <div className="flex items-center gap-3 px-2.5 py-2.5 mb-1">
                 <div className="w-10 h-10 rounded-full bg-brand-muted text-brand text-sm font-bold flex items-center justify-center shrink-0">
                   {CURRENT_USER.initials}

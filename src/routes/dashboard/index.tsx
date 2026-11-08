@@ -2,6 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowRight, Bell, CalendarCheck, GitFork, Milk, Sparkles, Truck } from 'lucide-react'
 import { SectionPanel, Card } from '../../components/common/SectionPanel'
 import { StatCard } from '../../components/common/StatCard'
+import { DailyVolumeBalance } from '../../components/dashboard/DailyVolumeBalance'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { AiLabel } from '../../components/planning/AiLabel'
 import { lineLanes } from '../../components/planning/planLanes'
@@ -82,6 +83,9 @@ function DashboardPage() {
             captionStatus={pendingRevision ? 'pending approval' : 'approved'}
           />
         </div>
+
+        {/* 24-HOUR DAILY VOLUME BALANCE (06:00 - 06:00) */}
+        <DailyVolumeBalance />
 
         <SectionPanel
           title={t('dashboard.plan')}

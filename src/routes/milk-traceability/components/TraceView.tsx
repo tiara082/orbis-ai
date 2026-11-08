@@ -1,10 +1,23 @@
+import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { Boxes, Factory, GitFork, Tractor } from 'lucide-react'
+import {
+  AlertTriangle,
+  Boxes,
+  CheckCircle2,
+  Download,
+  Factory,
+  GitFork,
+  RotateCcw,
+  ShieldAlert,
+  Tractor
+} from 'lucide-react'
 import { DataTable, type DataTableColumn } from '../../../components/common/DataTable'
 import { ScenarioNote } from '../../../components/common/SourceNote'
 import { StatCard } from '../../../components/common/StatCard'
 import { StepFlow } from '../../../components/common/StepFlow'
 import { SectionPanel, Card } from '../../../components/common/SectionPanel'
+import { Badge } from '../../../components/ui/Badge'
+import { Button } from '../../../components/ui/Button'
 import { ProgressBar } from '../../../components/ui/ProgressBar'
 import { Select } from '../../../components/ui/Select'
 import { BATCHES, FARMS, type Batch, type Transfer } from '../../../data/scenario'
@@ -32,6 +45,7 @@ export function TraceView({ direction, batchId, defaultId }: TraceViewProps) {
   const { t } = useTranslation()
   const fmt = useFormat()
   const navigate = useNavigate()
+  const [mockRecallActive, setMockRecallActive] = useState(false)
   const target = BATCHES.find((batch) => batch.id === batchId) ?? BATCHES.find((batch) => batch.id === defaultId)
 
   const options = BATCHES.filter((batch) =>
@@ -56,6 +70,27 @@ export function TraceView({ direction, batchId, defaultId }: TraceViewProps) {
   const finished = (direction === 'forward' ? others : [target]).filter((batch) => batch.kind === 'finished')
   const stages = [...new Set([target, ...others].map((batch) => batch.kind))].sort((a, b) => STAGE_ORDER.indexOf(a) - STAGE_ORDER.indexOf(b))
   const flow = direction === 'backward' ? ['farm', ...stages] : stages
+
+  const exportRecallReport = () => {
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      'Kategori,Batch ID,Aset Pabrik,Material / SKU,Volume (Liter),Porsi Dampak (%),Status Karantina\n' +
+      `SUMBER INSIDEN,${target.id},${target.assetId},${target.material},${target.volumeL},100.0%,KONTAMINASI TERDETEKSI\n` +
+      rows
+        .map(
+          (r) =>
+            `HILIR TERDAMPAK,${r.batch.id},${r.batch.assetId},${r.batch.material},${Math.round(r.liters)},${(r.share * 100).toFixed(1)}%,QUARANTINE_RECALL`
+        )
+        .join('\n')
+
+    const encodedUri = encodeURI(csvContent)
+    const link = document.createElement('a')
+    link.setAttribute('href', encodedUri)
+    link.setAttribute('download', `Berita_Acara_Mock_Recall_${target.id}_${new Date().toISOString().slice(0, 10)}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   const columns: DataTableColumn<TraceRow>[] = [
     { key: 'batch', header: t('col.batch'), type: 'mono', value: (row) => row.batch.id, sortable: true },
@@ -90,7 +125,20 @@ export function TraceView({ direction, batchId, defaultId }: TraceViewProps) {
       header: t('col.source'),
       render: (row) => (row.batch.kind === 'tanker' ? `${row.batch.deliveryId} · ${FARMS.find((f) => f.id === farmOfTanker(row.batch))?.name}` : row.batch.finishedSkuId ?? '—')
     },
-    { key: 'status', header: t('col.status'), type: 'status', value: (row) => row.batch.status }
+    {
+      key: 'status',
+      header: t('col.status'),
+      type: 'status',
+      value: (row) => (mockRecallActive ? 'rejected' : row.batch.status),
+      render: (row) =>
+        mockRecallActive ? (
+          <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 text-red-800 border border-red-200">
+            QUARANTINE / RECALL
+          </span>
+        ) : (
+          <Badge status={row.batch.status} />
+        )
+    }
   ]
 
   const transferColumns: DataTableColumn<Transfer>[] = [
@@ -103,20 +151,111 @@ export function TraceView({ direction, batchId, defaultId }: TraceViewProps) {
     { key: 'path', header: t('col.route'), className: 'min-w-[280px]', render: (row) => <span className="font-mono text-[11px]">{row.path.join(' → ')}</span> }
   ]
 
-  const setBatch = (id: string) => void navigate({ to: direction === 'backward' ? '/milk-traceability/backward' : '/milk-traceability/forward', search: { batch: id } })
+  const setBatch = (id: string) => {
+    setMockRecallActive(false)
+    void navigate({ to: direction === 'backward' ? '/milk-traceability/backward' : '/milk-traceability/forward', search: { batch: id } })
+  }
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-        <p className="text-sm font-semibold text-ink-strong">{direction === 'backward' ? t('trace.pickTarget') : t('trace.pickSource')}</p>
-        <Select
-          className="w-72"
-          value={target.id}
-          onChange={setBatch}
-          aria-label={t('col.batch')}
-          options={options.map((batch) => ({ value: batch.id, label: `${batch.id} · ${t(`trace.kind.${batch.kind}`)} · ${fmt.liters(batch.volumeL)}` }))}
-        />
+      {/* SELECTION & MOCK RECALL TOOLBAR */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="text-sm font-semibold text-ink-strong">{direction === 'backward' ? t('trace.pickTarget') : t('trace.pickSource')}</p>
+          <Select
+            className="w-72"
+            value={target.id}
+            onChange={setBatch}
+            aria-label={t('col.batch')}
+            options={options.map((batch) => ({ value: batch.id, label: `${batch.id} · ${t(`trace.kind.${batch.kind}`)} · ${fmt.liters(batch.volumeL)}` }))}
+          />
+        </div>
+
+        {direction === 'forward' && (
+          <div className="flex items-center gap-2">
+            {!mockRecallActive ? (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => setMockRecallActive(true)}
+                className="inline-flex items-center gap-1.5"
+              >
+                <ShieldAlert className="w-4 h-4" />
+                Simulasi 1-Click Mock Recall
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setMockRecallActive(false)}
+                className="inline-flex items-center gap-1.5"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                Reset Simulasi Karantina
+              </Button>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* EMERGENCY MOCK RECALL BANNER */}
+      {mockRecallActive && (
+        <div className="p-4 rounded-xl border-2 border-red-500 bg-red-50/90 text-red-950 space-y-3 animate-fadeIn">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-red-200 pb-3">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-600 shrink-0" />
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-red-800">
+                  Protokol Karantina Pangan & Mock Recall Aktif (Standar BPOM / ISO 22000)
+                </p>
+                <p className="text-sm font-semibold text-red-950">
+                  Simulasi Kontaminasi Terdeteksi pada Batch Sumber: {target.id} ({target.material})
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs font-bold px-2 py-1 rounded bg-red-600 text-white shadow-xs">
+                QUARANTINE LOCKED
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={exportRecallReport}
+                className="bg-white text-red-900 border-red-300 hover:bg-red-100 text-xs inline-flex items-center gap-1"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Unduh Berita Acara Karantina (CSV)
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+            <div className="p-2.5 rounded-lg bg-white/80 border border-red-200">
+              <span className="text-red-700 block text-[11px]">Batch Hilir Terpapar:</span>
+              <span className="text-base font-bold font-mono text-red-950">{rows.length} Batch</span>
+            </div>
+            <div className="p-2.5 rounded-lg bg-white/80 border border-red-200">
+              <span className="text-red-700 block text-[11px]">Volume Susu Terisolasi:</span>
+              <span className="text-base font-bold font-mono text-red-950">{fmt.liters(target.volumeL)}</span>
+            </div>
+            <div className="p-2.5 rounded-lg bg-white/80 border border-red-200">
+              <span className="text-red-700 block text-[11px]">SKU Kemasan Terblokir:</span>
+              <span className="text-base font-bold font-mono text-red-950">{finished.length} SKU Jadi</span>
+            </div>
+            <div className="p-2.5 rounded-lg bg-white/80 border border-red-200">
+              <span className="text-red-700 block text-[11px]">Waktu Respon Isolasi:</span>
+              <span className="text-base font-bold font-mono text-emerald-800">0.4 Detik (&lt; 4 Jam)</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-1 text-[11px] text-red-800 border-t border-red-200/60">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+            <span>
+              Integritas Audit Trail Terverifikasi · Algoritma DAG Traceability mengunci seluruh rute distribusi hilir secara instan.
+            </span>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard icon={Tractor} label={t('trace.summary.farms')} value={farms.length} caption={farms.map((id) => FARMS.find((f) => f.id === id)?.name).join(', ') || '—'} />
@@ -127,7 +266,7 @@ export function TraceView({ direction, batchId, defaultId }: TraceViewProps) {
           label={t('trace.summary.finished')}
           value={finished.length}
           caption={finished.map((b) => b.id).join(', ') || '—'}
-          captionTone={direction === 'forward' && finished.length > 0 ? 'warning' : 'neutral'}
+          captionTone={direction === 'forward' && finished.length > 0 ? (mockRecallActive ? 'danger' : 'warning') : 'neutral'}
         />
       </div>
 
@@ -140,7 +279,7 @@ export function TraceView({ direction, batchId, defaultId }: TraceViewProps) {
                 kind === 'farm'
                   ? farms.map((id) => FARMS.find((f) => f.id === id)?.name).join(', ')
                   : [target, ...others].filter((b) => b.kind === kind).map((b) => b.id).join(', '),
-              tone: kind === target.kind ? 'brand' : 'neutral'
+              tone: kind === target.kind ? (mockRecallActive ? 'danger' : 'brand') : 'neutral'
             }))}
           />
         </Card>
@@ -148,7 +287,7 @@ export function TraceView({ direction, batchId, defaultId }: TraceViewProps) {
 
       <DataTable
         title={direction === 'backward' ? t('trace.backwardTable', { id: target.id }) : t('trace.forwardTable', { id: target.id })}
-        subtitle={t('trace.shareHint')}
+        subtitle={mockRecallActive ? 'Seluruh batch hilir di bawah ini berstatus QUARANTINE / RECALL' : t('trace.shareHint')}
         columns={columns}
         rows={rows}
         rowKey={(row) => row.batch.id}

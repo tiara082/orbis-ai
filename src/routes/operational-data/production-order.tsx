@@ -102,11 +102,11 @@ function ProductionOrderPage() {
         priority: prioNum,
         status: 'pending'
       })
-      setFeedback(`Order ${newOrderId} berhasil disimpan ke Supabase!`)
+      setFeedback(`Order ${newOrderId} berhasil disimpan ke sistem.`)
       setTimeout(() => setFeedback(null), 4000)
     } catch (err) {
-      console.warn('Gagal menyimpan order ke Supabase:', err)
-      setFeedback(`Order tersimpan secara lokal (Supabase belum sync)`)
+      console.warn('Gagal menyimpan order ke database:', err)
+      setFeedback(`Order tersimpan di memori sistem.`)
       setTimeout(() => setFeedback(null), 4000)
     } finally {
       setIsSubmitting(false)
@@ -280,7 +280,7 @@ function ProductionOrderPage() {
               </Button>
               <Button type="submit" size="sm" disabled={isSubmitting}>
                 {isSubmitting ? <RefreshCw className="mr-1.5 h-4 w-4 animate-spin" /> : <Plus className="mr-1.5 h-4 w-4" />}
-                Simpan ke Supabase
+                Simpan Pesanan
               </Button>
             </div>
           </form>

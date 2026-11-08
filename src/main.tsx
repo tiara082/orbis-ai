@@ -6,6 +6,7 @@ import './index.css'
 import { LanguageProvider } from './lib/i18n'
 import { router } from './router'
 import { PlanningProvider } from './state/planning'
+import { UserRoleProvider } from './state/userRole'
 import './state/catalog'
 
 registerSW({ immediate: true })
@@ -13,9 +14,11 @@ registerSW({ immediate: true })
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LanguageProvider>
-      <PlanningProvider>
-        <RouterProvider router={router} />
-      </PlanningProvider>
+      <UserRoleProvider>
+        <PlanningProvider>
+          <RouterProvider router={router} />
+        </PlanningProvider>
+      </UserRoleProvider>
     </LanguageProvider>
-  </StrictMode>,
+  </StrictMode>
 )
