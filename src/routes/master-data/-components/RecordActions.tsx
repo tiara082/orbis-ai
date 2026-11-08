@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Download, FileSpreadsheet, Plus } from 'lucide-react'
-import { DetailDrawer } from '../../../components/common/DetailDrawer'
+import { Modal } from '../../../components/common/Modal'
 import { Button } from '../../../components/ui/Button'
 import { Select } from '../../../components/ui/Select'
 import { useTranslation } from '../../../lib/i18n'
@@ -135,7 +135,7 @@ export function RecordActions<T>({ title, fileName, fields, parse, onApply }: Re
       />
       {notice && <span className="text-xs text-ink max-w-md">{notice}</span>}
 
-      <DetailDrawer open={open} onClose={() => setOpen(false)} eyebrow={t('master.edit.formEyebrow')} title={title} description={t('master.edit.formHint')}>
+      <Modal open={open} onClose={() => setOpen(false)} eyebrow={t('master.edit.formEyebrow')} title={title} description={t('master.edit.formHint')}>
         <form
           className="space-y-3"
           onSubmit={(event) => {
@@ -173,7 +173,7 @@ export function RecordActions<T>({ title, fileName, fields, parse, onApply }: Re
             </Button>
           </div>
         </form>
-      </DetailDrawer>
+      </Modal>
     </>
   )
 }

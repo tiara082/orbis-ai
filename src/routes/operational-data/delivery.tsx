@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { DataTable, type DataTableColumn } from '../../components/common/DataTable'
 import { DetailDrawer, DrawerSection } from '../../components/common/DetailDrawer'
+import { Modal } from '../../components/common/Modal'
 import { KeyValueList } from '../../components/common/KeyValueList'
 import { StatCard } from '../../components/common/StatCard'
 import { StepFlow, type FlowStep } from '../../components/common/StepFlow'
@@ -42,7 +43,7 @@ function DeliveryPage() {
   const fmt = useFormat()
   const [deliveries, setDeliveries] = useState<Delivery[]>(DELIVERIES)
   const [selected, setSelected] = useState<Delivery | null>(null)
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [cloudSynced, setCloudSynced] = useState(false)
   const [feedback, setFeedback] = useState<string | null>(null)
@@ -127,7 +128,7 @@ function DeliveryPage() {
     }
 
     setDeliveries((prev) => [newDelivery, ...prev])
-    setIsDrawerOpen(false)
+    setIsFormOpen(false)
     setFeedback(`Truk tangki ${newId} berhasil dicatat ke sistem.`)
     setTimeout(() => setFeedback(null), 6000)
 
@@ -259,7 +260,7 @@ function DeliveryPage() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => setIsDrawerOpen(true)}
+            onClick={() => setIsFormOpen(true)}
             className="inline-flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
@@ -317,11 +318,11 @@ function DeliveryPage() {
         />
       )}
 
-      {/* ADD TANKER DELIVERY DRAWER */}
-      {isDrawerOpen && (
-        <DetailDrawer
+      {isFormOpen && (
+        <Modal
           open
-          onClose={() => setIsDrawerOpen(false)}
+          size="lg"
+          onClose={() => setIsFormOpen(false)}
           eyebrow="Penerimaan Susu Segar"
           title="Catat Kedatangan Truk Tangki Baru"
           description="Formulir resmi penerimaan susu segar dari peternakan Greenfields (Palaan & Wlingi)."
@@ -504,7 +505,7 @@ function DeliveryPage() {
                 variant="outline"
                 size="sm"
                 type="button"
-                onClick={() => setIsDrawerOpen(false)}
+                onClick={() => setIsFormOpen(false)}
               >
                 Batal
               </Button>
@@ -529,7 +530,7 @@ function DeliveryPage() {
               </Button>
             </div>
           </form>
-        </DetailDrawer>
+        </Modal>
       )}
     </>
   )

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { Plus, RefreshCw, CloudCheck, Trash2 } from 'lucide-react'
 import { DataTable, type DataTableColumn } from '../../components/common/DataTable'
-import { DetailDrawer, DrawerSection } from '../../components/common/DetailDrawer'
+import { DrawerSection } from '../../components/common/DetailDrawer'
+import { Modal } from '../../components/common/Modal'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
@@ -28,7 +29,7 @@ function ProductionOrderPage() {
   const { t } = useTranslation()
   const fmt = useFormat()
   const [orders, setOrders] = useState<ProductionOrder[]>(PRODUCTION_ORDERS)
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [feedback, setFeedback] = useState<string | null>(null)
 
@@ -86,7 +87,7 @@ function ProductionOrderPage() {
     }
 
     setOrders((prev) => [newOrder, ...prev])
-    setIsDrawerOpen(false)
+    setIsFormOpen(false)
 
     try {
       const prioNum = priority === 'high' ? 1 : priority === 'medium' ? 2 : 3
@@ -185,7 +186,7 @@ function ProductionOrderPage() {
     <>
       <PageHeader
         actions={
-          <Button size="sm" onClick={() => setIsDrawerOpen(true)}>
+          <Button size="sm" onClick={() => setIsFormOpen(true)}>
             <Plus className="mr-1.5 h-4 w-4" />
             Tambah Production Order
           </Button>
@@ -210,11 +211,10 @@ function ProductionOrderPage() {
         note={<ScenarioNote />}
       />
 
-      {/* Drawer Tambah Order */}
-      <DetailDrawer
+      <Modal
         title="Tambah Production Order Baru"
-        open={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        open={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
       >
         <DrawerSection title="Detail Pesanan">
           <form className="space-y-4" onSubmit={handleCreateOrder}>
@@ -234,7 +234,7 @@ function ProductionOrderPage() {
               <label className="block text-xs font-semibold text-ink-strong mb-1">Target Jumlah Pack</label>
               <input
                 type="number"
-                min={100}
+                min={500}
                 step={500}
                 value={packs}
                 onChange={(e) => setPacks(Number(e.target.value))}
@@ -275,7 +275,7 @@ function ProductionOrderPage() {
             </div>
 
             <div className="flex justify-end gap-2 pt-4 border-t border-gray-100">
-              <Button type="button" variant="outline" size="sm" onClick={() => setIsDrawerOpen(false)}>
+              <Button type="button" variant="outline" size="sm" onClick={() => setIsFormOpen(false)}>
                 Batal
               </Button>
               <Button type="submit" size="sm" disabled={isSubmitting}>
@@ -285,7 +285,7 @@ function ProductionOrderPage() {
             </div>
           </form>
         </DrawerSection>
-      </DetailDrawer>
+      </Modal>
     </>
   )
 }
