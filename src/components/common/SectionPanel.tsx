@@ -2,6 +2,7 @@ import React from 'react'
 import { cn } from '../../lib/cn'
 
 interface SectionPanelProps {
+  id?: string
   title?: string
   subtitle?: string
   actions?: React.ReactNode
@@ -13,6 +14,7 @@ interface SectionPanelProps {
 }
 
 export const SectionPanel: React.FC<SectionPanelProps> = ({
+  id,
   title,
   subtitle,
   actions,
@@ -22,6 +24,7 @@ export const SectionPanel: React.FC<SectionPanelProps> = ({
   children
 }) => (
   <section
+    id={id}
     className={cn(
       'rounded-2xl border',
       variant === 'muted' ? 'bg-gray-50 border-gray-200/80 p-3' : 'bg-white border-gray-200 shadow-xs p-5',

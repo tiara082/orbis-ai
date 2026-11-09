@@ -6,6 +6,7 @@ import { PageHeader } from '../../components/layout/PageHeader'
 import { lineLanes } from '../../components/planning/planLanes'
 import { OrderOutcomeTable, PlanBlocksTable } from '../../components/planning/PlanTables'
 import { ScheduleTimeline } from '../../components/planning/ScheduleTimeline'
+import { VolumeBalanceCalculator } from '../../components/planning/VolumeBalanceCalculator'
 import { SCENARIO } from '../../data/scenario'
 import { useFormat } from '../../lib/format'
 import { useTranslation } from '../../lib/i18n'
@@ -49,6 +50,12 @@ function RecommendedPage() {
             />
           </Card>
         </SectionPanel>
+
+        {/* Volume Balance Validation with formula: Stok Awal + Milk In = Output + Leftover Akhir */}
+        <VolumeBalanceCalculator
+          recommendedOutputL={Math.round(activePlan.milkRequiredL)}
+          recommendedPackOutputL={activePlan.orders.reduce((sum, o) => sum + o.liters, 0)}
+        />
 
         <PlanBlocksTable plan={activePlan} title={t('schedule.table')} subtitle={t('schedule.tableHint')} />
         <OrderOutcomeTable plan={activePlan} title={t('schedule.orders')} />

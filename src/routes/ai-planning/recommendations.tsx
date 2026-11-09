@@ -7,6 +7,8 @@ import { SectionPanel, Card } from '../../components/common/SectionPanel'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { AiLabel } from '../../components/planning/AiLabel'
 import { CheckList } from '../../components/planning/CheckList'
+import { ScheduleBalanceComparisonCard } from '../../components/planning/ScheduleBalanceComparisonCard'
+import { VolumeBalanceCalculator } from '../../components/planning/VolumeBalanceCalculator'
 import { Badge } from '../../components/ui/Badge'
 import type { AppPath } from '../../config/navigation'
 import { checkHolding, checkReceivingCapacity, type CheckResult } from '../../domain/checks'
@@ -94,6 +96,10 @@ function RecommendationsPage() {
     }
   ]
 
+  const scrollToFullComparison = () => {
+    document.getElementById('full-balance-comparison')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <>
       <PageHeader titleAddon={<AiLabel kind="optimizer" />} />
@@ -111,21 +117,47 @@ function RecommendationsPage() {
           }
         />
 
+        {/* 2-Column Grid: Reasons and Risks */}
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
           <SectionPanel title={t('planning.recs.why')} subtitle={t('planning.recs.whyHint')}>
-            <Card className="p-4">
-              <ul className="space-y-2 text-sm text-ink-strong list-disc pl-4">
-                <li>{t('planning.recs.reason.onTime', { count: baseline.plan.orders.length - lateCount(baseline.plan), total: baseline.plan.orders.length })}</li>
-                <li>{t('planning.recs.reason.milk', { required: fmt.liters(Math.round(baseline.plan.milkRequiredL)), available: fmt.liters(baseline.milkAvailableL) })}</li>
-                <li>{t('planning.recs.reason.changeover', { min: config.changeoverMin.VARIANT })}</li>
-                <li>{t('planning.recs.reason.end', { time: fmt.time(baseline.plan.end) })}</li>
-              </ul>
-            </Card>
+            <div className="space-y-3">
+              <Card className="p-4">
+                <ul className="space-y-2 text-sm text-ink-strong list-disc pl-4">
+                  <li>{t('planning.recs.reason.onTime', { count: baseline.plan.orders.length - lateCount(baseline.plan), total: baseline.plan.orders.length })}</li>
+                  <li>{t('planning.recs.reason.milk', { required: fmt.liters(Math.round(baseline.plan.milkRequiredL)), available: fmt.liters(baseline.milkAvailableL) })}</li>
+                  <li>{t('planning.recs.reason.changeover', { min: config.changeoverMin.VARIANT })}</li>
+                  <li>{t('planning.recs.reason.end', { time: fmt.time(baseline.plan.end) })}</li>
+                </ul>
+              </Card>
+
+              {/* Compact AI vs Conventional Efficiency Summary (Fits cleanly in narrow column without squishing) */}
+              <ScheduleBalanceComparisonCard
+                variant="compact"
+                baselinePlan={baseline.plan}
+                milkAvailableL={baseline.milkAvailableL}
+                onViewFull={scrollToFullComparison}
+              />
+            </div>
           </SectionPanel>
+
           <SectionPanel variant="plain" title={t('planning.recs.risks')} subtitle={t('planning.recs.risksHint')}>
             <CheckList checks={baseline.checks} issuesOnly />
           </SectionPanel>
         </div>
+
+        {/* Full-width Section: Comprehensive Volume Balance & Performance Comparison */}
+        <ScheduleBalanceComparisonCard
+          variant="full"
+          baselinePlan={baseline.plan}
+          milkAvailableL={baseline.milkAvailableL}
+        />
+
+        {/* Full-width Section: Interactive Volume Balance Calculator with live parameter tuning */}
+        <VolumeBalanceCalculator
+          recommendedOutputL={Math.round(baseline.plan.milkRequiredL)}
+          recommendedPackOutputL={baseline.plan.orders.reduce((sum, order) => sum + order.liters, 0)}
+          releasedMilkL={baseline.milkAvailableL}
+        />
 
         <DataTable
           title={t('planning.recs.alternatives')}
