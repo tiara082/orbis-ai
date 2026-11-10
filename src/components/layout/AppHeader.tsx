@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { Bell, Globe, LogOut, Search, Settings, UserRound } from 'lucide-react'
+import { Bell, BookOpen, Globe, LogOut, Search, Settings, UserRound } from 'lucide-react'
 import { CURRENT_USER } from '../../config/alerts'
 import { NAV_MODULES, type AppPath } from '../../config/navigation'
 import { useCheckText } from '../../lib/checkText'
@@ -293,6 +293,14 @@ export const AppHeader: React.FC = () => {
               >
                 <Settings className="w-4 h-4 text-ink" />
                 {t('shell.settings')}
+              </button>
+              <button
+                type="button"
+                onClick={() => go('/guide')}
+                className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-ink-strong hover:bg-gray-50"
+              >
+                <BookOpen className="w-4 h-4 text-ink" />
+                {t('shell.guide')}
               </button>
               <button
                 type="button"

@@ -1,4 +1,5 @@
 import {
+  BookOpen,
   CalendarRange,
   Database,
   GitFork,
@@ -20,6 +21,7 @@ export type ModuleId =
   | 'production-schedule'
   | 'master-data'
   | 'account'
+  | 'guide'
 
 export interface NavTab {
   /** Translation keys live under nav.tab.<module>.<id> */
@@ -141,7 +143,8 @@ export const NAV_GROUPS: NavGroup[] = [
           { id: 'profile', path: '/account/profile' },
           { id: 'settings', path: '/account/settings' }
         ]
-      }
+      },
+      { id: 'guide', icon: BookOpen, path: '/guide', hidden: true, tabs: [] }
     ]
   }
 ]

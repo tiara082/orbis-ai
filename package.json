@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "guide:md": "node scripts/build_user_guide.js",
     "preview": "vite preview"
   },
   "dependencies": {

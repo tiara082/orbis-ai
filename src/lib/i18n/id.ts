@@ -22,7 +22,8 @@ export const id: Messages = {
     role: 'Perencana produksi',
     plant: 'Pabrik susu · ESL & UHT',
     shift: 'Shift A',
-    signIn: 'Masuk'
+    signIn: 'Masuk',
+    guide: 'Panduan Pengguna'
   },
   alerts: {
     approval: {
@@ -53,12 +54,17 @@ export const id: Messages = {
       'ai-planning': 'Perencanaan Produksi AI',
       'production-schedule': 'Jadwal Produksi',
       'master-data': 'Master Data & Pengaturan',
-      account: 'Akun'
+      account: 'Akun',
+      guide: 'Panduan Pengguna'
     },
     moduleInfo: {
       dashboard: {
         title: 'Dashboard',
         description: 'Ringkasan hari ini: susu diterima, rencana, peringatan, dan ketertelusuran'
+      },
+      guide: {
+        title: 'Panduan Pengguna ORBIS',
+        description: 'Pengaturan bahasa, perencanaan produksi AI, dan penelusuran susu berbasis graf langkah demi langkah'
       }
     },
     tab: {
@@ -1211,6 +1217,19 @@ export const id: Messages = {
       title: 'Halaman tidak ditemukan',
       description: 'Alamat ini tidak cocok dengan menu mana pun.',
       action: 'Ke dashboard'
+    }
+  },
+  guide: {
+    quickStart: 'Mulai cepat',
+    quickStartHint: 'Lima langkah untuk sesi pertama. Klik langkah untuk melompat ke bagiannya.',
+    toc: 'Daftar isi',
+    openInApp: 'Buka di aplikasi:',
+    tryLanguage: 'Coba di sini',
+    contentLanguage: 'Isi panduan berbahasa Indonesia',
+    contentLanguageHint: 'Ganti bahasa ke ID terlebih dahulu (bagian 1) agar nama menu sama dengan panduan.',
+    focus: {
+      ai: 'Fokus AI',
+      trace: 'Fokus ketertelusuran'
     }
   }
 }

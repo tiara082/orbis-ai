@@ -20,6 +20,7 @@ import { Route as AiPlanningGenerateRouteImport } from './routes/ai-planning/gen
 import { Route as AiPlanningRecommendationsRouteImport } from './routes/ai-planning/recommendations'
 import { Route as AiPlanningScenariosRouteImport } from './routes/ai-planning/scenarios'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as GuideIndexRouteImport } from './routes/guide/index'
 import { Route as MasterDataIndexRouteImport } from './routes/master-data/index'
 import { Route as MasterDataAssetsRouteImport } from './routes/master-data/assets'
 import { Route as MasterDataLineEligibilityRouteImport } from './routes/master-data/line-eligibility'
@@ -105,6 +106,11 @@ const AiPlanningScenariosRoute = AiPlanningScenariosRouteImport.update({
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuideIndexRoute = GuideIndexRouteImport.update({
+  id: '/guide/',
+  path: '/guide/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MasterDataIndexRoute = MasterDataIndexRouteImport.update({
@@ -314,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/account/': typeof AccountIndexRoute
   '/ai-planning/': typeof AiPlanningIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/guide/': typeof GuideIndexRoute
   '/master-data/': typeof MasterDataIndexRoute
   '/milk-traceability/': typeof MilkTraceabilityIndexRoute
   '/operational-data/': typeof OperationalDataIndexRoute
@@ -357,6 +364,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountIndexRoute
   '/ai-planning': typeof AiPlanningIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/guide': typeof GuideIndexRoute
   '/master-data': typeof MasterDataIndexRoute
   '/milk-traceability': typeof MilkTraceabilityIndexRoute
   '/operational-data': typeof OperationalDataIndexRoute
@@ -401,6 +409,7 @@ export interface FileRoutesById {
   '/account/': typeof AccountIndexRoute
   '/ai-planning/': typeof AiPlanningIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/guide/': typeof GuideIndexRoute
   '/master-data/': typeof MasterDataIndexRoute
   '/milk-traceability/': typeof MilkTraceabilityIndexRoute
   '/operational-data/': typeof OperationalDataIndexRoute
@@ -446,6 +455,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/ai-planning/'
     | '/dashboard/'
+    | '/guide/'
     | '/master-data/'
     | '/milk-traceability/'
     | '/operational-data/'
@@ -489,6 +499,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/ai-planning'
     | '/dashboard'
+    | '/guide'
     | '/master-data'
     | '/milk-traceability'
     | '/operational-data'
@@ -532,6 +543,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/ai-planning/'
     | '/dashboard/'
+    | '/guide/'
     | '/master-data/'
     | '/milk-traceability/'
     | '/operational-data/'
@@ -576,6 +588,7 @@ export interface RootRouteChildren {
   AccountIndexRoute: typeof AccountIndexRoute
   AiPlanningIndexRoute: typeof AiPlanningIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  GuideIndexRoute: typeof GuideIndexRoute
   MasterDataIndexRoute: typeof MasterDataIndexRoute
   MilkTraceabilityIndexRoute: typeof MilkTraceabilityIndexRoute
   OperationalDataIndexRoute: typeof OperationalDataIndexRoute
@@ -659,6 +672,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guide/': {
+      id: '/guide/'
+      path: '/guide'
+      fullPath: '/guide/'
+      preLoaderRoute: typeof GuideIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/master-data/': {
@@ -914,6 +934,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountIndexRoute: AccountIndexRoute,
   AiPlanningIndexRoute: AiPlanningIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  GuideIndexRoute: GuideIndexRoute,
   MasterDataIndexRoute: MasterDataIndexRoute,
   MilkTraceabilityIndexRoute: MilkTraceabilityIndexRoute,
   OperationalDataIndexRoute: OperationalDataIndexRoute,

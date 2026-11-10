@@ -2,6 +2,8 @@
 
 Sistem ketertelusuran bahan baku dan pendukung keputusan perencanaan dalam bentuk production plan untuk industri pengolahan susu berbasis graf dan kecerdasan buatan/AI.
 
+📘 **Panduan pengguna:** [docs/USER_GUIDE.md](docs/USER_GUIDE.md), juga tersedia di aplikasi lewat menu avatar → **Panduan Pengguna** (`/guide`).
+
 ---
 
 ## 🥛 Latar Belakang & Masalah

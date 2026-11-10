@@ -20,7 +20,8 @@ export const en = {
     role: 'Production planner',
     plant: 'Dairy plant · ESL & UHT',
     shift: 'Shift A',
-    signIn: 'Sign in'
+    signIn: 'Sign in',
+    guide: 'User guide'
   },
   alerts: {
     approval: {
@@ -51,12 +52,17 @@ export const en = {
       'ai-planning': 'AI Production Planning',
       'production-schedule': 'Production Schedule',
       'master-data': 'Master Data & Settings',
-      account: 'Account'
+      account: 'Account',
+      guide: 'User guide'
     },
     moduleInfo: {
       dashboard: {
         title: 'Dashboard',
         description: 'Today at a glance: milk received, plan, alerts, and traceability'
+      },
+      guide: {
+        title: 'ORBIS user guide',
+        description: 'Language setup, AI production planning, and graph-based milk traceability step by step'
       }
     },
     tab: {
@@ -1209,6 +1215,19 @@ export const en = {
       title: 'Page not found',
       description: 'This address does not match any menu.',
       action: 'Go to dashboard'
+    }
+  },
+  guide: {
+    quickStart: 'Quick start',
+    quickStartHint: 'Five steps for a first session. Click a step to jump to its section.',
+    toc: 'Contents',
+    openInApp: 'Open in app:',
+    tryLanguage: 'Try it here',
+    contentLanguage: 'Guide content is in Bahasa Indonesia',
+    contentLanguageHint: 'Switch the language to ID first (section 1) so menu names match the guide.',
+    focus: {
+      ai: 'AI focus',
+      trace: 'Traceability focus'
     }
   }
 } as const
